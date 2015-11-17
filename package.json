@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/CircleOfNice/CoreExec#readme",
   "devDependencies": {
-    "babel": "^5.8.23",
+    "babel": "^5.8.29",
     "babel-eslint": "^4.1.1",
-    "babel-runtime": "^5.8.20",
+    "babel-runtime": "^5.8.29",
     "blanket": "^1.1.7",
     "browserify": "^11.1.0",
     "esdoc": "^0.4.1",
