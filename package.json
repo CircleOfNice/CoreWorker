@@ -27,7 +27,6 @@
     "babel-runtime": "^5.8.29",
     "blanket": "^1.1.7",
     "browserify": "^11.1.0",
-    "clone": "^1.0.2",
     "esdoc": "^0.4.1",
     "esdoc-es7-plugin": "0.0.2",
     "eslint": "^1.9.0",
@@ -35,10 +34,8 @@
     "jstransform": "^11.0.3",
     "mocha": "^2.3.2",
     "mocha-istanbul": "^0.2.0",
-    "moquire": "^1.5.5",
     "proxyquire": "^1.7.2",
     "remap-istanbul": "^0.3.1",
-    "sandboxed-module": "^2.0.3",
     "sinon": "^1.16.1",
     "source-map-support": "^0.3.3"
   },
