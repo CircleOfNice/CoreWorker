@@ -27,19 +27,22 @@
     "babel-runtime": "^5.8.29",
     "blanket": "^1.1.7",
     "browserify": "^11.1.0",
+    "clone": "^1.0.2",
     "esdoc": "^0.4.1",
     "esdoc-es7-plugin": "0.0.2",
-    "eslint": "^1.4.0",
+    "eslint": "^1.9.0",
     "istanbul": "^0.4.0",
     "jstransform": "^11.0.3",
     "mocha": "^2.3.2",
     "mocha-istanbul": "^0.2.0",
+    "moquire": "^1.5.5",
     "proxyquire": "^1.7.2",
     "remap-istanbul": "^0.3.1",
+    "sandboxed-module": "^2.0.3",
     "sinon": "^1.16.1",
     "source-map-support": "^0.3.3"
-},
-"eslintConfig": {
+  },
+  "eslintConfig": {
     "parser": "babel-eslint",
     "env": {
       "browser": true,
@@ -228,7 +231,7 @@
         2
       ],
       "no-invalid-this": [
-        2
+        0
       ],
       "no-iterator": [
         2
@@ -424,7 +427,8 @@
             "x",
             "e",
             "T",
-            "_"
+            "_",
+            "Q"
           ]
         }
       ],
@@ -619,5 +623,13 @@
       "spread": true,
       "modules": true
     }
+  },
+  "dependencies": {
+    "@circle/core-meta": "^0.1.1",
+    "@circle/core-types": "^0.2.13",
+    "immutable": "^3.7.5",
+    "lodash": "^3.10.1",
+    "q": "^1.4.1",
+    "set-default-value": "0.0.8"
   }
 }
