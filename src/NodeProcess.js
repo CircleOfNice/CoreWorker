@@ -69,12 +69,14 @@ NodeProcess.prototype.write = T.func([T.Object], T.Nil, "nodeProcess.write").of(
 /**
  * Kills a running instance
  *
- * @param  {String} reason how it will killed
  */
-NodeProcess.prototype.kill = T.func([T.String], T.Nil, "nodeProcess.kill").of(function(reason) {
+NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
     if(!this.isRunning()) return;
 
-    this.instance.kill(reason);
+    const forceKill = setTimeout(() => exec(`for pid in $(ps --no-headers -fC "${this.command}" | awk '{print $2}'); do kill -15 $pid; done`), 1000);
+
+    this.emitter.on("death", () => clearTimeout(forceKill));
+    this.instance.kill();
 });
 
 /**

@@ -58,10 +58,10 @@ Process.prototype.stream = T.func([], TDuplexStream, "process.stream").of(functi
 /**
  * Kills a running Process
  *
- * @param {String} reason to kill the process
+ * @param {String} signal to kill the process
  */
-Process.prototype.kill = T.func([T.String], T.Nil, "process.kill").of(function(reason) {
-    this.instance.kill(reason);
+Process.prototype.kill = T.func([], T.Nil, "process.kill").of(function() {
+    this.instance.kill();
 });
 
 /**

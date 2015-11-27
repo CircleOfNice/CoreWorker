@@ -1,13 +1,13 @@
-import CoreExec from "../index";
+import CoreExec from "../Process";
 import assert from "assert";
 import Result from "../Result.type";
 import { Writable } from "stream";
 import path from "path";
 
-describe("CoreExec", function() {
-    const counterScript = path.join(__dirname, "/Scripts/CounterScript.js");
-    const stdinLogger   = path.join(__dirname, "/Scripts/StdinLogger.js");
+const counterScript = path.join(__dirname, "/Scripts/CounterScript.js");
+const stdinLogger   = path.join(__dirname, "/Scripts/StdinLogger.js");
 
+describe("CoreExec", function() {
     it("executes an application and wait until it is ready", async function(done) {
         const process = CoreExec.create(`node ${counterScript}`, "Log No. 10");
 
@@ -16,7 +16,7 @@ describe("CoreExec", function() {
         /*eslint-enable*/
             await process.ready(500);
 
-            process.kill("SIGTERM");
+            process.kill();
             done();
         } catch(err) {
             done(err);
@@ -33,7 +33,7 @@ describe("CoreExec", function() {
 
             assert.deepStrictEqual(result, Result({ data: "Log No. 5" }));
 
-            process.kill("SIGTERM");
+            // process.kill();
             done();
         } catch(err) {
             done(err);
@@ -52,7 +52,7 @@ describe("CoreExec", function() {
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            process.kill("SIGTERM");
+            process.kill();
             done();
         }
     });
@@ -98,7 +98,7 @@ describe("CoreExec", function() {
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            process.kill("SIGTERM");
+            process.kill();
             done();
         }
     });
@@ -110,7 +110,7 @@ describe("CoreExec", function() {
 
         writable.write = function(chunk) {
             assert.equal(chunk, "Hello\n");
-            process.kill("SIGTERM");
+            process.kill();
             done();
         };
 

@@ -5,10 +5,12 @@
  * This example will return a stream
  */
 
-var path        = require("path");
-var CoreExec    = require("../build/src/index");
+"use strict";
+
+var path = require("path");
+var CoreExec = require("../index");
 var stdinLogger = path.join(__dirname, "../build/src/__tests__/Scripts/StdinLogger.js");
-var Writable    = require("stream").Writable;
+var Writable = require("stream").Writable;
 var writeStream = new Writable();
 
 /** Creates a Process with
@@ -17,15 +19,17 @@ var writeStream = new Writable();
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var process = CoreExec.create(`node ${stdinLogger}`, "");
-var stream  = process.stream();
+var process = CoreExec.create("node " + stdinLogger, "");
+var stream = process.stream();
 
-writeStream.write = function(output) {
-    console.log("Got Output", output.slice(0, -1));
+writeStream.write = function (output) {
+  console.log("> Got Output", output.slice(0, -1));
 
-    console.log("Closing..");
-    process.kill("SIGTERM");
+  console.log("> Closing..");
+  process.kill();
 };
 
 stream.pipe(writeStream);
-stream.write("Hello");
+stream.write("Hello World");
+
+//# sourceMappingURL=stream.js.map

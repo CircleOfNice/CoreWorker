@@ -43,7 +43,10 @@ OBJECTS:= \
 #  es6 to es5
 #
 INSTALLED_OBJECTS:= \
-	$(foreach x, $(shell cd $(WORKING_DIR)/src && find . -type f -iname '*.js'), $(INSTALLDIR)/lib/$(x)) \
+	$(foreach x, $(shell cd $(WORKING_DIR)/src && find . -type f -iname '*.js' ! -path "./example/*"), $(INSTALLDIR)/lib/$(x)) \
+
+EXAMPLES:= \
+	$(foreach x, $(shell cd $(WORKING_DIR)/src && find example -type f -iname '*.js'), $(INSTALLDIR)/$(basename $(x)))
 
 all: install
 
@@ -55,12 +58,12 @@ test: build
 	$(WORKING_DIR)/node_modules/.bin/istanbul cover --root $(WORKING_DIR)/build/src -x "**/__tests__/**" $(WORKING_DIR)/node_modules/.bin/_mocha $(shell find $(WORKING_DIR)/build/src -name "*Test.js") -- -R spec --require source-map-support/register
 	$(WORKING_DIR)/node_modules/.bin/remap-istanbul -i $(WORKING_DIR)/coverage/coverage.json -o $(WORKING_DIR)/coverage/lcov-report -t html
 
-
 docs: build
 	$(WORKING_DIR)/node_modules/.bin/esdoc -c esdoc.json
 
 install: docs test
-	@make -s $(INSTALLED_OBJECTS)
+	@+make -s $(INSTALLED_OBJECTS)
+	@+make -s $(EXAMPLES)
 	$(info Copied $(INSTALLED_OBJECTS) to $(INSTALLDIR))
 
 clean:
@@ -68,6 +71,7 @@ clean:
 	rm -rf $(WORKING_DIR)/docs
 	rm -rf $(WORKING_DIR)/lib
 	rm -rf $(WORKING_DIR)/coverage
+	rm -rf $(WORKING_DIR)/example
 	rm -rf $(WORKING_DIR)/setupfile
 
 ##
@@ -97,6 +101,14 @@ $(WORKING_DIR)/build/src/%.js: $(WORKING_DIR)/src/%.js $(WORKING_DIR)/setupfile
 #  every destination file needs a transpiled
 #  source that is tested
 #
-$(WORKING_DIR)/lib/%.js: $(WORKING_DIR)/build/src/%.js
+$(INSTALLDIR)/lib/%.js: $(WORKING_DIR)/build/src/%.js
+	mkdir -p $(dir $@)
+	cp $< $@
+
+##
+#  every destination file needs a transpiled
+#  source that is tested
+#
+$(INSTALLDIR)/example/%: $(WORKING_DIR)/build/src/example/%.js
 	mkdir -p $(dir $@)
 	cp $< $@

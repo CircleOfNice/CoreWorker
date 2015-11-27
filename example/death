@@ -1,0 +1,68 @@
+/*
+ * Runs a Script that increases a counter each millisecond and logs it
+ * This example waits until Process is finished
+ */
+"use strict";
+
+var _regeneratorRuntime = require("babel-runtime/regenerator")["default"];
+
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _index = require("../index");
+
+var _index2 = _interopRequireDefault(_index);
+
+/** Creates a Process with
+ *
+ * @param  {String}                      command   to execute
+ * @param  {String || Function || Regex} condition checking when process is ready
+ * @return {Process}                     --> Not running yet
+ */
+var copyProcess = _index2["default"].create("cp " + _path2["default"].join(__dirname, "Resources/dummyfile") + " " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"), "");
+var removeProcess = _index2["default"].create("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"), "");
+
+var copyAndRemove = function copyAndRemove() {
+    return _regeneratorRuntime.async(function copyAndRemove$(context$1$0) {
+        while (1) switch (context$1$0.prev = context$1$0.next) {
+            case 0:
+                context$1$0.prev = 0;
+
+                /*eslint-enable*/
+                console.log("> Copy file: dummyfile");
+                context$1$0.next = 4;
+                return _regeneratorRuntime.awrap(copyProcess.death(500));
+
+            case 4:
+                console.log("> Finished copy process: dummyfile -> copiedDummyfile");
+
+                console.log("> Remove file: copiedDummyfile");
+                context$1$0.next = 8;
+                return _regeneratorRuntime.awrap(removeProcess.death(500));
+
+            case 8:
+                console.log("> Finished remove process: copiedDummyfile -> -");
+                context$1$0.next = 14;
+                break;
+
+            case 11:
+                context$1$0.prev = 11;
+                context$1$0.t0 = context$1$0["catch"](0);
+
+                console.log("Failed to copy or remove a single file: \n", context$1$0.t0.message);
+
+            case 14:
+            case "end":
+                return context$1$0.stop();
+        }
+    }, null, this, [[0, 11]]);
+};
+
+copyAndRemove();
+
+/*eslint-disable*/
+
+//# sourceMappingURL=death.js.map

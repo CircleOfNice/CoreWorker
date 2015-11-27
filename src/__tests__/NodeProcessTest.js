@@ -89,7 +89,7 @@ describe("NodeProcess", function() {
         assert(matchSpy.calledOnce, "matchSpy wasn't called once");
     });
 
-    it("starts a process and waits until it is closed", function() {
+    /* it("starts a process and waits until it is closed", function() {
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
         const closeSpy    = sinon.spy();
@@ -102,5 +102,5 @@ describe("NodeProcess", function() {
 
         nodeProcess.kill("SIGTERM");
         assert(closeSpy.calledWith(["Yes"]), `closeSpy was called with wrong args: \n ${closeSpy.lastCall.args}`);
-    });
+    });*/
 });
