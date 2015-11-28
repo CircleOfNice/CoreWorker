@@ -20,6 +20,10 @@ export default class DuplexStream extends Writable {
         next();
     }
 
+    end() {
+        this.instance.end();
+    }
+
     /*
      * Registers a Stream to pipe in
      *

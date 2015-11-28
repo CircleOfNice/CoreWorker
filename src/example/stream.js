@@ -1,15 +1,15 @@
-/* eslint no-var: 0 lines-around-comment: 0*/
-
 /*
  * Runs a Script that listens on stdin and logs it
  * This example will return a stream
  */
 
-var path        = require("path");
-var CoreExec    = require("../index");
-var stdinLogger = path.join(__dirname, "../build/src/__tests__/Scripts/StdinLogger.js");
-var Writable    = require("stream").Writable;
-var writeStream = new Writable();
+import path from "path";
+import fs from "fs";
+import { Writable } from "stream";
+import CoreExec from "../index";
+
+const dummyfile   = path.join(__dirname, "Resources/dummyfile");
+const writeStream = new Writable();
 
 /** Creates a Process with
  *
@@ -17,15 +17,14 @@ var writeStream = new Writable();
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var process = CoreExec.create(`node ${stdinLogger}`, "");
-var stream  = process.stream();
+const process = CoreExec.create("grep first", "");
+const stream  = process.stream();
 
 writeStream.write = function(output) {
-    console.log("> Got Output", output.slice(0, -1));
+    console.log("> Got Output:\n", output.slice(0, -1));
 
     console.log("> Closing..");
     process.kill();
 };
 
-stream.pipe(writeStream);
-stream.write("Hello World");
+fs.createReadStream(dummyfile).pipe(stream).pipe(writeStream);

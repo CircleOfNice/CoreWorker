@@ -2,8 +2,8 @@ import Validator from "./Validator";
 import NodeProcess from "./NodeProcess.type";
 import Condition from "./Condition.type";
 import T from "@circle/core-types";
-import { exec } from "child_process";
-import { assign } from "lodash";
+import { spawn } from "child_process";
+import { assign, first } from "lodash";
 import { EventEmitter } from "events";
 import Result from "./Result.type";
 
@@ -43,11 +43,11 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     if(this.isRunning()) return;
 
-    const process = exec(this.command);
+    const process = spawn(this.command, this.commandArgs);
 
-    this.emitter.on("data", data => this.store(data));
-    this.emitter.on("data", data => this.validate(data));
-    process.stdout.on("data", data => this.emitter.emit("data", data));
+    this.emitter.on("data", data => this.store(data.toString()));
+    this.emitter.on("data", data => this.validate(data.toString()));
+    process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
     process.on("close", () => this.emitter.emit("death", this.instance.output) && assign(this.instance, { isRunning: false }));
 
@@ -67,15 +67,19 @@ NodeProcess.prototype.write = T.func([T.Object], T.Nil, "nodeProcess.write").of(
 });
 
 /**
+ * Flushs all data piped into stdin
+ */
+NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
+    this.instance.stdin.end();
+});
+
+/**
  * Kills a running instance
  *
  */
 NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
     if(!this.isRunning()) return;
 
-    const forceKill = setTimeout(() => exec(`for pid in $(ps --no-headers -fC "${this.command}" | awk '{print $2}'); do kill -15 $pid; done`), 1000);
-
-    this.emitter.on("death", () => clearTimeout(forceKill));
     this.instance.kill();
 });
 
@@ -143,12 +147,14 @@ NodeProcess.prototype.lastMatch = T.func([], T.maybe(T.String), "nodeProcess.las
 NodeProcess.create = T.func([T.String, Condition], NodeProcess, "NodeProcess.create").of(function(command, condition) {
     const filter  = Validator.create(condition);
     const emitter = new EventEmitter();
+    const splittedCommand = command.split(" ");
 
     return {
-        emitter:  emitter,
-        command:  command,
-        filter:   filter,
-        instance: {
+        emitter:     emitter,
+        command:     first(splittedCommand),
+        commandArgs: splittedCommand.slice(1),
+        filter:      filter,
+        instance:    {
             isRunning: false,
             output:    [],
             lastMatch: null,

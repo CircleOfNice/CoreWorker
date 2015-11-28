@@ -1,5 +1,3 @@
-/* eslint no-var: 0 lines-around-comment: 0*/
-
 /*
  * Runs a Script that listens on stdin and logs it
  * This example will return a stream
@@ -7,11 +5,24 @@
 
 "use strict";
 
-var path = require("path");
-var CoreExec = require("../index");
-var stdinLogger = path.join(__dirname, "../build/src/__tests__/Scripts/StdinLogger.js");
-var Writable = require("stream").Writable;
-var writeStream = new Writable();
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _fs = require("fs");
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _stream = require("stream");
+
+var _index = require("../index");
+
+var _index2 = _interopRequireDefault(_index);
+
+var dummyfile = _path2["default"].join(__dirname, "Resources/dummyfile");
+var writeStream = new _stream.Writable();
 
 /** Creates a Process with
  *
@@ -19,17 +30,16 @@ var writeStream = new Writable();
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var process = CoreExec.create("node " + stdinLogger, "");
+var process = _index2["default"].create("grep first", "");
 var stream = process.stream();
 
 writeStream.write = function (output) {
-  console.log("> Got Output", output.slice(0, -1));
+  console.log("> Got Output:\n", output.slice(0, -1));
 
   console.log("> Closing..");
   process.kill();
 };
 
-stream.pipe(writeStream);
-stream.write("Hello World");
+_fs2["default"].createReadStream(dummyfile).pipe(stream).pipe(writeStream);
 
 //# sourceMappingURL=stream.js.map

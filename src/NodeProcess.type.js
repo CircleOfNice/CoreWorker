@@ -6,8 +6,9 @@ import Instance from "./Instance.type";
  * @typedef NodeProcess
  */
 export default T.struct({
-    emitter:  T.Object,
-    instance: Instance,
-    filter:   Validator,
-    command:  T.String
+    emitter:     T.Object,
+    instance:    Instance,
+    filter:      Validator,
+    command:     T.String,
+    commandArgs: T.list(T.String)
 }, "NodeProcess");

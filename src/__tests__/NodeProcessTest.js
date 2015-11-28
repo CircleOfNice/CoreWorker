@@ -9,8 +9,8 @@ const commandSpy   = sinon.spy();
 const callbacks    = {};
 const setCallbacks = (name, cb) => set(callbacks, name, cb);
 
-const exec = function(command) {
-    commandSpy(command);
+const spawn = function(command, commandArgs) {
+    commandSpy(command, commandArgs);
 
     return {
         stdout: {
@@ -27,7 +27,7 @@ const exec = function(command) {
 const run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     if(this.isRunning()) return;
 
-    const process = exec(this.command);
+    const process = spawn(this.command, this.commandArgs);
 
     this.emitter.on("data", data => this.store(data));
     this.emitter.on("data", data => this.validate(data));
@@ -41,13 +41,21 @@ const run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     });
 });
 
+const kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
+    if(!this.isRunning()) return;
+
+    this.instance.kill();
+});
+
 describe("NodeProcess", function() {
     before(function() {
+        sinon.stub(NodeProcess.prototype, "kill", kill);
         sinon.stub(NodeProcess.prototype, "run", run);
     });
 
     after(function() {
         NodeProcess.prototype.run.restore();
+        NodeProcess.prototype.kill.restore();
     });
 
     it("creates a new NodeProcess", function() {
@@ -55,7 +63,8 @@ describe("NodeProcess", function() {
 
         assert.deepStrictEqual(keys(nodeProcess.instance), ["isRunning", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
         assert(!nodeProcess.instance.isRunning, "Process shouldn't run after create");
-        assert.equal(nodeProcess.command, "node Test.js", "Command should be stored in Process");
+        assert.equal(nodeProcess.command, "node", "Command should be stored in Process");
+        assert.equal(nodeProcess.commandArgs, "Test.js", "CommandArgs should be stored in Process");
         assert(nodeProcess.filter.validate("Started Successfully."), "Filter should be set on given String");
         assert(nodeProcess.emitter instanceof EventEmitter, "emitter should be an instance of EventEmitter");
     });
@@ -67,7 +76,7 @@ describe("NodeProcess", function() {
         nodeProcess.onReady(match => matchSpy(match));
         nodeProcess.run();
 
-        assert(commandSpy.calledWith("node Test.js"), `commandSpy was called with wrong args: \n ${commandSpy.lastCall.args}`);
+        assert(commandSpy.calledWith("node", ["Test.js"]), `commandSpy was called with wrong args: \n ${commandSpy.lastCall.args}`);
         assert.deepStrictEqual(keys(callbacks), ["stdout", "stderr", "close"], "Callbacks should be set after process.run");
 
         callbacks.stdout("Started Successfully.");
@@ -89,7 +98,7 @@ describe("NodeProcess", function() {
         assert(matchSpy.calledOnce, "matchSpy wasn't called once");
     });
 
-    /* it("starts a process and waits until it is closed", function() {
+    it("starts a process and waits until it is closed", function() {
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
         const closeSpy    = sinon.spy();
@@ -100,7 +109,7 @@ describe("NodeProcess", function() {
         assert(T.Function.is(callbacks.close), "Close shoud be set again");
         callbacks.stdout("Yes");
 
-        nodeProcess.kill("SIGTERM");
+        nodeProcess.kill();
         assert(closeSpy.calledWith(["Yes"]), `closeSpy was called with wrong args: \n ${closeSpy.lastCall.args}`);
-    });*/
+    });
 });
