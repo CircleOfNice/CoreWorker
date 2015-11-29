@@ -11,8 +11,8 @@ import CoreExec from "../index";
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-const copyProcess   = CoreExec.create(`cp ${path.join(__dirname, "Resources/dummyfile")} ${path.join(__dirname, "Resources/copiedDummyfile")}`, "");
-const removeProcess = CoreExec.create(`rm ${path.join(__dirname, "Resources/copiedDummyfile")}`, "");
+const copyProcess   = CoreExec.create(`cp ${path.join(__dirname, "Resources/dummyfile")} ${path.join(__dirname, "Resources/copiedDummyfile")}`);
+const removeProcess = CoreExec.create(`rm ${path.join(__dirname, "Resources/copiedDummyfile")}`);
 
 const copyAndRemove = async function() {
     /*eslint-disable*/

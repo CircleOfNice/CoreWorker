@@ -4,6 +4,7 @@ import { keys, assign, set } from "lodash";
 import { EventEmitter } from "events";
 import T from "@circle/core-types";
 import NodeProcess from "../NodeProcess";
+import Result from "../Result";
 
 const commandSpy   = sinon.spy();
 const callbacks    = {};
@@ -33,7 +34,7 @@ const run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data));
     process.stdout.on("data", data => this.emitter.emit("data", data));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", this.instance.output) && assign(this.instance, { isRunning: false }));
+    process.on("close", () => this.emitter.emit("death", Result.createBatch(this.instance.output)) && assign(this.instance, { isRunning: false }));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -109,7 +110,7 @@ describe("NodeProcess", function() {
         assert(T.Function.is(callbacks.close), "Close shoud be set again");
         callbacks.stdout("Yes");
 
-        nodeProcess.kill();
-        assert(closeSpy.calledWith(["Yes"]), `closeSpy was called with wrong args: \n ${closeSpy.lastCall.args}`);
+        callbacks.close();
+        assert(closeSpy.calledWith(Result({ data: "Yes" })), `closeSpy was called with wrong args: \n ${closeSpy.lastCall.args}`);
     });
 });

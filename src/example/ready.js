@@ -19,7 +19,7 @@ const createWebsocket = async function() {
     try {
     /*eslint-enabe*/
         console.log("> Creating a websocket");
-        const result        = await process.ready(1000);
+        const result = await process.ready(1000);
 
         /*
          * If Promise gets resolved, a Result is returned containing ...

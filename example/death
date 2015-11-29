@@ -22,8 +22,8 @@ var _index2 = _interopRequireDefault(_index);
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var copyProcess = _index2["default"].create("cp " + _path2["default"].join(__dirname, "Resources/dummyfile") + " " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"), "");
-var removeProcess = _index2["default"].create("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"), "");
+var copyProcess = _index2["default"].create("cp " + _path2["default"].join(__dirname, "Resources/dummyfile") + " " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
+var removeProcess = _index2["default"].create("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
 
 var copyAndRemove = function copyAndRemove() {
     return _regeneratorRuntime.async(function copyAndRemove$(context$1$0) {

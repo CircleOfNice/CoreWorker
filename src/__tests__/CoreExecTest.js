@@ -14,8 +14,9 @@ describe("CoreExec", function() {
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            await process.ready(500);
+            const result = await process.ready(500);
 
+            assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
             process.kill();
             done();
         } catch(err) {
@@ -31,7 +32,7 @@ describe("CoreExec", function() {
         /*eslint-enable*/
             const result = await process.ready(500);
 
-            assert.deepStrictEqual(result, Result({ data: "Log No. 5" }));
+            assert.deepStrictEqual(result, Result({ data: "Log No. 5" }), "Result should contain 'Log No. 5'");
 
             // process.kill();
             done();
@@ -46,8 +47,9 @@ describe("CoreExec", function() {
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            await process.ready(10);
+            const result = await process.ready(10);
 
+            assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
             done(new Error("This shouldn't finish."));
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
@@ -63,9 +65,9 @@ describe("CoreExec", function() {
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const output = await process.death();
+            const result = await process.death();
 
-            output.forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
+            result.data.split("\n").filter(line => line !== "").forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
             done();
         } catch(err) {
             done(err);
@@ -78,9 +80,9 @@ describe("CoreExec", function() {
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const output = await process.death(500);
+            const result = await process.death(500);
 
-            output.forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
+            result.data.split("\n").filter(line => line !== "").forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
             done();
         } catch(err) {
             done(err);

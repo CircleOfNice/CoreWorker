@@ -21,7 +21,7 @@ const process = CoreExec.create("grep first", "");
 const stream  = process.stream();
 
 writeStream.write = function(output) {
-    console.log("> Got Output:\n", output.slice(0, -1));
+    console.log("> Found the following matched in file:\n", output.slice(0, -1));
 
     console.log("> Closing..");
     process.kill();

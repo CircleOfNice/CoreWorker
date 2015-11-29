@@ -110,12 +110,16 @@ describe("Process", function() {
     });
 
     it("runs a new Instance and waits until death", function(done) {
-        test.set({ resolve: "TestString" });
+        test.set({
+            resolve: {
+                data: "TestString"
+            }
+        });
 
         const instance = Process.create("node Test.js", "TestString");
 
         instance.death().then(function(data) {
-            assert.equal(data, "TestString", "TestString should be resolved");
+            assert.deepStrictEqual(data, { data: "TestString" }, `TestString should be resolved: \n ${JSON.stringify(data)}`);
             done();
         }).catch(done);
 

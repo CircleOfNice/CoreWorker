@@ -5,7 +5,7 @@ import T from "@circle/core-types";
 import { spawn } from "child_process";
 import { assign, first } from "lodash";
 import { EventEmitter } from "events";
-import Result from "./Result.type";
+import Result from "./Result";
 
 /**
  * Collects data and emits it afterwards
@@ -49,7 +49,7 @@ NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", this.instance.output) && assign(this.instance, { isRunning: false }));
+    process.on("close", () => this.emitter.emit("death", Result.createBatch(this.instance.output)) && assign(this.instance, { isRunning: false }));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -145,8 +145,8 @@ NodeProcess.prototype.lastMatch = T.func([], T.maybe(T.String), "nodeProcess.las
  * @return {NodeProcess}
  */
 NodeProcess.create = T.func([T.String, Condition], NodeProcess, "NodeProcess.create").of(function(command, condition) {
-    const filter  = Validator.create(condition);
-    const emitter = new EventEmitter();
+    const filter          = Validator.create(condition);
+    const emitter         = new EventEmitter();
     const splittedCommand = command.split(" ");
 
     return {
