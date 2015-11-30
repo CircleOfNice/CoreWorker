@@ -1,10 +1,11 @@
 import sinon from "sinon";
 import assert from "assert";
-import { keys, assign, set } from "lodash";
+import { keys, set } from "lodash";
 import { EventEmitter } from "events";
 import T from "@circle/core-types";
 import NodeProcess from "../NodeProcess";
 import Result from "../Result";
+import ChildProcess from "child_process";
 
 const commandSpy   = sinon.spy();
 const callbacks    = {};
@@ -25,38 +26,13 @@ const spawn = function(command, commandArgs) {
     };
 };
 
-const run = T.func([], T.Nil, "NodeProcess.run").of(function() {
-    if(this.isRunning()) return;
-
-    const process = spawn(this.command, this.commandArgs);
-
-    this.emitter.on("data", data => this.store(data));
-    this.emitter.on("data", data => this.validate(data));
-    process.stdout.on("data", data => this.emitter.emit("data", data));
-    process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", Result.create(this.instance.output.join(""))) && assign(this.instance, { isRunning: false }));
-
-    assign(this.instance, process, {
-        isRunning: true,
-        kill:      process.kill
-    });
-});
-
-const kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
-    if(!this.isRunning()) return;
-
-    this.instance.kill();
-});
-
 describe("NodeProcess", function() {
     before(function() {
-        sinon.stub(NodeProcess.prototype, "kill", kill);
-        sinon.stub(NodeProcess.prototype, "run", run);
+        sinon.stub(ChildProcess, "spawn", spawn);
     });
 
     after(function() {
-        NodeProcess.prototype.run.restore();
-        NodeProcess.prototype.kill.restore();
+        ChildProcess.spawn.restore();
     });
 
     it("creates a new NodeProcess", function() {
