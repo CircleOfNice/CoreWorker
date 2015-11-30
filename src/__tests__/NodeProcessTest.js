@@ -34,7 +34,7 @@ const run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data));
     process.stdout.on("data", data => this.emitter.emit("data", data));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", Result.createBatch(this.instance.output)) && assign(this.instance, { isRunning: false }));
+    process.on("close", () => this.emitter.emit("death", Result.create(this.instance.output.join(""))) && assign(this.instance, { isRunning: false }));
 
     assign(this.instance, process, {
         isRunning: true,

@@ -1,6 +1,6 @@
 import T from "@circle/core-types";
 import Validator from "./Validator.type";
-import RegEx from "./RegEx.type";
+import RegExp from "./RegExp.type";
 import Condition from "./Condition.type";
 import { assign, first } from "lodash";
 import Result from "./Result";
@@ -12,7 +12,7 @@ import Result from "./Result";
  * @return {Result}
  */
 Validator.prototype.getResult = T.func([T.String], Result, "validator.getResult").of(function(match) {
-    return Result.create(RegEx.is(this.filter) ? first(this.filter.exec(match)) : null);
+    return Result.create(RegExp.is(this.filter) ? first(this.filter.exec(match)) : null);
 });
 
 /**
@@ -24,9 +24,10 @@ Validator.prototype.getResult = T.func([T.String], Result, "validator.getResult"
 Validator.create = T.func([Condition], Validator, "Validator.create").of(function(condition) {
     const validator = { filter: condition };
 
-    if(RegEx.is(condition))      return assign(validator, { validate: value => condition.test(value) });
+    if(RegExp.is(condition))     return assign(validator, { validate: value => condition.test(value) });
     if(T.String.is(condition))   return assign(validator, { validate: value => value.indexOf(condition) !== -1 });
-    if(T.Function.is(condition)) return assign(validator, { validate: condition });
+
+    return assign(validator, { validate: condition });
 });
 
 export default Validator;

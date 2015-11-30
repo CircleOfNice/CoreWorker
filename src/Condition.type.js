@@ -1,13 +1,13 @@
 import T from "@circle/core-types";
-import RegEx from "./RegEx.type";
+import RegExp from "./RegExp.type";
 
 /**
  * @typedef Condition
  */
-const Condition = T.union([RegEx, T.String, T.Function], "Condition");
+const Condition = T.union([RegExp, T.String, T.Function], "Condition");
 
 Condition.dispatch = function(x) {
-    if(RegEx.is(x))      return RegEx;
+    if(RegExp.is(x))      return RegExp;
     if(T.String.is(x))   return T.String;
     if(T.Function.is(x)) return T.Function;
 

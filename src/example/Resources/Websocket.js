@@ -1,10 +1,9 @@
-/* eslint no-var: 0 lines-around-comment: 0*/
-var http = require("http");
+import http from "http";
 
 /**
  * First a http-Server is needed
  */
-var server = http.createServer(function(req, res) {
+const server = http.createServer(function(req, res) {
     console.log("Got request");
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Okay");
@@ -14,7 +13,7 @@ var server = http.createServer(function(req, res) {
  * Upgrades to Websocket
  */
 server.on("upgrade", function(req, socket) {
-    var handshake = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
+    const handshake = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
                     "Upgrade: WebSocket\r\n" +
                     "Connection: Upgrade\r\n" +
                     "\r\n";
@@ -30,12 +29,8 @@ server.on("upgrade", function(req, socket) {
  * Starts the Http Server listening on localhost:1337
  */
 server.listen(1337, "127.0.0.1", function() {
-    var options = null;
-    var req     = null;
-
     console.log("Listening on 127.0.0.1:1337");
-
-    options = {
+    const options = {
         port:     1337,
         hostname: "127.0.0.1",
         headers:  {
@@ -43,8 +38,8 @@ server.listen(1337, "127.0.0.1", function() {
             Upgrade:    "websocket"
         }
     };
+    const req     = http.request(options);
 
-    req = http.request(options);
     req.end();
 
     /**

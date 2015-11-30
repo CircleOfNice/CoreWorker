@@ -1,12 +1,15 @@
-/* eslint no-var: 0 lines-around-comment: 0*/
 "use strict";
 
-var http = require("http");
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _http = require("http");
+
+var _http2 = _interopRequireDefault(_http);
 
 /**
  * First a http-Server is needed
  */
-var server = http.createServer(function (req, res) {
+var server = _http2["default"].createServer(function (req, res) {
     console.log("Got request");
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("Okay");
@@ -29,12 +32,8 @@ server.on("upgrade", function (req, socket) {
  * Starts the Http Server listening on localhost:1337
  */
 server.listen(1337, "127.0.0.1", function () {
-    var options = null;
-    var req = null;
-
     console.log("Listening on 127.0.0.1:1337");
-
-    options = {
+    var options = {
         port: 1337,
         hostname: "127.0.0.1",
         headers: {
@@ -42,8 +41,8 @@ server.listen(1337, "127.0.0.1", function () {
             Upgrade: "websocket"
         }
     };
+    var req = _http2["default"].request(options);
 
-    req = http.request(options);
     req.end();
 
     /**

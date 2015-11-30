@@ -67,7 +67,12 @@ describe("CoreExec", function() {
         /*eslint-enable*/
             const result = await process.death();
 
-            result.data.split("\n").filter(line => line !== "").forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
+            result.data
+                .slice(0, -1)
+                .split("\n")
+                .forEach(function(row, iterator) {
+                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\n Log No. ${iterator + 1}`);
+                });
             done();
         } catch(err) {
             done(err);
@@ -82,7 +87,12 @@ describe("CoreExec", function() {
         /*eslint-enable*/
             const result = await process.death(500);
 
-            result.data.split("\n").filter(line => line !== "").forEach(row => assert(row.indexOf("Log No.") === 0, `Wrong output: ${row}`));
+            result.data
+                .slice(0, -1)
+                .split("\n")
+                .forEach(function(row, iterator) {
+                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\n Log No. ${iterator + 1}`);
+                });
             done();
         } catch(err) {
             done(err);
