@@ -16,15 +16,16 @@ var _index = require("../index");
 
 var _index2 = _interopRequireDefault(_index);
 
-var websocket = _path2["default"].join(__dirname, "Resources/Websocket");
+var websocketPath = _path2["default"].join(__dirname, "Resources/Websocket");
 
-/** Creates a Process with
+/**
+ * Creates a Process and waits for further action, before the process gets started
  *
  * @param  {String}                      command   to execute
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var process = _index2["default"].create("node " + websocket, "Request was upgraded successfully to new Websocket");
+var websocket = (0, _index2["default"])("node " + websocketPath, "Request was upgraded successfully to new Websocket");
 var createWebsocket = function createWebsocket() {
   var result;
   return _regeneratorRuntime.async(function createWebsocket$(context$1$0) {
@@ -35,7 +36,7 @@ var createWebsocket = function createWebsocket() {
         /*eslint-enabe*/
         console.log("> Creating a websocket");
         context$1$0.next = 4;
-        return _regeneratorRuntime.awrap(process.ready(1000));
+        return _regeneratorRuntime.awrap(websocket.ready(1000));
 
       case 4:
         result = context$1$0.sent;
@@ -49,7 +50,7 @@ var createWebsocket = function createWebsocket() {
         console.log("> Websocket is ready to use, returning the following result: \n", result);
         console.log("> Shutdown process...");
 
-        process.kill();
+        websocket.kill();
         context$1$0.next = 14;
         break;
 
@@ -58,7 +59,7 @@ var createWebsocket = function createWebsocket() {
         context$1$0.t0 = context$1$0["catch"](0);
 
         console.log("Failed to create Websocket", context$1$0.t0.message);
-        process.kill();
+        websocket.kill();
 
       case 14:
       case "end":

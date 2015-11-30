@@ -156,6 +156,6 @@ describe("Process", function() {
         process.instance.emitter.emit("data", "Test2");
         assert(pipeSpy.calledWith("Test2"), `pipeSpy was called with wrong args: \n ${pipeSpy.lastCall.args}`);
 
-        assert.throws(process.stream, Error, "It should only run one instance");
+        assert.throws(process.stream, "It should only run one instance");
     });
 });

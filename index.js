@@ -1,1 +1,1 @@
-module.exports = require("./lib/Process");
+module.exports = require("./lib/index");

@@ -7,7 +7,7 @@ import RegExp from "./RegExp.type";
 const Condition = T.union([RegExp, T.String, T.Function], "Condition");
 
 Condition.dispatch = function(x) {
-    if(RegExp.is(x))      return RegExp;
+    if(RegExp.is(x))     return RegExp;
     if(T.String.is(x))   return T.String;
     if(T.Function.is(x)) return T.Function;
 

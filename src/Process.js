@@ -6,6 +6,7 @@ import TDuplexStream from "./DuplexStream.type";
 import defaults from "set-default-value";
 import T from "@circle/core-types";
 import Condition from "./Condition.type";
+import assert from "assert";
 
 /**
  * Awaits the death of a (running) process
@@ -48,7 +49,7 @@ Process.prototype.ready = T.func([T.Index], T.Object, "process.ready").of(functi
  * @return {DuplexStream}
  */
 Process.prototype.stream = T.func([], TDuplexStream, "process.stream").of(function() {
-    if(this.instance.isRunning()) throw new Error("Can't use stream after process initialization");
+    assert(!this.instance.isRunning(), "Can't use stream after process initialization");
 
     this.instance.run();
 
@@ -65,16 +66,25 @@ Process.prototype.kill = T.func([], T.Nil, "process.kill").of(function() {
 });
 
 /**
+ * Returns global "process"-variable
+ *
+ * @return {Object}
+ */
+Process.prototype.getGlobal = T.func([], T.Object, "process.getGlobal").of(function() {
+    return process;
+});
+
+/**
  * Creates a new Process
  *
  * @param  {String}    command   executed in Process
  * @param  {Condition} condition as filter
  * @return {Process}
  */
-Process.create = function(command, condition = "") {
-    return Process({
+Process.create = T.func([T.String, Condition], Process, "Process.create").of(function(command, condition) {
+    return {
         instance: NodeProcess.create(T.String(command), Condition(condition))
-    });
-};
+    };
+});
 
 export default Process;

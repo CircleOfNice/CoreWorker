@@ -6,7 +6,7 @@
 import path from "path";
 import fs from "fs";
 import { Writable } from "stream";
-import CoreExec from "../index";
+import process from "../index";
 
 const dummyfile   = path.join(__dirname, "Resources/dummyfile");
 const writeStream = new Writable();
@@ -17,14 +17,14 @@ const writeStream = new Writable();
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-const process = CoreExec.create("grep first", "");
-const stream  = process.stream();
+const grep    = process("grep first", "");
+const stream  = grep.stream();
 
 writeStream.write = function(output) {
     console.log("> Found the following matched in file:\n", output.slice(0, -1));
 
     console.log("> Closing..");
-    process.kill();
+    grep.kill();
 };
 
 fs.createReadStream(dummyfile).pipe(stream).pipe(writeStream);

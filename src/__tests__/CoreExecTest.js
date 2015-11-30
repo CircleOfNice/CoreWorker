@@ -1,4 +1,4 @@
-import CoreExec from "../Process";
+import process from "../index";
 import assert from "assert";
 import Result from "../Result.type";
 import { Writable } from "stream";
@@ -8,29 +8,29 @@ const counterScript = path.join(__dirname, "/Scripts/CounterScript.js");
 const stdinLogger   = path.join(__dirname, "/Scripts/StdinLogger.js");
 
 describe("CoreExec", function() {
-    it("executes an application and wait until it is ready", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, "Log No. 10");
+    it("executes an application and waits until it is ready", async function(done) {
+        const counter = process(`node ${counterScript}`, "Log No. 10");
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const result = await process.ready(500);
+            const result = await counter.ready(500);
 
             assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
-            process.kill();
+            counter.kill();
             done();
         } catch(err) {
             done(err);
         }
     });
 
-    it("executes an application and wait until it is ready", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, /Log\ No\.\ 5/);
+    it("executes an application and waits until it is ready", async function(done) {
+        const counter = process(`node ${counterScript}`, /Log\ No\.\ 5/);
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const result = await process.ready(500);
+            const result = await counter.ready(500);
 
             assert.deepStrictEqual(result, Result({ data: "Log No. 5" }), "Result should contain 'Log No. 5'");
 
@@ -41,31 +41,31 @@ describe("CoreExec", function() {
         }
     });
 
-    it("executes an application and wait until it is ready exceeding timeout", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, "Log No. 10");
+    it("executes an application, waits until it is ready, but exceeds given timeout", async function(done) {
+        const counter = process(`node ${counterScript}`, "Log No. 10");
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const result = await process.ready(10);
+            const result = await counter.ready(10);
 
             assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
             done(new Error("This shouldn't finish."));
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            process.kill();
+            counter.kill();
             done();
         }
     });
 
-    it("executes an application and wait until death", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, /Log\ No\.\ 10/);
+    it("executes an application and waits its death", async function(done) {
+        const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const result = await process.death();
+            const result = await counter.death();
 
             result.data
                 .slice(0, -1)
@@ -79,13 +79,13 @@ describe("CoreExec", function() {
         }
     });
 
-    it("executes an application and wait until death with timeout", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, /Log\ No\.\ 10/);
+    it("executes an application and waits its death with a spedified timeout", async function(done) {
+        const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            const result = await process.death(500);
+            const result = await counter.death(500);
 
             result.data
                 .slice(0, -1)
@@ -99,30 +99,30 @@ describe("CoreExec", function() {
         }
     });
 
-    it("executes an application and wait until death exceeding timeout", async function(done) {
-        const process = CoreExec.create(`node ${counterScript}`, /Log\ No\.\ 10/);
+    it("executes an application, waits its death, but exceeds given timeout", async function(done) {
+        const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            await process.death(10);
+            await counter.death(10);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            process.kill();
+            counter.kill();
             done();
         }
     });
 
     it("executes an application and handles it as a stream", function(done) {
-        const process  = CoreExec.create(`node ${stdinLogger}`, "");
-        const writable = Writable();
-        const stream   = process.stream();
+        const inputLogger = process(`node ${stdinLogger}`, "");
+        const writable    = Writable();
+        const stream      = inputLogger.stream();
 
         writable.write = function(chunk) {
             assert.equal(chunk, "Hello\n");
-            process.kill();
+            inputLogger.kill();
             done();
         };
 

@@ -14,9 +14,9 @@ const server = http.createServer(function(req, res) {
  */
 server.on("upgrade", function(req, socket) {
     const handshake = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" +
-                    "Upgrade: WebSocket\r\n" +
-                    "Connection: Upgrade\r\n" +
-                    "\r\n";
+        "Upgrade: WebSocket\r\n" +
+        "Connection: Upgrade\r\n" +
+        "\r\n";
 
     socket.write(handshake);
     socket.on("end", function() {

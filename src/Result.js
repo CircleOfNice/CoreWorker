@@ -2,7 +2,7 @@ import T from "@circle/core-types";
 import Result from "./Result.type";
 
 /**
- * Creats a new Result
+ * Creates a new Result
  *
  * @param  {String?} match stored in result
  * @return {Result}

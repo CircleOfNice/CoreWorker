@@ -1,7 +1,7 @@
 {
-  "name": "@circle/core-exec",
+  "name": "@circle/core-worker",
   "version": "0.0.1",
-  "description": "CoreExec",
+  "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
     "test": "make test"

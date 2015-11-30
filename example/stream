@@ -30,14 +30,14 @@ var writeStream = new _stream.Writable();
  * @param  {String || Function || Regex} condition checking when process is ready
  * @return {Process}                     --> Not running yet
  */
-var process = _index2["default"].create("grep first", "");
-var stream = process.stream();
+var grep = (0, _index2["default"])("grep first", "");
+var stream = grep.stream();
 
 writeStream.write = function (output) {
   console.log("> Found the following matched in file:\n", output.slice(0, -1));
 
   console.log("> Closing..");
-  process.kill();
+  grep.kill();
 };
 
 _fs2["default"].createReadStream(dummyfile).pipe(stream).pipe(writeStream);

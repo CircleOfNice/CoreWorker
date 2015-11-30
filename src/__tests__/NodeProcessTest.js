@@ -35,7 +35,7 @@ describe("NodeProcess", function() {
         ChildProcess.spawn.restore();
     });
 
-    it("creates a new NodeProcess", function() {
+    it("creates a new nodeProcess", function() {
         const nodeProcess = NodeProcess.create("node Test.js", "Started Successfully.");
 
         assert.deepStrictEqual(keys(nodeProcess.instance), ["isRunning", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
@@ -75,7 +75,7 @@ describe("NodeProcess", function() {
         assert(matchSpy.calledOnce, "matchSpy wasn't called once");
     });
 
-    it("starts a process and waits until it is closed", function() {
+    it("starts a nodeProcess and waits until it is closed", function() {
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
         const closeSpy    = sinon.spy();

@@ -24,8 +24,8 @@ Validator.prototype.getResult = T.func([T.String], Result, "validator.getResult"
 Validator.create = T.func([Condition], Validator, "Validator.create").of(function(condition) {
     const validator = { filter: condition };
 
-    if(RegExp.is(condition))     return assign(validator, { validate: value => condition.test(value) });
-    if(T.String.is(condition))   return assign(validator, { validate: value => value.indexOf(condition) !== -1 });
+    if(RegExp.is(condition))   return assign(validator, { validate: value => condition.test(value) });
+    if(T.String.is(condition)) return assign(validator, { validate: value => value.indexOf(condition) !== -1 });
 
     return assign(validator, { validate: condition });
 });

@@ -11,7 +11,6 @@ import Result from "./Result";
  * Collects data and emits it afterwards
  *
  * @param  {String}   data received from process.output
- * @return {Boolean?}
  */
 NodeProcess.prototype.validate = T.func([T.String], T.Nil, "nodeProcess.validate").of(function(data) {
     if(Result.is(this.instance.result) || !this.filter.validate(data)) return;
@@ -60,7 +59,7 @@ NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
 /**
  * Streams data in process.stdin
  *
- * @param  {Buffer || String} chunk piped in stdin
+ * @param  {Buffer} chunk piped in stdin
  */
 NodeProcess.prototype.write = T.func([T.Object], T.Nil, "nodeProcess.write").of(function(chunk) {
     this.instance.stdin.write(chunk);
@@ -75,7 +74,6 @@ NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
 
 /**
  * Kills a running instance
- *
  */
 NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
     if(!this.isRunning()) return;
@@ -84,7 +82,7 @@ NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function()
 });
 
 /**
- * Sets a listener on Procces.close
+ * Stores a callback, that gets called, when process ends
  *
  * @param  {Function} cb executed after Process was closed
  */
@@ -93,7 +91,7 @@ NodeProcess.prototype.onDeath = T.func([T.Function], T.Nil, "nodeProcess.onDeath
 });
 
 /**
- * Sets a listener on Process.ready
+ * Stores a callback, that gets called, when process is ready
  *
  * @param  {Function} cb executed, when process is ready
  */
@@ -102,7 +100,7 @@ NodeProcess.prototype.onReady = T.func([T.Function], T.Nil, "nodeProcess.onReady
 });
 
 /**
- * Sets a listener on Process.stdout/Process.stderr
+ * Stores a callback, that gets called, when process logs in stdout/stderr
  *
  * @param  {Function} cb executed on Output
  */
