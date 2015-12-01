@@ -1,0 +1,57 @@
+"use strict";
+
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _http = require("http");
+
+var _http2 = _interopRequireDefault(_http);
+
+/**
+ * First a http-Server is needed
+ */
+var server = _http2["default"].createServer(function (req, res) {
+    console.log("Got request");
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Okay");
+});
+
+/**
+ * Upgrades to Websocket
+ */
+server.on("upgrade", function (req, socket) {
+    var handshake = "HTTP/1.1 101 Web Socket Protocol Handshake\r\n" + "Upgrade: WebSocket\r\n" + "Connection: Upgrade\r\n" + "\r\n";
+
+    socket.write(handshake);
+    socket.on("end", function () {
+        console.log("Closing Server");
+        server.close();
+    });
+});
+
+/*
+ * Starts the Http Server listening on localhost:1337
+ */
+server.listen(1337, "127.0.0.1", function () {
+    console.log("Listening on 127.0.0.1:1337");
+    var options = {
+        port: 1337,
+        hostname: "127.0.0.1",
+        headers: {
+            Connection: "Upgrade",
+            Upgrade: "websocket"
+        }
+    };
+    var req = _http2["default"].request(options);
+
+    req.end();
+
+    /**
+     * Upgrades Request to Websocket
+     */
+    req.on("upgrade", function (res, socket) {
+        console.log("Request was upgraded successfully to new Websocket");
+        socket.end();
+    });
+});
+
+//# sourceMappingURL=Websocket.js.map

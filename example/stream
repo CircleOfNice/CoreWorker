@@ -1,0 +1,43 @@
+/*
+ * Runs a Script that listens on stdin and logs it
+ * This example will return a stream
+ */
+
+"use strict";
+
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _fs = require("fs");
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _stream = require("stream");
+
+var _index = require("../index");
+
+var dummyfile = _path2["default"].join(__dirname, "Resources/dummyfile");
+var writeStream = new _stream.Writable();
+
+/** Creates a Process and waits for further action, before the process gets started
+ *
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
+ */
+var grep = (0, _index.process)("grep first", "");
+var stream = grep.stream();
+
+writeStream.write = function (output) {
+  console.log("> Found the following matches in file:\n", output.slice(0, -1));
+
+  console.log("> Closing..");
+  grep.kill();
+};
+
+_fs2["default"].createReadStream(dummyfile).pipe(stream).pipe(writeStream);
+
+//# sourceMappingURL=stream.js.map
