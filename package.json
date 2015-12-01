@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CircleOfNice/CoreExec.git"
+    "url": "git+https://github.com/CircleOfNice/CoreWorker"
   },
   "keywords": [
     "Execute",
@@ -18,9 +18,9 @@
   "author": "Circle",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/CircleOfNice/CoreExec/issues"
+    "url": "https://github.com/CircleOfNice/CoreWorker/issues"
   },
-  "homepage": "https://github.com/CircleOfNice/CoreExec#readme",
+  "homepage": "https://github.com/CircleOfNice/CoreWorker#readme",
   "devDependencies": {
     "babel": "^5.8.29",
     "babel-eslint": "^4.1.1",
