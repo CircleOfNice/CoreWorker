@@ -14,16 +14,14 @@ var _path2 = _interopRequireDefault(_path);
 
 var _index = require("../index");
 
-var _index2 = _interopRequireDefault(_index);
-
-/** Creates a Process with
+/** Creates a Process and waits for further action, before the process gets started
  *
- * @param  {String}                      command   to execute
- * @param  {String || Function || Regex} condition checking when process is ready
- * @return {Process}                     --> Not running yet
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
  */
-var copyProcess = (0, _index2["default"])("cp " + _path2["default"].join(__dirname, "Resources/dummyfile") + " " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
-var removeProcess = (0, _index2["default"])("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
+var copyProcess = (0, _index.process)("cp " + _path2["default"].join(__dirname, "Resources/dummyfile") + " " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
+var removeProcess = (0, _index.process)("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
 
 var copyAndRemove = function copyAndRemove() {
     return _regeneratorRuntime.async(function copyAndRemove$(context$1$0) {

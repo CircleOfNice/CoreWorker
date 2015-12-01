@@ -66,25 +66,16 @@ Process.prototype.kill = T.func([], T.Nil, "process.kill").of(function() {
 });
 
 /**
- * Returns global "process"-variable
- *
- * @return {Object}
- */
-Process.prototype.getGlobal = T.func([], T.Object, "process.getGlobal").of(function() {
-    return process;
-});
-
-/**
  * Creates a new Process
  *
  * @param  {String}    command   executed in Process
  * @param  {Condition} condition as filter
  * @return {Process}
  */
-Process.create = T.func([T.String, Condition], Process, "Process.create").of(function(command, condition) {
-    return {
+Process.create = function(command, condition = "") {
+    return Process({
         instance: NodeProcess.create(T.String(command), Condition(condition))
-    };
-});
+    });
+};
 
 export default Process;

@@ -1,4 +1,4 @@
-import process from "../index";
+import { process } from "../index";
 import assert from "assert";
 import Result from "../Result.type";
 import { Writable } from "stream";

@@ -14,18 +14,16 @@ var _path2 = _interopRequireDefault(_path);
 
 var _index = require("../index");
 
-var _index2 = _interopRequireDefault(_index);
-
 var websocketPath = _path2["default"].join(__dirname, "Resources/Websocket");
 
 /**
  * Creates a Process and waits for further action, before the process gets started
  *
- * @param  {String}                      command   to execute
- * @param  {String || Function || Regex} condition checking when process is ready
- * @return {Process}                     --> Not running yet
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
  */
-var websocket = (0, _index2["default"])("node " + websocketPath, "Request was upgraded successfully to new Websocket");
+var websocket = (0, _index.process)("node " + websocketPath, "Request was upgraded successfully to new Websocket");
 var createWebsocket = function createWebsocket() {
   var result;
   return _regeneratorRuntime.async(function createWebsocket$(context$1$0) {

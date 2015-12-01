@@ -19,22 +19,20 @@ var _stream = require("stream");
 
 var _index = require("../index");
 
-var _index2 = _interopRequireDefault(_index);
-
 var dummyfile = _path2["default"].join(__dirname, "Resources/dummyfile");
 var writeStream = new _stream.Writable();
 
-/** Creates a Process with
+/** Creates a Process and waits for further action, before the process gets started
  *
- * @param  {String}                      command   to execute
- * @param  {String || Function || Regex} condition checking when process is ready
- * @return {Process}                     --> Not running yet
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
  */
-var grep = (0, _index2["default"])("grep first", "");
+var grep = (0, _index.process)("grep first", "");
 var stream = grep.stream();
 
 writeStream.write = function (output) {
-  console.log("> Found the following matched in file:\n", output.slice(0, -1));
+  console.log("> Found the following matches in file:\n", output.slice(0, -1));
 
   console.log("> Closing..");
   grep.kill();

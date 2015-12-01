@@ -3,13 +3,13 @@
  * This example waits until Process is finished
  */
 import path from "path";
-import process from "../index";
+import { process } from "../index";
 
-/** Creates a Process with
+/** Creates a Process and waits for further action, before the process gets started
  *
- * @param  {String}                      command   to execute
- * @param  {String || Function || Regex} condition checking when process is ready
- * @return {Process}                     --> Not running yet
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
  */
 const copyProcess   = process(`cp ${path.join(__dirname, "Resources/dummyfile")} ${path.join(__dirname, "Resources/copiedDummyfile")}`);
 const removeProcess = process(`rm ${path.join(__dirname, "Resources/copiedDummyfile")}`);

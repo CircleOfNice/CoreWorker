@@ -3,16 +3,16 @@
  * This example waits until Process is ready
  */
 import path from "path";
-import process from "../index";
+import { process } from "../index";
 
 const websocketPath = path.join(__dirname, "Resources/Websocket");
 
 /**
  * Creates a Process and waits for further action, before the process gets started
  *
- * @param  {String}                      command   to execute
- * @param  {String || Function || Regex} condition checking when process is ready
- * @return {Process}                     --> Not running yet
+ * @param  {String}    command   to execute
+ * @param  {Condition} condition checking when process is ready
+ * @return {Process}
  */
 const websocket       = process(`node ${websocketPath}`, "Request was upgraded successfully to new Websocket");
 const createWebsocket = async function() {
