@@ -34,7 +34,7 @@ describe("CoreExec", function() {
 
             assert.deepStrictEqual(result, Result({ data: "Log No. 5" }), "Result should contain 'Log No. 5'");
 
-            // process.kill();
+            counter.kill();
             done();
         } catch(err) {
             done(err);
