@@ -15,12 +15,3 @@
  * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// It does nothing, but getting copied by ../death.js
-
-"use strict";
-
-var firstArgument = "My First String";
-
-console.log(firstArgument);
-
-//# sourceMappingURL=dummyfile.js.map
