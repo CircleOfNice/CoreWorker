@@ -48,6 +48,29 @@ INSTALLED_OBJECTS:= \
 EXAMPLES:= \
 	$(foreach x, $(shell cd $(WORKING_DIR)/src && find example -type f -iname '*.js'), $(INSTALLDIR)/$(basename $(x)))
 
+
+define LICENCE
+/*
+ * This file is part of CoreWorker.
+ *
+ * CoreWorker is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CoreWorker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
+ */
+
+endef
+export LICENCE
+
 all: install
 
 setup: $(WORKING_DIR)/setupfile
@@ -73,6 +96,11 @@ clean:
 	rm -rf $(WORKING_DIR)/coverage
 	rm -rf $(WORKING_DIR)/example
 	rm -rf $(WORKING_DIR)/setupfile
+	rm -f $(WORKING_DIR)/Licence_Template
+	rm -f $(WORKING_DIR)/Licence_Template.tmp
+
+$(WORKING_DIR)/Licence_Template:
+	@echo "$$LICENCE" > $@
 
 ##
 #  file to save setup status
@@ -85,8 +113,13 @@ $(WORKING_DIR)/setupfile:
 #  transpiled files, even if they exist. if the no-op is removed
 #  this will trigger a rebuild too
 #
-$(WORKING_DIR)/src/%.js:
-	@echo "" > /dev/null
+$(WORKING_DIR)/src/%.js: $(WORKING_DIR)/Licence_Template
+	@if ! grep -q "Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)" $@;then \
+		cp $< "$<.tmp"; \
+		cat $@ >> "$<.tmp"; \
+		rm $@; \
+		mv "$<.tmp" "$@"; \
+	fi
 
 ##
 #  every transpiled file requires a matching source file
