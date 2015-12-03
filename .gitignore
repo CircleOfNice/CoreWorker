@@ -41,6 +41,7 @@ Thumbs.db
 *.swp*
 
 setupfile
+Licence_Template
 node_modules
 out
 ../.DS_Store
