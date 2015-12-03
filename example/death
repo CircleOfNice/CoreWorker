@@ -1,4 +1,22 @@
 /*
+ * This file is part of CoreWorker.
+ *
+ * CoreWorker is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CoreWorker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
+ */
+
+/*
  * Runs a Script that increases a counter each millisecond and logs it
  * This example waits until Process is finished
  */
@@ -24,39 +42,39 @@ var copyProcess = (0, _index.process)("cp " + _path2["default"].join(__dirname, 
 var removeProcess = (0, _index.process)("rm " + _path2["default"].join(__dirname, "Resources/copiedDummyfile"));
 
 var copyAndRemove = function copyAndRemove() {
-    return _regeneratorRuntime.async(function copyAndRemove$(context$1$0) {
-        while (1) switch (context$1$0.prev = context$1$0.next) {
-            case 0:
-                context$1$0.prev = 0;
+  return _regeneratorRuntime.async(function copyAndRemove$(context$1$0) {
+    while (1) switch (context$1$0.prev = context$1$0.next) {
+      case 0:
+        context$1$0.prev = 0;
 
-                /*eslint-enable*/
-                console.log("> Copy file: dummyfile");
-                context$1$0.next = 4;
-                return _regeneratorRuntime.awrap(copyProcess.death(500));
+        /*eslint-enable*/
+        console.log("> Copy file: dummyfile");
+        context$1$0.next = 4;
+        return _regeneratorRuntime.awrap(copyProcess.death(500));
 
-            case 4:
-                console.log("> Finished copy process: dummyfile -> copiedDummyfile");
+      case 4:
+        console.log("> Finished copy process: dummyfile -> copiedDummyfile");
 
-                console.log("> Remove file: copiedDummyfile");
-                context$1$0.next = 8;
-                return _regeneratorRuntime.awrap(removeProcess.death(500));
+        console.log("> Remove file: copiedDummyfile");
+        context$1$0.next = 8;
+        return _regeneratorRuntime.awrap(removeProcess.death(500));
 
-            case 8:
-                console.log("> Finished remove process: copiedDummyfile -> -");
-                context$1$0.next = 14;
-                break;
+      case 8:
+        console.log("> Finished remove process: copiedDummyfile -> -");
+        context$1$0.next = 14;
+        break;
 
-            case 11:
-                context$1$0.prev = 11;
-                context$1$0.t0 = context$1$0["catch"](0);
+      case 11:
+        context$1$0.prev = 11;
+        context$1$0.t0 = context$1$0["catch"](0);
 
-                console.log("Failed to copy or remove a single file: \n", context$1$0.t0.message);
+        console.log("Failed to copy or remove a single file: \n", context$1$0.t0.message);
 
-            case 14:
-            case "end":
-                return context$1$0.stop();
-        }
-    }, null, this, [[0, 11]]);
+      case 14:
+      case "end":
+        return context$1$0.stop();
+    }
+  }, null, this, [[0, 11]]);
 };
 
 copyAndRemove();
