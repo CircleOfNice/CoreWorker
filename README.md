@@ -105,12 +105,16 @@ try {
 For this example the timeout isn't really necessary and that's why you can simply omit this parameter - this is not allowed for ready().
 
 ## Stream
-Sometimes it is necessary to communicate with your child process. This can be achieved with the stream command:
-We want to read a file, grep for something with our process and use the output for other operations:
+Sometimes it is necessary to communicate with your child process - write Input into it and receive the resulting output. This can be achieved with the following example:
+We want to read a file, ...
+```js
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+```
+... grep for "Lorem" with our process and use the output for other operations:
 ```js
 import { process } from "CoreWorker";
 import fs from "fs";
 
-fs.createReadStream(file).pipe(process("grep something").stream()).pipe(other operation);
+fs.createReadStream(file).pipe(process("grep Lorem").stream()).pipe(other operation);
 ```
 Due to the spawn-command the process waits for input that can be written in the stream. The output that is generated in stdout and stderr will be written in the "other operation"-stream.
