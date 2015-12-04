@@ -8,29 +8,25 @@ You can install CoreWorker with npm
 ```js
 npm install core-worker
 ``` 
-or just clone with git and import 
-```js
-import CoreWorker from "path/to/CoreWorker/index";
-````
 
 ## API
-
+A Process is created with a Command and an optional filter 
 ```js
-typedef Filter: Nil | String | String -> Boolean | RegExp
-
-typedef Timeout: Index
-
-typedef Result: {
-    data: String | Nil
-}
-
+typedef Filter:  Nil | String | String -> Boolean | RegExp
 typedef process: String -> Filter? -> Process
-
+```
+The returned Process offers the following API
+```js
+typedef Timeout: Index
 typedef Process: {
     ready:  Timeout  -> Result
     death:  Timeout? -> Result
     stream: Nil      -> Stream
     kill:   Nil      -> Nil
+}
+
+typedef Result:  {
+    data: String | Nil
 }
 
 typdef Stream: {
@@ -44,19 +40,19 @@ Start a process and wait until it is ready
 ```js
 import { process } from "core-worker";
 
-const result = await process(Command, Filter).ready(Timeout);
+const result = await process("your command", "filter condition").ready(1000);
 ```
 Start a process and wait until it is finished
 ```js
 import { process } from "core-worker";
 
-const result = await process(Command, Filter?).death(Timeout?);
+const result = await process("your command", /filter condition/g).death();
 ```
 Start a process and use it as a stream
 ```js
 import { process } from "core-worker";
 
-readstream.pipe(process(Command, Filter?).stream()).pipe(writestream);
+readstream.pipe(process("your command", Filter?).stream()).pipe(writestream);
 ```
 # Example
 
