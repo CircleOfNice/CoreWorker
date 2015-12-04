@@ -54,9 +54,9 @@ import { process } from "core-worker";
 
 readstream.pipe(process("your command", Filter?).stream()).pipe(writestream);
 ```
-# Example
+# Examples
 
-## Ready
+## Wait until process is ready
 Let's suppose we want to wait until our http-server is ready - but not longer than 1000 milliseconds
 So first we write a simple server script ...
 ```js
@@ -83,7 +83,7 @@ try {
 This example runs the "Server.js" in a child process and waits 1000 milliseconds to get the server started. When the server is ready, a result is returned. The result will be null, if your filter is of type ```String | Function```. If the filter is of type ```RegExp```, the result returns the matched string.
 If the timeout exceeds, the process returns an Error containing "Timeout exceeded." as message. If you want to wait for a process to be ready, the timeout argument isn't optional.
 
-## Death
+## Wait until processes has finished
 If you rather want to wait until a process is finished, you can achieve this with the following exmaple:
 This time we want to copy a given file with the "cp"-command:
 
@@ -100,7 +100,7 @@ try {
 ```
 For this example the timeout isn't really necessary and that's why you can simply omit this parameter - this is not allowed for ready().
 
-## Stream
+## Use process as stream
 Sometimes it is necessary to communicate with your child process - write Input into it and receive the resulting output. This can be achieved with the following example:
 We want to read a file, ...
 ```
@@ -119,3 +119,37 @@ import fs from "fs";
 fs.createReadStream(file).pipe(process("grep Lorem").stream()).pipe(other operation);
 ```
 Due to the spawn-command the process waits for input that can be written in the stream. The output that is generated in stdout and stderr will be written in the "other operation"-stream.
+
+## Use all process functions at once
+If you want to use the complete functionality of process at once, you have to start it with a stream first.
+In this exmaple we want to start a chat application, that logs "Chat ready", when it accepts messages.
+```js
+import { process } from "core-worker";
+
+const simpleChat = process("node chat.js", "Chat ready");
+const chatInput  = process.stream();
+
+simpleChat.death().then(() => console.log("Chat closed"));
+
+try {
+    await simpleChat.ready(500);
+    
+    chatInput.pipe(console.log);
+    chatInput.write("Hello");
+    chatIntput.write("Goodbye");
+    
+    simpleChat.kill();
+} catch(err) {
+    console.log(err);
+}
+```
+
+# Testing
+
+This module can be tested via the mocha framework. This can be executed directly in the direcotry with
+```
+make test
+```
+
+
+
