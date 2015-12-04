@@ -1,5 +1,5 @@
 # Motivation
-CoreWorker is an abstraction of node's spawn-command, that offers additional functionality, by passing an optional filter argument, which listens on stdout and stderr. This filter can be usefull, when you want to wait for a process to be ready.
+CoreWorker is an abstraction of node's spawn-command, that offers additional functionality by passing an optional filter argument, which listens on stdout and stderr. This filter can be usefull, when you want to wait for a process to be ready.
 Additionally you can wait for a process to finish - without even passing a filter argument - as precondition of other tasks or even use the running process as a Duplex-Stream, in which you can write (process.stdin) and on which you can listen (process.stdout).
 
 # Installation
