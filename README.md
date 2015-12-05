@@ -120,7 +120,7 @@ fs.createReadStream(file).pipe(process("grep Lorem").stream()).pipe(other operat
 ```
 Due to the spawn-command the process waits for input that can be written in the stream. The output that is generated in stdout and stderr will be written in the "other operation"-stream.
 
-## Use all process functions at once
+## Use all processes functions at once
 If you want to use the complete functionality of process at once, you have to start it with a stream first.
 In this exmaple we want to start a chat application, that logs "Chat ready", when it accepts messages.
 ```js
@@ -151,5 +151,13 @@ This module can be tested via the mocha framework. This can be executed directly
 make test
 ```
 
+# Contributing
 
+If you want to contribute to this repository, please take care to maintain the existing coding style. Please use the linting tools that are listed in the package.json. Add and/or customize unit tests for any changed code and reference an issue in your pull request.
 
+## Checklist for a new pull request
+
+- [ ] Is there an issue i can reference on?
+- [ ] Is my code reasonable for eslint?
+- [ ] is my code completely tested (unit/functional)?
+- [ ] ```make``` doesn't abort?
