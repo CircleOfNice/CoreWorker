@@ -1,6 +1,5 @@
 # Motivation
-CoreWorker is an abstraction of node's spawn-command, that offers additional functionality by passing an optional filter argument, which listens on stdout and stderr. This filter can be usefull, when you want to wait for a process to be ready.
-Additionally you can wait for a process to finish - without even passing a filter argument - as precondition of other tasks or even use the running process as a Duplex-Stream, in which you can write (process.stdin) and on which you can listen (process.stdout).
+CoreWorker is an abstraction of node's <a href="https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options">spawn</a>-command, that offers additional functionality allowing you to manage special lifecycle events of your child process. You gain in control of setting a process to "ready" and/or "finished" and determine a given reaction to the changed state. That makes it easier to build preconditions for other processes or even let them exchange information like in a duplex stream, in which you can write (process.stdin) and on which you can listen to (process.stdout).
 
 # Installation
 
