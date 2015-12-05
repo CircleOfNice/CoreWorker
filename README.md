@@ -120,7 +120,7 @@ fs.createReadStream(file).pipe(process("grep Lorem").stream()).pipe(other operat
 ```
 Due to the spawn-command the process waits for input that can be written in the stream. The output that is generated in stdout and stderr will be written in the "other operation"-stream.
 
-## Use all processes functions at once
+## Use all process functions at once
 If you want to use the complete functionality of process at once, you have to start it with a stream first.
 In this exmaple we want to start a chat application, that logs "Chat ready", when it accepts messages.
 ```js
