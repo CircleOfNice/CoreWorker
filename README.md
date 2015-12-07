@@ -3,7 +3,7 @@ CoreWorker is an abstraction of node's <a href="https://nodejs.org/api/child_pro
 
 # Installation
 
-You can install CoreWorker with npm 
+You may install CoreWorker with npm 
 ```js
 npm install core-worker
 ``` 
