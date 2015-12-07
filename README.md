@@ -1,6 +1,6 @@
 # Motivation
 Handle child processes in node.js leads to a lot of boilerplate, even though the handling is only a mean of running your main tasks correctly. Therefore CoreWorker tries to eliminate this overhead by offering you addtional features. In fact it is an abstraction of node's <a href="https://nodejs.org/api/child_process.html#child_process_child_process_spawn_command_args_options">spawn</a>-command, that allows you to manage special lifecycle events of your child process. 
-This means that you get the abillity to define a "ready"- and/or "finished"-state and determine a given reaction on those state changes. Thus CoreWorker facilitates building preconditions for other processes or even lets you exchange information between your main process and relating child processes - like in a [duplex stream](#use-process-as-stream).
+This means that you get the abillity to define a "ready"- and/or "finished"-state and determine a given reaction to those state changes. Thus CoreWorker facilitates building preconditions for other processes or even lets you exchange information between your main process and relating child processes - like in a [duplex stream](#use-process-as-stream).
 
 # Installation
 
