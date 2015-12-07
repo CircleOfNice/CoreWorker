@@ -76,7 +76,7 @@ try {
     
     console.log(result);
 } catch(err) {
-    console.log(err);
+    // handle err
 }
 ```
 This example runs the "Server.js" in a child process and waits 1000 milliseconds to get the server started. When the server is ready, a result is returned. The result will be null, if your filter is of type ```String | Function```. If the filter is of type ```RegExp```, the result returns the matched string.
@@ -94,7 +94,7 @@ try {
     
     console.log(err);
 } catch(err) {
-    console.log(err);
+    // handle err
 }
 ```
 For this example the timeout isn't really necessary and that's why you can simply omit this parameter - this is not allowed for ready().
@@ -139,7 +139,7 @@ try {
     
     simpleChat.kill();
 } catch(err) {
-    console.log(err);
+    // handle err
 }
 ```
 
