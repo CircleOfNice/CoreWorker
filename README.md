@@ -11,24 +11,29 @@ npm install core-worker
 
 ## API
 A Process is created with a Command and an optional filter 
-```js
-typedef Filter:  Nil | String | String -> Boolean | RegExp
-typedef process: String -> Filter? -> Process
 ```
-The returned Process offers the following API
-```js
-typedef Timeout: Index
+typedef process: Command -> Filter? -> Process
+typedef Filter:  Nil | String | String -> Boolean | RegExp
+typdef Command:  String
+```
+The returned Process contains the following methods
+```
 typedef Process: {
     ready:  Timeout  -> Result
     death:  Timeout? -> Result
     stream: Nil      -> Stream
     kill:   Nil      -> Nil
 }
-
+typedef Timeout: Index
+```
+Ready and death return the following result
+```
 typedef Result:  {
     data: String | Nil
 }
-
+```
+Stream returns a stream-like strcuture
+```
 typdef Stream: {
     write: String | Buffer -> Nil
     pipe:  Stream          -> Nil
@@ -36,23 +41,23 @@ typdef Stream: {
 ```
 
 # Usage
-Start a process and wait until it is ready
+It starts a process and waits until a log (of stdout/stderr) contains "filter condition"
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command", "filter condition").ready(1000);
 ```
-Start a process and wait until it is finished
+It starts a process and wait until it is finished
 ```js
 import { process } from "core-worker";
 
-const result = await process("your command", /filter condition/g).death();
+const result = await process("your command").death();
 ```
 Start a process and use it as a stream
 ```js
 import { process } from "core-worker";
 
-readstream.pipe(process("your command", Filter?).stream()).pipe(writestream);
+readstream.pipe(process("your command").stream()).pipe(writestream);
 ```
 # Examples
 
@@ -64,6 +69,7 @@ So first we write a simple server script ...
 const server = http.createServer(...);
 
 server.listen(1337, "127.0.0.1", function() {
+    // This log will notify our main process, that the server is ready to use
     console.log("Server is ready.");
 });
 ```
@@ -73,6 +79,10 @@ server.listen(1337, "127.0.0.1", function() {
 import { process } from "core-worker";
 
 try {
+    /*
+     * For this child process we set the filter "Server is ready" and a timeout of 1000 milliseconds.
+     * Accordingly, the process gets ready, when a log contains this string within the given timeout.
+     */
     const result = await process("node Server.js", "Server is ready.").ready(1000);
     
     console.log(result);
@@ -80,45 +90,45 @@ try {
     // handle err
 }
 ```
-This example runs the "Server.js" in a child process and waits 1000 milliseconds to get the server started. When the server is ready, a result is returned. The result will be null, if your filter is of type ```String | Function```. If the filter is of type ```RegExp```, the result returns the matched string.
-If the timeout exceeds, the process returns an Error containing "Timeout exceeded." as message. If you want to wait for a process to be ready, the timeout argument isn't optional.
+This example runs "Server.js" in a child process and returns a promise. That's why "Server.js" logs its ready status after ther server has started successfully and "startServer.js" validates stdout/stderr for this log resolving the returned promise with a result. The result will be null, if your filter is of type ```String | Function```. If the filter is of type ```RegExp```, the result returns the matched string. If the timeout of 1000 milliseconds exceeds before a result is returned, the process throws an Error instead.
 
-## Wait until processes has finished
+## Wait until process has finished
 If you rather want to wait until a process is finished, you can achieve this with the following exmaple:
-This time we want to copy a given file with the "cp"-command:
+This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile".
 
 ```js
 import { process } from "core-worker";
 
 try {
-    const result = await process("cp file copiedFile").death();
+    const result = await process("cp path/to/file /newLocation/newFile").death();
     
     console.log(err);
 } catch(err) {
     // handle err
 }
 ```
-For this example the timeout isn't really necessary and that's why you can simply omit this parameter - this is not allowed for ready().
+For this example the timeout isn't really necessary since we think this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and in Process.ready forbidden.
 
 ## Use process as stream
-Sometimes it is necessary to communicate with your child process - write Input into it and receive the resulting output. This can be achieved with the following example:
-We want to read a file, ...
+This examples shows you the possibility to compose single process like on a unix shell, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can use Process.stream:
+
+So lets assume that we want to read a file, ...
 ```
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-sed diam voluptua. 
-At vero eos et accusam et justo duo dolores et ea rebum. 
-Stet clita kasd gubergren, 
-no sea takimata sanctus  est Lorem ipsum dolor sit amet.
+It is a period of civil war. Rebel spaceships, striking from a hidden base,
+have won their first victory against the evil Galactic Empire.
+During the battle, Rebel spies managed to steal secret plans to the Empire's ultimate weapon,
+the DEATH STAR, an armored space station with enough power to destroy an entire planet.
+Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, 
+custodian of the stolen plans that can save her people and restore freedom to the galaxy . . .
 ```
-... grep for "Lorem" with our process and use the output for other operations:
+... grep for "galaxy" with our process and use the output for other operations:
 ```js
 import { process } from "CoreWorker";
 import fs from "fs";
 
-fs.createReadStream(file).pipe(process("grep Lorem").stream()).pipe(other operation);
+fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(other operation);
 ```
-Due to the spawn-command the process waits for input that can be written in the stream. The output that is generated in stdout and stderr will be written in the "other operation"-stream.
+By using the stream method you have the possibility to include the process in a chain of streams. This means that data can be written in your waiting command and piped out into your next stream afterwards.
 
 ## Use all process functions at once
 If you want to use the complete functionality of process at once, you have to start it with a stream first.
@@ -128,10 +138,12 @@ import { process } from "core-worker";
 
 const simpleChat = process("node chat.js", "Chat ready");
 const chatInput  = process.stream();
-
-simpleChat.death().then(() => console.log("Chat closed"));
-
 try {
+    simpleChat
+        .death()
+        .then(() => console.log("Chat closed"))
+        .catch(err => throw err);
+
     await simpleChat.ready(500);
     
     chatInput.pipe(console.log);
@@ -146,18 +158,13 @@ try {
 
 # Testing
 
-This module can be tested via the mocha framework. This can be executed directly in the direcotry with
-```
-make test
-```
+You may test CoreWorker with mocha by executing ```make test``` in the root directory of the project.
 
 # Contributing
 
-If you want to contribute to this repository, please take care to maintain the existing coding style. Please use the linting tools that are listed in the package.json. Add and/or customize unit tests for any changed code and reference an issue in your pull request.
-
-## Checklist for a new pull request
-
-- [ ] Is there an issue i can reference on?
-- [ ] Is my code reasonable for eslint?
-- [ ] is my code completely tested (unit/functional)?
-- [ ] ```make``` doesn't abort?
+If you want to contribute to this repository, please ensure ...
+    ... to use ```make``` for deployment (it validates the source code and transpiles it in /lib).
+    ... to follow the existing coding style.
+    ... to use the linting tools that are listed in the package.json,  which should validate anyway by using ```make```.
+    ... to add and/or customize unit tests for any changed code.
+    ... to reference an issue in your pull request with a small description of your changes.
