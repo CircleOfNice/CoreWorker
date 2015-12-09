@@ -142,8 +142,7 @@ fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(fs.createWr
 By using processes as streams you are able to create for example a data transform pipeline of processes, which is language agnostic and easily manageable via node.js.
 
 ## Use all process functions at once
-If you want to use the complete functionality of process at once, you have to start it with a stream first.
-In this example we want to start a chat application, that logs "Chat ready", when it accepts messages.
+Sometimes it is necessary to get notified about process state changes and at the same time to interact with the process. Accordingly the next example shows you how to use multiple process functions at once. It uses a simpe chat application, that logs "Chat ready", when it is able to accept messages.
 ```js
 import { process } from "core-worker";
 
@@ -166,6 +165,7 @@ try {
     // handle err
 }
 ```
+Please note that ```instance.stream``` throws an error, if you execute ```instance.ready/instance.death``` before.
 
 # Testing
 
