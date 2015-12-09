@@ -10,24 +10,14 @@ npm install core-worker
 ``` 
 
 ## API
-You may use CoreWorker on two different ways. Either you import ```{ process }```, which is a method to create new Processes, or you import ```{ Process }``` to create your Processes manually.
-```js
-typedef CoreWorker : {
-    process: process,
-    Process: Process
-}
-```
-With process in lower case, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
+By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
+By using process, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
 ```
 typedef process: Command -> Filter? -> Process
 typedef Filter:  Nil | String | String -> Boolean | RegExp
 typdef Command:  String
 ```
-If you want to import Process (capitalized), you just have to use ```Process.create``` for creating new instances of Process.
-```js
-typedef create: Command -> Filter? -> Process
-```
-However, when you got your instance, you have multiple possibilites for interaction. You may want to await the process getting ready or finished, or you want to use your process for streaming functionalities. Additionally it is always possible to kill your instance with ```instance.kill()```.
+Now you are able to interact with the returned instance in multiple ways: You can for example wait until the process is ready or dead or use it as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
 typedef Process: {
     ready:  Timeout  -> Result
@@ -43,7 +33,7 @@ typedef Result:  {
     data: String | Nil
 }
 ```
-Using ```instance.stream``` returns a duplex stream directly, with whom you can write in the stdin of your instance. All output generated in stdout/stderr of your instance can be piped into another writable stream.
+```ìnstance.stream``` exposes the instance's stdin and stdout/stderr as a duplexstream. As result you can prepend a readstream and append a writestream to your duplexstream.
 ```
 typdef Stream: {
     write: String | Buffer -> Nil
@@ -52,25 +42,32 @@ typdef Stream: {
 ```
 
 # Usage
-If you just want to wait until your process is ready, which gets determined by your filter condition, create a process with your desired command and a filter. Afterwards you can await the ready-state with a specified timeout.
+If you just want to wait until your process is ready, which gets determined by your filter condition, create a process with your desired command and filter, that validates stdout/stderr and will only set the process to ready, when the validation is successfull.
+This can happen in three different ways: 
+  1. The filter is a string and the output contains this string
+  2. The filter is a regular expression and the output is a match
+  3. The filter is a function, takes the output and returns ```true```
+
+Afterwards you can await the ready-state with a specified timeout.
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command", "filter condition").ready(1000);
 ```
-You also have the possibility to wait until your process is finished by creating a new process. This time you don't need to set a filter, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
+You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a filter, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command").death();
 ```
-If you want to compose a chain of streams with your created process in it, then you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout```.
+If you want to compose a chain of streams containing your process, you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout/instance.stderr```.
 ```js
 import { process } from "core-worker";
 
 readstream.pipe(process("your command").stream()).pipe(writestream);
 ```
 # Examples
+How to use CoreWorker properly and for which use cases it is suitable is shown with the following examples.
 
 ## Wait until process is ready
 Let's suppose we want to wait until our http-server is ready - but not longer than 1000 milliseconds
@@ -101,11 +98,12 @@ try {
     // handle err
 }
 ```
-The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. That's why we want to log the ready-state in "server.js" after the server has started successfully. The log will then be validated by our filter condition "Server is ready", which will finally resolve the promise with an empty result, unless the timeout of 1000 milliseconds isnt't exceeded earlier. Keep in mind, that ```Result``` can also return the mathed string, if your filter is a regular expression.
+The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the filter condition "Server is ready.". If it succesfully valdates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+Keep in mind, that ```Result``` can also return the mathed string, if your filter is a regular expression.
 
 ## Wait until process has finished
-If you rather want to wait until a process is finished, you can achieve this with the following exmaple:
-This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile" and wait until this operation has finished:
+This example shows how to wait for a process to be successfully executed and closed.
+This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile" and wait until this operation has successfully finished:
 
 ```js
 import { process } from "core-worker";
@@ -113,12 +111,12 @@ import { process } from "core-worker";
 try {
     const result = await process("cp path/to/file /newLocation/newFile").death();
     
-    console.log(err);
+    // work with result
 } catch(err) {
     // handle err
 }
 ```
-The example ignores the timeout, since we think this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and and even forbidden when awaiting the ready state of a process.
+The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
 
 ## Use process as stream
 This examples shows how to compose single processes unix-style, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can combine them with the canonical "pipe" method exposed by every node.js stream, including our processes:
@@ -139,28 +137,26 @@ import fs from "fs";
 
 fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(fs.createWriteStream("/ocurrences"));
 ```
-By using processes as streams you are able to create for example a data transform pipeline of processes, which is language agnostic and easily manageable via node.js.
+By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes via node.js.
 
 ## Use all process functions at once
-Sometimes it is necessary to get notified about process state changes and at the same time to interact with the process. Accordingly the next example shows you how to use multiple process functions at once. It uses a simpe chat application, that logs "Chat ready", when it is able to accept messages.
+Sometimes it is necessary to get notified about multiple state changes of a single instance of a specific process and at the same time interact with them. Accordingly the next example shows you how to work with multiple instance states at once. 
+As an example we use a simpe chat application, that logs "Chat ready", when it is able to accept messages.
 ```js
 import { process } from "core-worker";
 
 const simpleChat = process("node chat.js", "Chat ready");
 const chatInput  = process.stream();
-try {
-    simpleChat
-        .death()
-        .then(() => console.log("Chat closed"))
-        .catch(err => throw err);
 
-    await simpleChat.ready(500);
-    
-    chatInput.pipe(console.log);
-    chatInput.write("Hello");
-    chatIntput.write("Goodbye");
-    
-    simpleChat.kill();
+process.stdin.pipe(chatInput).pipe(process.stdout);
+setTimeout(() => simpleChat.kill(), 360000); // wait an hour and close the chat
+
+try {
+      await simpleChat.ready(500);
+      console.log("You are now able to send messages.");
+
+      await simpleChat.death();
+      console.log("Chat closed");
 } catch(err) {
     // handle err
 }
@@ -169,11 +165,12 @@ Please note that ```instance.stream``` throws an error, if you execute ```instan
 
 # Testing
 
-You may test CoreWorker with mocha by executing ```make test``` in the root directory of the project.
+You can test CoreWorker with mocha by executing ```make test``` in the root directory of the project.
 
 # Contributing
 
 If you want to contribute to this repository, please ensure ...
+
     ... to use ```make``` for deployment (it validates the source code and transpiles it to /lib).
     ... to follow the existing coding style.
     ... to use the linting tools that are listed in the package.json (which you get for free when using ```make```)
