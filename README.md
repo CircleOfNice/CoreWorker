@@ -27,7 +27,7 @@ If you want to import Process (capitalized), you just have to use ```Process.cre
 ```js
 typedef create: Command -> Filter? -> Process
 ```
-However, when you got your instance, you have multiple possibilites for interaction. You may want to await, the process getting ready or finished, or you want to use your process for streaming functionalities. Additionally it is always possible to kill your instance with ```instance.kill()```.
+However, when you got your instance, you have multiple possibilites for interaction. You may want to await the process getting ready or finished, or you want to use your process for streaming functionalities. Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
 typedef Process: {
     ready:  Timeout  -> Result
