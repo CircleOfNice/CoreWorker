@@ -9,7 +9,7 @@ You may install CoreWorker with npm
 npm install core-worker
 ``` 
 
-## API
+# API
 By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
 You just have to pass a ```command``` and an optional ```filter``` to get a new instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
 ```
