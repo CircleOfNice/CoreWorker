@@ -1,7 +1,10 @@
+# CoreWorker
+Advanced process management with more control, but less code.
+
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
 
-CoreWorker wants to simplify process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by adding events and hooks (to determine when the events are fired) to node's internal process module.
+CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by adding events and hooks (to determine when the events are fired) to node's internal process module.
 
 # Installation
 
@@ -12,11 +15,11 @@ npm install core-worker
 
 # API
 By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
-You just have to pass a ```command``` and an optional ```filter``` to get a new instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
+Just call process with a ```command``` and an optional ```condition``` to determine a ready condition to receive an instance. A command has to whereas a command has to use absolute paths and should look like it would on your os specific command line interface.
 ```
-typedef process: Command -> Filter? -> Process
-typedef Filter:  Nil | String | String -> Boolean | RegExp
-typdef Command:  String
+typedef process:    Command -> Condition? -> Process
+typedef Condition:  Nil | String | String -> Boolean | RegExp
+typdef Command:     String
 ```
 Now you are able to interact with the returned instance in multiple ways: You can for example wait until the process is ready or dead or use it as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
@@ -28,7 +31,7 @@ typedef Process: {
 }
 typedef Timeout: Index
 ```
-Using ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as filter, the result will contain the matched string - otherwise it contains ```Nil```.
+```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as the condition, the result will contain the matched string - otherwise it contains ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
@@ -43,19 +46,19 @@ typdef Stream: {
 ```
 
 # Usage
-If you just want to wait until your process is ready, which gets determined by your filter condition, create a process with your desired command and filter, that validates stdout/stderr and will only set the process to ready, when the validation is successfull.
+If you just want to wait until your process is ready, which gets determined by your condition, create a process with your desired command and condition, that validates stdout/stderr and will only set the process to ready, when the validation is successfull.
 This can happen in three different ways: 
-  1. The filter is a string and the output contains this string
-  2. The filter is a regular expression and the output is a match
-  3. The filter is a function, takes the output and returns ```true```
+  1. The ```condition``` is a string and the output contains this string
+  2. The ```condition``` is a regular expression and the output is a match
+  3. The ```condition``` is a function, takes the output and returns ```true```
 
 Afterwards you can await the ready-state with a specified timeout.
 ```js
 import { process } from "core-worker";
 
-const result = await process("your command", "filter condition").ready(1000);
+const result = await process("your command", "condition").ready(1000);
 ```
-You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a filter, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
+You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a conditio, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
 ```js
 import { process } from "core-worker";
 
@@ -68,7 +71,7 @@ import { process } from "core-worker";
 readstream.pipe(process("your command").stream()).pipe(writestream);
 ```
 # Examples
-How to use CoreWorker properly and for which use cases it is suitable is shown with the following examples.
+The following examples show how some common use cases are solved using CoreWorker.
 
 ## Wait until process is ready
 Let's suppose we want to wait until our http-server is ready - but not longer than 1000 milliseconds
@@ -89,7 +92,7 @@ import { process } from "core-worker";
 
 try {
     /*
-     * For this child process we set the filter "Server is ready" and a timeout of 1000 milliseconds.
+     * For this child process we set the condition "Server is ready" and a timeout of 1000 milliseconds.
      * Accordingly, the process gets ready, when a log contains this string within the given timeout.
      */
     const result = await process("node Server.js", "Server is ready.").ready(1000);
@@ -99,8 +102,8 @@ try {
     // handle err
 }
 ```
-The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the filter condition "Server is ready.". If it succesfully valdates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
-Keep in mind, that ```Result``` can also return the mathed string, if your filter is a regular expression.
+The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the condition "Server is ready.". If it succesfully valdates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
 
 ## Wait until process has finished
 This example shows how to wait for a process to be successfully executed and closed.
