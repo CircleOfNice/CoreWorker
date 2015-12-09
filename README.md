@@ -101,7 +101,7 @@ try {
     // handle err
 }
 ```
-This example runs "Server.js" in a child process and returns a promise. That's why "Server.js" logs its ready status after ther server has started successfully and "startServer.js" validates stdout/stderr for this log resolving the returned promise with a result. The result will be null, if your filter is of type ```String | Function```. If the filter is of type ```RegExp```, the result returns the matched string. If the timeout of 1000 milliseconds exceeds before a result is returned, the process throws an Error instead.
+The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. That's why we want to log the ready-state in "server.js" after the server has started successfully. The log will then be validated by our filter condition "Server is ready", which will finally resolve the promise with an empty result, unless the timeout of 1000 milliseconds isnt't exceeded earlier. Keep in mind, that ```Result``` can also return the mathed string, if your filter is a regular expression.
 
 ## Wait until process has finished
 If you rather want to wait until a process is finished, you can achieve this with the following exmaple:
