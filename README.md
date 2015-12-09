@@ -23,7 +23,7 @@ typedef process: Command -> Filter? -> Process
 typedef Filter:  Nil | String | String -> Boolean | RegExp
 typdef Command:  String
 ```
-If you want to import capitalized Process, you just have to use ```Process.create``` for creating new instances of Process.
+If you want to import Process (capitalized), you just have to use ```Process.create``` for creating new instances of Process.
 ```js
 typedef create: Command -> Filter? -> Process
 ```
