@@ -17,7 +17,7 @@ typedef CoreWorker : {
     Process: Process
 }
 ```
-With process in lower case, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute pathes and should look like on your os specific command line interface.
+With process in lower case, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
 ```
 typedef process: Command -> Filter? -> Process
 typedef Filter:  Nil | String | String -> Boolean | RegExp
