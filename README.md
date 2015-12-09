@@ -11,7 +11,7 @@ npm install core-worker
 
 ## API
 By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
-By using process, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
+You just have to pass a ```command``` and an optional ```filter``` to get a new instance, whereas a command has to use absolute paths and should look like on your os specific command line interface.
 ```
 typedef process: Command -> Filter? -> Process
 typedef Filter:  Nil | String | String -> Boolean | RegExp
