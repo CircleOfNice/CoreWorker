@@ -37,7 +37,7 @@ typedef Process: {
 }
 typedef Timeout: Index
 ```
-Using ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as filter, the result will contain the mathced string - otherwise it contains ```Nil```.
+Using ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as filter, the result will contain the matched string - otherwise it contains ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
