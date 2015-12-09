@@ -10,13 +10,24 @@ npm install core-worker
 ``` 
 
 ## API
-A Process is created with a Command and an optional filter 
+You may use CoreWorker on two different ways. Either you import ```{ process }```, which is a method to create new Processes, or you import ```{ Process }``` to create your Processes manually.
+```js
+typedef CoreWorker : {
+    process: process,
+    Process: Process
+}
+```
+With process in lower case, you have to pass a ```command``` and an optional ```filter``` to get a new Process-Instance, whereas a command has to use absolute pathes and should look like on your os specific command line interface.
 ```
 typedef process: Command -> Filter? -> Process
 typedef Filter:  Nil | String | String -> Boolean | RegExp
 typdef Command:  String
 ```
-The returned Process contains the following methods
+If you want to import capitalized Process, you just have to use ```Process.create``` for creating new instances of Process.
+```js
+typedef create: Command -> Filter? -> Process
+```
+However, when you got your instance, you have multiple possibilites for interaction. You may want to await, the process getting ready or finished, or you want to use your process for streaming functionalities. Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
 typedef Process: {
     ready:  Timeout  -> Result
@@ -26,13 +37,13 @@ typedef Process: {
 }
 typedef Timeout: Index
 ```
-Ready and death return the following result
+Using ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as filter, the result will contain the mathced string - otherwise it contains ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
 }
 ```
-Stream returns a stream-like strcuture
+Using ```instance.stream``` returns a duplex stream directly, with whom you can write in the stdin of your instance. All output generated in stdout/stderr of your instance can be piped into another writable stream.
 ```
 typdef Stream: {
     write: String | Buffer -> Nil
