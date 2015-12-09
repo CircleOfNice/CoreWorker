@@ -170,9 +170,8 @@ You can test CoreWorker with mocha by executing ```make test``` in the root dire
 # Contributing
 
 If you want to contribute to this repository, please ensure ...
-
-    ... to use ```make``` for deployment (it validates the source code and transpiles it to /lib).
-    ... to follow the existing coding style.
-    ... to use the linting tools that are listed in the package.json (which you get for free when using ```make```)
-    ... to add and/or customize unit tests for any changed code.
-    ... to reference an issue in your pull request with a small description of your changes.
+  - to use ```make``` for deployment (it validates the source code and transpiles it to /lib).
+  - to follow the existing coding style.
+  - to use the linting tools that are listed in the package.json (which you get for free when using ```make```)
+  - to add and/or customize unit tests for any changed code.
+  - to reference an issue in your pull request with a small description of your changes.
