@@ -52,19 +52,19 @@ typdef Stream: {
 ```
 
 # Usage
-It starts a process and waits until a log (of stdout/stderr) contains "filter condition"
+If you just want to wait until your process is ready, which gets determined by your filter condition, create a process with your desired command and a filter. Afterwards you can await the ready-state with a specified timeout.
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command", "filter condition").ready(1000);
 ```
-It starts a process and wait until it is finished
+You also have the possibility to wait until your process is finished by creating a new process. This time you don't need to set a filter, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command").death();
 ```
-Start a process and use it as a stream
+If you want to compose a chain of streams with your created process in it, then you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout```.
 ```js
 import { process } from "core-worker";
 
@@ -105,7 +105,7 @@ This example runs "Server.js" in a child process and returns a promise. That's w
 
 ## Wait until process has finished
 If you rather want to wait until a process is finished, you can achieve this with the following exmaple:
-This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile".
+This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile" and wait until this operation has finished:
 
 ```js
 import { process } from "core-worker";
@@ -118,12 +118,12 @@ try {
     // handle err
 }
 ```
-For this example the timeout isn't really necessary since we think this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and in Process.ready forbidden.
+The example ignores the timeout, since we think this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and and even forbidden when awaiting the ready state of a process.
 
 ## Use process as stream
-This examples shows you the possibility to compose single process like on a unix shell, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can use Process.stream:
+This examples shows how to compose single processes unix-style, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can combine them with the canonical "pipe" method exposed by every node.js stream, including our processes:
 
-So lets assume that we want to read a file, ...
+So lets assume that we want to read a file "/private/movie/project", ...
 ```
 It is a period of civil war. Rebel spaceships, striking from a hidden base,
 have won their first victory against the evil Galactic Empire.
@@ -132,18 +132,18 @@ the DEATH STAR, an armored space station with enough power to destroy an entire 
 Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, 
 custodian of the stolen plans that can save her people and restore freedom to the galaxy . . .
 ```
-... grep for "galaxy" with our process and use the output for other operations:
+... grep for "galaxy" and write the results to "/ocurrences"
 ```js
 import { process } from "CoreWorker";
 import fs from "fs";
 
-fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(other operation);
+fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(fs.createWriteStream("/ocurrences"));
 ```
-By using the stream method you have the possibility to include the process in a chain of streams. This means that data can be written in your waiting command and piped out into your next stream afterwards.
+By using processes as streams you are able to create for example a data transform pipeline of processes, which is language agnostic and easily manageable via node.js.
 
 ## Use all process functions at once
 If you want to use the complete functionality of process at once, you have to start it with a stream first.
-In this exmaple we want to start a chat application, that logs "Chat ready", when it accepts messages.
+In this example we want to start a chat application, that logs "Chat ready", when it accepts messages.
 ```js
 import { process } from "core-worker";
 
@@ -174,8 +174,8 @@ You may test CoreWorker with mocha by executing ```make test``` in the root dire
 # Contributing
 
 If you want to contribute to this repository, please ensure ...
-    ... to use ```make``` for deployment (it validates the source code and transpiles it in /lib).
+    ... to use ```make``` for deployment (it validates the source code and transpiles it to /lib).
     ... to follow the existing coding style.
-    ... to use the linting tools that are listed in the package.json,  which should validate anyway by using ```make```.
+    ... to use the linting tools that are listed in the package.json (which you get for free when using ```make```)
     ... to add and/or customize unit tests for any changed code.
     ... to reference an issue in your pull request with a small description of your changes.
