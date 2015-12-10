@@ -16,8 +16,8 @@ npm install core-worker
 By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```command``` and an optional ```condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your os specific command line interface.
 ```
 typedef process:    Command -> Condition? -> Process
+typedef Command:     String
 typedef Condition:  Nil | String | String -> Boolean | RegExp
-typdef Command:     String
 ```
 Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
@@ -29,7 +29,7 @@ typedef Process: {
 }
 typedef Timeout: Index
 ```
-```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a RegExp as the condition, ```Result``` will contain the matched string - otherwise it contains ```Nil```.
+```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a RegExp as the condition, ```Result``` will contain the matched string - otherwise there will be ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
@@ -44,7 +44,7 @@ typedef Stream: {
 ```
 
 # Usage
-If you just want to wait until your process is ready, create a process with your desired command and condition. The condition is used to filter incoming data from stdout/stderr until it is triggered. In this case the process has reached its ready state, which can be reached in three different ways:
+If you just want to wait until some ready condition is reached, create a process with your desired command and a requirement for getting ready. The condition is used to filter incoming data from stdout/stderr until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
   1. The ```condition``` is a string and the output contains this string
   2. The ```condition``` is a regular expression and the output is a match
   3. The ```condition``` is a function, takes the output and returns ```true```
@@ -74,7 +74,7 @@ readstream.pipe(process("your command").stream()).pipe(writestream);
 The following examples show how some common use cases are solved using CoreWorker:
 
 ## Wait until a process is ready
-Let's suppose we want to wait until our HTTP-Server is ready - but no longer than 1000 milliseconds
+Let's suppose we want to wait until our HTTP-Server is ready - but no longer than 1000 milliseconds.
 So first we write a simple server script ...
 ```js
 //Server.js
@@ -102,7 +102,8 @@ try {
     // handle err
 }
 ```
-The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now evaluates any output with the given condition ("Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. 
+CoreWorker now evaluates any output with the given condition ("Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
 Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
 
 ## Wait until a process has finished
@@ -147,7 +148,7 @@ By using processes as streams you are generally able to create language agnostic
 
 ## Use all process functions at once
 Sometimes it is necessary to get notified about multiple state changes of a single instance of a specific process while at the same time interacting with it. 
-Accordingly the next example shows you how to work with multiple instance states at once. Exemplary we use a simple chat application, that logs "Chat ready", when it is able to accept messages.
+Accordingly the next example shows you how to work with multiple instance states at once. Exemplary we use a simple chat application, that logs "Chat ready", when it is able to accept messages:
 ```js
 import { process } from "core-worker";
 
@@ -167,7 +168,7 @@ try {
     // handle err
 }
 ```
-Please note that ```instance.stream``` will throw an error, if you executed ```instance.ready/instance.death``` earlier.
+Please note that ```instance.stream``` would throw an error, if you executed ```instance.ready/instance.death``` earlier.
 
 # Testing
 
