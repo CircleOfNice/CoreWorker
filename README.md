@@ -102,7 +102,7 @@ try {
     // handle err
 }
 ```
-The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the condition "Server is ready.". If it succesfully valdates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the condition "Server is ready.". If it succesfully validates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
 Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
 
 ## Wait until process has finished
@@ -123,7 +123,7 @@ try {
 The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
 
 ## Use process as stream
-This examples shows how to compose single processes unix-style, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can combine them with the canonical "pipe" method exposed by every node.js stream, including our processes:
+This examples shows how to compose single processes in unix-style, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can combine them with the canonical "pipe" method exposed by every node.js stream, including our processes:
 
 So lets assume that we want to read a file "/private/movie/project", ...
 ```
@@ -139,7 +139,9 @@ custodian of the stolen plans that can save her people and restore freedom to th
 import { process } from "CoreWorker";
 import fs from "fs";
 
-fs.createReadStream(file).pipe(process("grep galaxy").stream()).pipe(fs.createWriteStream("/ocurrences"));
+fs.createReadStream(file)
+    .pipe(process("grep galaxy").stream())
+    .pipe(fs.createWriteStream("/ocurrences"));
 ```
 By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes via node.js.
 
