@@ -1,5 +1,5 @@
 # CoreWorker
-Advanced process management with more control, but less code.
+Handling process lifecycles like never before
 
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
