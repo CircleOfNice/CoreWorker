@@ -1,5 +1,5 @@
 # CoreWorker
-Handling process lifecycles like never before
+CoreWorker is a module for handling processes more efficiently.
 
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
