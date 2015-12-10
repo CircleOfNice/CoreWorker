@@ -15,7 +15,7 @@ npm install core-worker
 
 # API
 By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
-Just call process with a ```command``` and an optional ```condition``` to determine a ready condition to receive an instance. A command has to whereas a command has to use absolute paths and should look like it would on your os specific command line interface.
+Just call process with a ```command``` and an optional ```condition``` to determine a ready condition to receive an instance. A command has to use absolute paths and should look like it would on your os specific command line interface.
 ```
 typedef process:    Command -> Condition? -> Process
 typedef Condition:  Nil | String | String -> Boolean | RegExp
@@ -31,7 +31,7 @@ typedef Process: {
 }
 typedef Timeout: Index
 ```
-```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a result or rejected with an error. If you set a RegExp as the condition, the result will contain the matched string - otherwise it contains ```Nil```.
+```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a RegExp as the condition, ```Result``` will contain the matched string - otherwise it contains ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
@@ -39,7 +39,7 @@ typedef Result:  {
 ```
 ```ìnstance.stream``` exposes the instance's stdin and stdout/stderr as a duplexstream. As result you can prepend a readstream and append a writestream to your duplexstream.
 ```
-typdef Stream: {
+typedef Stream: {
     write: String | Buffer -> Nil
     pipe:  Stream          -> Nil
 }
@@ -58,7 +58,7 @@ import { process } from "core-worker";
 
 const result = await process("your command", "condition").ready(1000);
 ```
-You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a conditio, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
+You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a condition, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
 ```js
 import { process } from "core-worker";
 
@@ -74,7 +74,7 @@ readstream.pipe(process("your command").stream()).pipe(writestream);
 The following examples show how some common use cases are solved using CoreWorker.
 
 ## Wait until process is ready
-Let's suppose we want to wait until our http-server is ready - but not longer than 1000 milliseconds
+Let's suppose we want to wait until our http-server is ready - but no longer than 1000 milliseconds
 So first we write a simple server script ...
 ```js
 //Server.js
