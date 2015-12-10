@@ -4,7 +4,7 @@ Advanced process management with more control, but less code.
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
 
-CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by adding events and hooks (to determine when the events are fired) to node's internal process module.
+CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by wrapping some events and hooks (to determine when the events are fired) around node's internal process module.
 
 # Installation
 
@@ -14,14 +14,13 @@ npm install core-worker
 ``` 
 
 # API
-By default you can import CoreWorker with ```{ process }```, which is a method, that allows you to create new process instances.
-Just call process with a ```command``` and an optional ```condition``` to determine a ready condition to receive an instance. A command has to use absolute paths and should look like it would on your os specific command line interface.
+By default you can import CoreWorker by ```import { process } from "core-worker";```. Just call process with a ```command``` and an optional ```condition```, which is used to determine the moment when the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your os specific command line interface.
 ```
 typedef process:    Command -> Condition? -> Process
 typedef Condition:  Nil | String | String -> Boolean | RegExp
 typdef Command:     String
 ```
-Now you are able to interact with the returned instance in multiple ways: You can for example wait until the process is ready or dead or use it as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
+Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
 typedef Process: {
     ready:  Timeout  -> Result
@@ -46,7 +45,7 @@ typedef Stream: {
 ```
 
 # Usage
-If you just want to wait until your process is ready, which gets determined by your condition, create a process with your desired command and condition, that validates stdout/stderr and will only set the process to ready, when the validation is successfull.
+If you just want to wait until your process is ready, create a process with your desired command and condition. The condition is used to filter incoming data from stdout/stderr until it is triggered. In this case the process has reached its ready state.
 This can happen in three different ways: 
   1. The ```condition``` is a string and the output contains this string
   2. The ```condition``` is a regular expression and the output is a match
@@ -58,7 +57,7 @@ import { process } from "core-worker";
 
 const result = await process("your command", "condition").ready(1000);
 ```
-You also have the possibility to wait until your process is finished, which is shown in the next example. This time you don't need to set a condition, unless you want to wait until the process is ready additionally. Afterwards you can await the finished-state with or without a specified timeout.
+Besides you can wait until your process is finished, shown in the example below. This time a condition does not need to be set, unless you want to wait until the process is ready, too. Afterwards the finished state is awaitable with or without a specified timeout.
 ```js
 import { process } from "core-worker";
 
@@ -71,7 +70,7 @@ import { process } from "core-worker";
 readstream.pipe(process("your command").stream()).pipe(writestream);
 ```
 # Examples
-The following examples show how some common use cases are solved using CoreWorker.
+The following examples show how some common use cases are solved using CoreWorker:
 
 ## Wait until process is ready
 Let's suppose we want to wait until our http-server is ready - but no longer than 1000 milliseconds
@@ -81,7 +80,7 @@ So first we write a simple server script ...
 const server = http.createServer(...);
 
 server.listen(1337, "127.0.0.1", function() {
-    // This log will notify our main process, that the server is ready to use
+    // This log will notify our main process when the server is ready to use
     console.log("Server is ready.");
 });
 ```
@@ -92,8 +91,8 @@ import { process } from "core-worker";
 
 try {
     /*
-     * For this child process we set the condition "Server is ready" and a timeout of 1000 milliseconds.
-     * Accordingly, the process gets ready, when a log contains this string within the given timeout.
+     * Here we define "Server is ready" as our condiition and use a timeout of 1000ms.
+     * Accordingly, the process gets ready when a log contains this string within the given timeout.
      */
     const result = await process("node Server.js", "Server is ready.").ready(1000);
     
@@ -102,7 +101,7 @@ try {
     // handle err
 }
 ```
-The example will start the http-Server and returns a ```promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now validates any output with the condition "Server is ready.". If it succesfully validates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. CoreWorker now evaluates any output with the condition "Server is ready.". If it succesfully validates within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
 Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
 
 ## Wait until process has finished
@@ -120,12 +119,12 @@ try {
     // handle err
 }
 ```
-The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish. So Process.death allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
+The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So Process.death allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
 
 ## Use process as stream
-This examples shows how to compose single processes in unix-style, but instead of using the pipe operator "|" (e.g. cat file.txt | grep something), you can combine them with the canonical "pipe" method exposed by every node.js stream, including our processes:
+This examples shows how to compose single processes unix-style. But instead of using the pipe operator "|" (e.g. cat file.txt | grep something), we can combine them with the canonical "pipe" method exposed by every node.js stream:
 
-So lets assume that we want to read a file "/private/movie/project", ...
+So let's assume that we want to read a file "/private/movie/project", ...
 ```
 It is a period of civil war. Rebel spaceships, striking from a hidden base,
 have won their first victory against the evil Galactic Empire.
@@ -146,8 +145,8 @@ fs.createReadStream(file)
 By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes via node.js.
 
 ## Use all process functions at once
-Sometimes it is necessary to get notified about multiple state changes of a single instance of a specific process and at the same time interact with them. Accordingly the next example shows you how to work with multiple instance states at once. 
-As an example we use a simpe chat application, that logs "Chat ready", when it is able to accept messages.
+Sometimes it is necessary to get notified about multiple state changes of a single instance of a specific process and at the same time interact with it. Accordingly the next example shows you how to work with multiple instance states at once. 
+As an example we use a simple chat application, that logs "Chat ready", when it is able to accept messages.
 ```js
 import { process } from "core-worker";
 
