@@ -1,4 +1,5 @@
 # CoreWorker
+
 CoreWorker is a module for handling processes more efficiently.
 
 # Motivation
@@ -13,7 +14,7 @@ npm install core-worker
 ``` 
 
 # API
-By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```command``` and an optional ```condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your os specific command line interface.
+By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```command``` and an optional ```condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your OS specific command line interface.
 ```
 typedef process:    Command -> Condition? -> Process
 typedef Command:     String
@@ -35,7 +36,7 @@ typedef Result:  {
     data: String | Nil
 }
 ```
-```ìnstance.stream``` exposes the instance's stdin and stdout/stderr as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
+```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout/instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
 ```
 typedef Stream: {
     write: String | Buffer -> Nil
@@ -44,19 +45,19 @@ typedef Stream: {
 ```
 
 # Usage
-If you just want to wait until some ready condition is reached, create a process with your desired command and a requirement for getting ready. The condition is used to filter incoming data from stdout/stderr until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
+If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from ```instance.stdout/instance.stderr``` until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
   1. The ```condition``` is a string and the output contains this string
   2. The ```condition``` is a regular expression and the output is a match
   3. The ```condition``` is a function, takes the output and returns ```true```
 
-You can now await the ready-state with a specified timeout.
+You can now await the ready state with a timeout:
 ```js
 import { process } from "core-worker";
 
 const result = await process("your command", "condition").ready(1000);
 ```
 
-Shown in the example below, you can wait until your process has finished. This time a condition does not need to be set, unless you want to wait until the process is ready, too. Afterwards the finished state is awaitable with or without a specified timeout.
+Shown in the example below, you can wait until your process has finished. This time a condition does not need to be set, unless you want to wait until the process is ready, too. Afterwards the finished state is awaitable with or without a specified timeout:
 ```js
 import { process } from "core-worker";
 
@@ -103,12 +104,12 @@ try {
 }
 ```
 The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. 
-CoreWorker now evaluates any output with the given condition ("Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
+CoreWorker now evaluates any output with the given condition (in this case "Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
 Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
 
 ## Wait until a process has finished
 This example shows how to wait for a process to be successfully executed and closed.
-This time we want to copy a given file, named "/path/to/file" with the "cp"-command into a new location "/newLocation/copiedFile" and wait until this operation has successfully finished:
+This time we want to copy a given file, named ```/path/to/file``` with the ```cp```-command into a new location ```/newLocation/copiedFile``` and wait until this operation has successfully finished:
 
 ```js
 import { process } from "core-worker";
@@ -121,12 +122,12 @@ try {
     // handle err
 }
 ```
-The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So Process.death allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
+The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So ```process.death``` allows you to omit this parameter, even though this isn't recommmended and even forbidden when awaiting the ready state of a process.
 
 ## Use a process as a stream
-This examples shows how to compose single processes unix-style. But instead of using the pipe operator "|" (e.g. cat file.txt | grep something), we can combine them with the canonical "pipe" method exposed by every node.js stream:
+This examples shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. ```cat file.txt | grep something```), we can combine them with the canonical "pipe" method exposed by every node.js stream:
 
-So let's assume that we want to read a file "/private/movie/project", ...
+So let's assume that we want to read a file ```/private/movie/project```, ...
 ```
 It is a period of civil war. Rebel spaceships, striking from a hidden base,
 have won their first victory against the evil Galactic Empire.
@@ -135,7 +136,7 @@ the DEATH STAR, an armored space station with enough power to destroy an entire 
 Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, 
 custodian of the stolen plans that can save her people and restore freedom to the galaxy . . .
 ```
-... grep for "galaxy" and write the results to "/ocurrences"
+... grep for "galaxy" and write the results to ```/ocurrences```
 ```js
 import { process } from "CoreWorker";
 import fs from "fs";
@@ -177,8 +178,8 @@ You can test CoreWorker with mocha by executing ```make test``` in the root dire
 # Contributing
 
 If you want to contribute to this repository, please ensure ...
-  - to use ```make``` for deployment (it validates the source code and transpiles it to /lib).
+  - to use ```make``` for deployment (it validates the source code and transpiles it to ```/lib```).
   - to follow the existing coding style.
-  - to use the linting tools that are listed in the package.json (which you get for free when using ```make```)
+  - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```)
   - to add and/or customize unit tests for any changed code.
   - to reference an issue in your pull request with a small description of your changes.
