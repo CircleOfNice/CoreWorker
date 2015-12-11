@@ -24,6 +24,7 @@ import path from "path";
 
 const counterScript = path.join(__dirname, "/Scripts/CounterScript.js");
 const stdinLogger   = path.join(__dirname, "/Scripts/StdinLogger.js");
+const failScript    = path.join(__dirname, "/Scripts/FailScript.js");
 
 describe("CoreExec", function() {
     it("executes an application and waits until it is ready", async function(done) {
@@ -146,5 +147,19 @@ describe("CoreExec", function() {
 
         stream.pipe(writable);
         stream.write("Hello");
+    });
+
+    it("executes an application, but terminates unexpectedly", async function(done) {
+        const failProcess = process(`node ${failScript}`);
+
+        /*eslint-disable*/
+        try {
+        /*eslint-enable*/
+            await failProcess.death(100);
+            done(new Error("Shouldn't resolve here"));
+        } catch(err) {
+            assert.equal(err.message, "Process was closed unexpectedly. Code: 1", "Message should be closing code with 1");
+            done();
+        }
     });
 });
