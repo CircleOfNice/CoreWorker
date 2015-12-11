@@ -36,7 +36,7 @@ Process.prototype.death = function(maybeTimeout) {
     const timeout  = T.Index(defaults(maybeTimeout).to(0));
     const deferred = Q.defer();
 
-    this.instance.onDeath(deferred.resolve);
+    this.instance.onDeath(deferred);
     this.instance.run();
     setTimeout(() => timeout === 0 ? null : deferred.reject(new Error("Timeout exceeded.")), timeout);
 

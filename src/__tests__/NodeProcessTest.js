@@ -16,6 +16,7 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
+/* eslint max-statements: [2, 12] */
 import sinon from "sinon";
 import assert from "assert";
 import { keys, set } from "lodash";
@@ -96,15 +97,21 @@ describe("NodeProcess", function() {
     it("starts a nodeProcess and waits until it is closed", function() {
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
-        const closeSpy    = sinon.spy();
+        const mockPromise = {
+            resolve: sinon.spy(),
+            reject:  sinon.spy()
+        };
 
-        nodeProcess.onDeath(output => closeSpy(output));
+        nodeProcess.onDeath(mockPromise);
         nodeProcess.run();
 
         assert(T.Function.is(callbacks.close), "Close shoud be set again");
         callbacks.stdout("Yes");
 
-        callbacks.close();
-        assert(closeSpy.calledWith(Result({ data: "Yes" })), `closeSpy was called with wrong args: \n ${closeSpy.lastCall.args}`);
+        callbacks.close(0);
+        assert(mockPromise.resolve.calledWith(Result({ data: "Yes" })), `closeSpy was called with wrong args: \n ${mockPromise.resolve.args}`);
+
+        callbacks.close(1);
+        assert(mockPromise.reject.calledWith(new Error("Bla")), `closeSpy was called with wrong args: \n ${mockPromise.reject.args}`);
     });
 });

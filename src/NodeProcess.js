@@ -66,7 +66,13 @@ NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", Result.create(this.instance.output.join(""))) && assign(this.instance, { isRunning: false }));
+    process.on("close", function(code) {
+        assign(this.instance, { isRunning: false });
+
+        return code === 0 ?
+            this.emitter.emit("death", Result.create(this.instance.output.join(""))) :
+            this.emitter.emit("failure", new Error(`Process closed with Error Code ${code}`));
+    }.bind(this));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -104,8 +110,9 @@ NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function()
  *
  * @param  {Function} cb executed after Process was closed
  */
-NodeProcess.prototype.onDeath = T.func([T.Function], T.Nil, "nodeProcess.onDeath").of(function(cb) {
-    this.emitter.on("death", cb);
+NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, "nodeProcess.onDeath").of(function(cb) {
+    this.emitter.on("death", cb.resolve);
+    this.emitter.on("failure", cb.reject);
 });
 
 /**
