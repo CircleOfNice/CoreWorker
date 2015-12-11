@@ -60,9 +60,15 @@ const run = function() {
     }.bind(this), 3);
 };
 
-const onStatusChange = function(resolve) {
+const onReady = function(resolve) {
     test.set({
         promises: test.all().promises.concat(resolve)
+    });
+};
+
+const onDeath = function(deferred) {
+    test.set({
+        promises: test.all().promises.concat(deferred.resolve)
     });
 };
 
@@ -76,8 +82,8 @@ describe("Process", function() {
     before(function() {
         sinon.stub(NodeProcess.prototype, "run", run);
         sinon.stub(NodeProcess.prototype, "write", write);
-        sinon.stub(NodeProcess.prototype, "onReady", onStatusChange);
-        sinon.stub(NodeProcess.prototype, "onDeath", onStatusChange);
+        sinon.stub(NodeProcess.prototype, "onReady", onReady);
+        sinon.stub(NodeProcess.prototype, "onDeath", onDeath);
         sinon.stub(NodeProcess.prototype, "kill", kill);
         this.clock = sinon.useFakeTimers();
     });

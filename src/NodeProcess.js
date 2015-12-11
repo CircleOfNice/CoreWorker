@@ -66,7 +66,7 @@ NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", () => this.emitter.emit("death", Result.create(this.instance.output.join(""))) && assign(this.instance, { isRunning: false }));
+    process.on("close", (code, signal) => code === 0 || T.NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -100,12 +100,31 @@ NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function()
 });
 
 /**
+ * Emits an Error if process was closed unexpectedly
+ *
+ * @param {Index} code as exit status of the instance
+ */
+NodeProcess.prototype.terminate = T.func([T.Index], T.Nil, "nodeProcess.terminate").of(function(code) {
+    assign(this.instance, { isRunning: false });
+    this.emitter.emit("failure", new Error(`Process was closed unexpectedly. Code: ${code}`));
+});
+
+/**
+ * Emits result after process was closed
+ */
+NodeProcess.prototype.finish = T.func([], T.Nil, "nodeProcess.finish").of(function() {
+    assign(this.instance, { isRunning: false });
+    this.emitter.emit("death", Result.create(this.instance.output.join("")));
+});
+
+/**
  * Stores a callback, that gets called, when process ends
  *
- * @param  {Function} cb executed after Process was closed
+ * @param {Promise} deferred executed after Process was closed
  */
-NodeProcess.prototype.onDeath = T.func([T.Function], T.Nil, "nodeProcess.onDeath").of(function(cb) {
-    this.emitter.on("death", cb);
+NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, "nodeProcess.onDeath").of(function(deferred) {
+    this.emitter.on("death", deferred.resolve);
+    this.emitter.on("failure", deferred.reject);
 });
 
 /**
