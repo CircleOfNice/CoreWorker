@@ -182,3 +182,4 @@ If you want to contribute to this repository, please ensure ...
   - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```)
   - to add and/or customize unit tests for any changed code.
   - to reference an issue in your pull request with a small description of your changes.
+All contributors are listed in ```AUTHORS``` sorted by their first contribution.
