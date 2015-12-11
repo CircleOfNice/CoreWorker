@@ -3,7 +3,7 @@
 
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
-CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by wrapping some events and hooks (to determine when the events are fired) around node's internal process module.
+CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done bby wrapping some events and hooks around node's internal process module to determine the moments they are triggered.
 
 # Installation
 
@@ -13,7 +13,7 @@ npm install core-worker
 ``` 
 
 # API
-By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```command``` and an optional ```condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your OS specific command line interface.
+By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```Command``` and an optional ```Condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your OS specific command line interface.
 ```
 typedef process:    Command -> Condition? -> Process
 typedef Command:     String
@@ -22,20 +22,20 @@ typedef Condition:  Nil | String | String -> Boolean | RegExp
 Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
 ```
 typedef Process: {
-    ready:  Timeout  -> Result
-    death:  Timeout? -> Result
+    ready:  Timeout  -> Promise
+    death:  Timeout? -> Promise
     stream: Nil      -> Stream
     kill:   Nil      -> Nil
 }
 typedef Timeout: Index
 ```
-```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a RegExp as the condition, ```Result``` will contain the matched string - otherwise there will be ```Nil```.
+```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a ```RegExp``` as the condition, ```Result``` will contain the matched string - otherwise there will be ```Nil```.
 ```
 typedef Result:  {
     data: String | Nil
 }
 ```
-```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout/instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
+```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout```/```instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
 ```
 typedef Stream: {
     write: String | Buffer -> Nil
@@ -44,7 +44,7 @@ typedef Stream: {
 ```
 
 # Usage
-If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from ```instance.stdout/instance.stderr``` until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
+If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from ```instance.stdout```/```instance.stderr``` until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
   1. The ```condition``` is a string and the output contains this string
   2. The ```condition``` is a regular expression and the output is a match
   3. The ```condition``` is a function, takes the output and returns ```true```
@@ -63,7 +63,7 @@ import { process } from "core-worker";
 const result = await process("your command").death();
 ```
 
-If you want to compose a chain of streams containing your process, you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout/instance.stderr```.
+If you want to compose a chain of streams containing your process, you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout```/```instance.stderr```.
 ```js
 import { process } from "core-worker";
 
@@ -102,9 +102,9 @@ try {
     // handle err
 }
 ```
-The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```error```. 
-CoreWorker now evaluates any output with the given condition (in this case "Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty result - otherwise it gets rejected.
-Keep in mind, that ```Result``` can also return the matched string, if your condition is a regular expression.
+The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```Error```. 
+CoreWorker now evaluates any output with the given ```Condition``` (in this case "Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty ```Result``` - otherwise it gets rejected.
+Keep in mind, that ```Result``` can also return the matched string, if your ````Condition``` is a regular expression.
 
 ## Wait until a process has finished
 This example shows how to wait for a process to be successfully executed and closed.
@@ -144,10 +144,10 @@ fs.createReadStream(file)
     .pipe(process("grep galaxy").stream())
     .pipe(fs.createWriteStream("/ocurrences"));
 ```
-By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes via node.js.
+By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes, leveraging all the shiny streaming stuff of node.
 
 ## Use all process functions at once
-Sometimes it is necessary to get notified about multiple state changes of a single instance of a specific process while at the same time interacting with it. 
+Sometimes it is necessary to get notified about multiple state changes of a a single instance belonging to a specific process while at the same time interacting with it. 
 Accordingly the next example shows you how to work with multiple instance states at once. Exemplary we use a simple chat application, that logs "Chat ready", when it is able to accept messages:
 ```js
 import { process } from "core-worker";
@@ -155,7 +155,10 @@ import { process } from "core-worker";
 const simpleChat = process("node chat.js", "Chat ready");
 const chatInput  = process.stream();
 
-process.stdin.pipe(chatInput).pipe(process.stdout);
+process.stdin
+    .pipe(simpleChat.stream())
+    .pipe(process.stdout);
+
 setTimeout(() => simpleChat.kill(), 360000); // wait an hour and close the chat
 
 try {
@@ -168,7 +171,7 @@ try {
     // handle err
 }
 ```
-Please note that ```instance.stream``` would throw an error, if you executed ```instance.ready/instance.death``` earlier.
+Please note that ```instance.stream``` would throw an error, if you executed ```instance.ready```/```instance.death``` earlier.
 
 # Testing
 
@@ -182,4 +185,4 @@ If you want to contribute to this repository, please ensure ...
   - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```)
   - to add and/or customize unit tests for any changed code.
   - to reference an issue in your pull request with a small description of your changes.
-All contributors are listed in ```AUTHORS``` sorted by their first contribution.
+All contributors are listed in ```AUTHORS``` sorted by the time of their first contribution.
