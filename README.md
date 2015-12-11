@@ -1,6 +1,5 @@
 # CoreWorker
-
-CoreWorker is a module for handling processes more efficiently.
+<img src="https://scontent-frt3-1.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/11281977_943814572305837_858119153_n.jpg" />
 
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
