@@ -13,7 +13,7 @@ npm install core-worker
 ``` 
 
 # API
-By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```Command``` and an optional ```Condition```, which is used to determine the precise moment the proccess is ready, to receive an instance. A command has to use absolute paths and should be the same as on your OS specific command line interface.
+By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```Command``` and an optional ```Condition``` to receive an instance, where ```Condition``` is used to determine the moment it is ready. A command has to use absolute paths and should be the same as on your OS specific command line interface.
 ```
 typedef process:   Command -> Condition? -> Process
 typedef Command:   String
@@ -71,7 +71,7 @@ readstream.pipe(process("your command").stream()).pipe(writestream);
 ```
 
 # Examples
-The following examples show how some common use cases are solved using CoreWorker:
+The following examples present some common use cases and how they are mastered using CoreWorker:
 
 ## Wait until a process is ready
 Let's suppose we want to wait until our HTTP-Server is ready - but no longer than 1000 milliseconds.
@@ -103,11 +103,14 @@ try {
 }
 ```
 The example will start the HTTP-Server and returns a ```Promise```, that either gets resolved with a ```Result``` or rejected with an ```Error```. 
+
 CoreWorker now evaluates any output with the given ```Condition``` (in this case "Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty ```Result``` - otherwise it gets rejected.
+
 Keep in mind, that ```Result``` can also return the matched string, if your ```Condition``` is a regular expression.
 
 ## Wait until a process has finished
 This example shows how to wait for a process to be successfully executed and closed.
+
 This time we want to copy a given file, named ```/path/to/file``` with the ```cp```-command into a new location ```/newLocation/copiedFile``` and wait until this operation has successfully finished:
 
 ```js
@@ -148,6 +151,7 @@ By using processes as streams you are generally able to create language agnostic
 
 ## Use all process functions at once
 Sometimes it is necessary to get notified about multiple state changes of a a single instance belonging to a specific process while at the same time interacting with it. 
+
 Accordingly the next example shows you how to work with multiple instance states at once. Exemplary we use a simple chat application, that logs "Chat ready", when it is able to accept messages:
 ```js
 import { process } from "core-worker";
@@ -173,7 +177,7 @@ You can test CoreWorker with mocha by executing ```make test``` in the root dire
 If you want to contribute to this repository, please ensure ...
   - to use ```make``` for deployment (it validates the source code and transpiles it to ```/lib```).
   - to follow the existing coding style.
-  - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```)
+  - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```).
   - to add and/or customize unit tests for any changed code.
   - to reference an issue in your pull request with a small description of your changes.
 All contributors are listed in the ```AUTHORS``` file, sorted by the time of their first contribution.
