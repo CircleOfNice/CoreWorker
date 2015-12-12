@@ -30,7 +30,7 @@ typedef Process: {
     stream: Nil      -> Stream
     kill:   Nil      -> Nil
 }
-typedef Timeout: Index
+typedef Timeout: Integer & x > 0
 ```
 ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a ```RegExp``` as the condition, ```Result``` will contain the matched string - otherwise there will be ```Nil```.
 ```
@@ -38,7 +38,7 @@ typedef Result:  {
     data: String | Nil
 }
 ```
-```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout```/```instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
+```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout``` / ```instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
 ```
 typedef Stream: {
     write: String | Buffer -> Nil
@@ -47,7 +47,7 @@ typedef Stream: {
 ```
 
 # Usage
-If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from ```instance.stdout```/```instance.stderr``` until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
+If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from ```instance.stdout``` / ```instance.stderr``` until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:
   1. The ```condition``` is a string and the output contains this string
   2. The ```condition``` is a regular expression and the output is a match
   3. The ```condition``` is a function, takes the output and returns ```true```
@@ -66,7 +66,7 @@ import { process } from "core-worker";
 const result = await process("your command").death();
 ```
 
-If you want to compose a chain of streams containing your process, you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout```/```instance.stderr```.
+If you want to compose a chain of streams containing your process, you can use ```instance.stream``` to write data into ```instance.stdin``` and read data out of ```instance.stdout``` / ```instance.stderr```.
 ```js
 import { process } from "core-worker";
 
@@ -178,7 +178,7 @@ You can test CoreWorker with mocha by executing ```make test``` in the root dire
 # Contributing
 
 If you want to contribute to this repository, please ensure ...
-  - to use ```make``` for deployment (it validates the source code and transpiles it to ```/lib```).
+  - to use ```make``` for development (it validates the source code and transpiles it to ```/lib```).
   - to follow the existing coding style.
   - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```).
   - to add and/or customize unit tests for any changed code.
