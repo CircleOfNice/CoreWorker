@@ -3,7 +3,10 @@
 
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
-CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited. This is done by wrapping some events and hooks around node's internal process module to determine the exact moments they are triggered.
+
+CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited.
+
+This is done by wrapping some events and hooks around node's internal process module to determine the exact moments they are triggered.
 
 # Installation
 
@@ -166,7 +169,7 @@ simpleChat.ready(500)
     .then(console.log.bind(console, "Chat closed"))
     .catch(() => /* handle err */);
 ```
-Please note that ```instance.stream``` would throw an error, if ```instance.ready```/```instance.death``` is executed earlier.
+Please note that ```instance.stream``` would throw an error, if ```instance.ready``` and/or ```instance.death``` is executed earlier.
 
 # Testing
 
