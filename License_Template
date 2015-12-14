@@ -16,8 +16,3 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-const fails = function() {
-    throw new Error("Process failed");
-};
-
-setTimeout(fails, 5);
