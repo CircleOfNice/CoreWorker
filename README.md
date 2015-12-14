@@ -2,7 +2,7 @@
 <img src="https://scontent-frt3-1.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/11281977_943814572305837_858119153_n.jpg" />
 
 # Motivation
-Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally build CoreWorker.
+Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally built CoreWorker.
 
 CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited.
 
