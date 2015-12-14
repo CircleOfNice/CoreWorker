@@ -10,8 +10,8 @@ This is done by wrapping some events and hooks around node's internal process mo
 
 # Installation
 
-You may install CoreWorker with npm 
-```js
+CoreWorker is installable via npm:
+```console
 npm install core-worker
 ``` 
 
@@ -38,7 +38,7 @@ typedef Result:  {
     data: String | Nil
 }
 ```
-```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout``` / ```instance.stderr``` as a stream. Accordingly you can prepend a ReadStream to your instance and/or pipe your stream into a WriteStream.
+```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout``` / ```instance.stderr``` as a stream. Accordingly you can prepend a readable stream to your instance and/or pipe your stream into a writable stream.
 ```
 typedef Stream: {
     write: String | Buffer -> Nil
@@ -130,7 +130,7 @@ try {
 The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So ```process.death``` allows you to omit this parameter, even though this isn't recommended and even forbidden when awaiting the ready state of a process.
 
 ## Use a process as a stream
-This examples shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. ```cat file.txt | grep something```), we can combine them with the canonical "pipe" method exposed by every node.js stream:
+This example shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. ```cat file.txt | grep something```), we can combine them with the canonical "pipe" method exposed by every node.js stream:
 
 So let's assume that we want to read a file ```/private/movie/project```, ...
 ```
@@ -182,5 +182,6 @@ If you want to contribute to this repository, please ensure ...
   - to follow the existing coding style.
   - to use the linting tools that are listed in the ```package.json``` (which you get for free when using ```make```).
   - to add and/or customize unit tests for any changed code.
-  - to reference an issue in your pull request with a small description of your changes.
+  - to reference the corresponding issue in your pull request with a small description of your changes.
+
 All contributors are listed in the ```AUTHORS``` file, sorted by the time of their first contribution.
