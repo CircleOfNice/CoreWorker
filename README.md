@@ -4,7 +4,7 @@
 # Motivation
 Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally built CoreWorker.
 
-CoreWorker aims at simplifying process management by making the most prominent lifefcycle events/states explicit so that they can be awaited.
+CoreWorker aims at simplifying process management by making the most prominent lifecycle events/states explicit so that they can be awaited.
 
 This is done by wrapping some events and hooks around node's internal process module to determine the exact moments they are triggered.
 
