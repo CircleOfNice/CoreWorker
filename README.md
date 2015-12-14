@@ -76,7 +76,7 @@ readstream.pipe(process("your command").stream()).pipe(writestream);
 # Examples
 The following examples present some common use cases and how they are mastered using CoreWorker:
 
-## Wait until a process is ready
+## Example 1 - Wait until a process is ready
 Let's suppose we want to wait until our HTTP-Server is ready - but no longer than 1000 milliseconds.
 So first we write a simple server script ...
 ```js
@@ -111,7 +111,7 @@ CoreWorker now evaluates any output with the given ```Condition``` (in this case
 
 Keep in mind, that ```Result``` can also return the matched string, if your ```Condition``` is a regular expression.
 
-## Wait until a process has finished
+## Example 2 - Wait until a process has finished
 This example shows how to wait for a process to be successfully executed and closed.
 
 This time we want to copy a given file, named ```/path/to/file``` with the ```cp```-command into a new location ```/newLocation/copiedFile``` and wait until this operation has successfully finished:
@@ -129,7 +129,7 @@ try {
 ```
 The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So ```process.death``` allows you to omit this parameter, even though this isn't recommended and even forbidden when awaiting the ready state of a process.
 
-## Use a process as a stream
+## Example 3 -Use a process as a stream
 This example shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. ```cat file.txt | grep something```), we can combine them with the canonical "pipe" method exposed by every node.js stream:
 
 So let's assume that we want to read a file ```/private/movie/project```, ...
@@ -153,9 +153,9 @@ fs.createReadStream(file)
 By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes, leveraging all the shiny streaming stuff of node.js.
 
 ## Use all process functions at once
-Sometimes it is necessary to get notified about multiple state changes of a a single instance belonging to a specific process while at the same time interacting with it. 
+Sometimes it is necessary to get notified about multiple state changes of a single instance belonging to a specific process while at the same time interacting with it. 
 
-Accordingly the next example shows you how to work with multiple instance states at once. Exemplary we use a simple chat application, that logs "Chat ready", when it is able to accept messages:
+Accordingly the next example shows you how to work with multiple instance states at once. We use a simple chat application exemplarily, that logs "Chat ready", when it is able to accept messages:
 ```js
 import { process } from "core-worker";
 
