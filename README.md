@@ -17,13 +17,13 @@ npm install core-worker
 
 # API
 By default you can import CoreWorker with ```import { process } from "core-worker";```. Just call process with a ```Command``` and an optional ```Condition``` to receive an instance, where ```Condition``` is used to determine the moment it is ready. A command has to use absolute paths and should be the same as on your OS specific command line interface.
-```
+```c2hs
 typedef process:   Command -> Condition? -> Process
 typedef Command:   String
 typedef Condition: Nil | String | String -> Boolean | RegExp
 ```
 Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
-```
+```c2hs
 typedef Process: {
     ready:  Timeout  -> Promise
     death:  Timeout? -> Promise
@@ -33,13 +33,13 @@ typedef Process: {
 typedef Timeout: Integer & x > 0
 ```
 ```instance.ready``` or ```instance.death``` will return a Promise object, that either gets fullfilled with a ```Result``` or rejected with an ```Error```. If you set a ```RegExp``` as the condition, ```Result``` will contain the matched string - otherwise there will be ```Nil```.
-```
+```c2hs
 typedef Result:  {
     data: String | Nil
 }
 ```
 ```ìnstance.stream``` exposes ```instance.stdin``` and ```instance.stdout``` / ```instance.stderr``` as a stream. Accordingly you can prepend a readable stream to your instance and/or pipe your stream into a writable stream.
-```
+```c2hs
 typedef Stream: {
     write: String | Buffer -> Nil
     pipe:  Stream          -> Nil
