@@ -45,11 +45,16 @@ OBJECTS:= \
 INSTALLED_OBJECTS:= \
 	$(foreach x, $(shell cd $(WORKING_DIR)/src && find . -type f -iname '*.js' ! -path "./example/*"), $(INSTALLDIR)/lib/$(x)) \
 
+##
+#  These are out example files - they will be moved to root for execution purposes
+#
 EXAMPLES:= \
 	$(foreach x, $(shell cd $(WORKING_DIR)/src && find example -type f -iname '*.js'), $(INSTALLDIR)/$(basename $(x)))
 
-
-define LICENCE
+##
+#  This template has to be appended to all src files for Copyright purposes
+#
+define LICENSE
 /*
  * This file is part of CoreWorker.
  *
@@ -69,7 +74,7 @@ define LICENCE
  */
 
 endef
-export LICENCE
+export LICENSE
 
 all: install
 
@@ -96,11 +101,14 @@ clean:
 	rm -rf $(WORKING_DIR)/coverage
 	rm -rf $(WORKING_DIR)/example
 	rm -rf $(WORKING_DIR)/setupfile
-	rm -f $(WORKING_DIR)/Licence_Template
-	rm -f $(WORKING_DIR)/Licence_Template.tmp
+	rm -f $(WORKING_DIR)/License_Template
+	rm -f $(WORKING_DIR)/License_Template.tmp
 
-$(WORKING_DIR)/Licence_Template:
-	@echo "$$LICENCE" > $@
+##
+#  Writes the Header in a template file
+#
+$(WORKING_DIR)/License_Template:
+	@echo "$$LICENSE" > $@
 
 ##
 #  file to save setup status
@@ -113,7 +121,7 @@ $(WORKING_DIR)/setupfile:
 #  transpiled files, even if they exist. if the no-op is removed
 #  this will trigger a rebuild too
 #
-$(WORKING_DIR)/src/%.js: $(WORKING_DIR)/Licence_Template
+$(WORKING_DIR)/src/%.js: $(WORKING_DIR)/License_Template
 	@if ! grep -q "Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)" $@;then \
 		cp $< "$<.tmp"; \
 		cat $@ >> "$<.tmp"; \

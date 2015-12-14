@@ -16,12 +16,3 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import T from "@circle/core-types";
-import NodeProcess from "./NodeProcess";
-
-/**
- * @typedef Process
- */
-export default T.struct({
-    instance: NodeProcess
-}, "ProcessManager");

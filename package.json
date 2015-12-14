@@ -1,6 +1,6 @@
 {
-  "name": "@circle/core-worker",
-  "version": "0.0.1",
+  "name": "core-worker",
+  "version": "0.1.0",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
