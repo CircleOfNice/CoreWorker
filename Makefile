@@ -43,13 +43,13 @@ OBJECTS:= \
 #  es6 to es5
 #
 INSTALLED_OBJECTS:= \
-	$(foreach x, $(shell cd $(WORKING_DIR)/src && find . -type f -iname '*.js' ! -path "./example/*"), $(INSTALLDIR)/lib/$(x)) \
+	$(foreach x, $(shell cd $(WORKING_DIR)/src && find . -type f -iname '*.js' ! -path "./examples/*"), $(INSTALLDIR)/lib/$(x)) \
 
 ##
 #  These are out example files - they will be moved to root for execution purposes
 #
 EXAMPLES:= \
-	$(foreach x, $(shell cd $(WORKING_DIR)/src && find example -type f -iname '*.js'), $(INSTALLDIR)/$(basename $(x)))
+	$(foreach x, $(shell cd $(WORKING_DIR)/src && find examples -type f -iname '*.js'), $(INSTALLDIR)/$(basename $(x)))
 
 ##
 #  This template has to be appended to all src files for Copyright purposes
@@ -99,7 +99,7 @@ clean:
 	rm -rf $(WORKING_DIR)/docs
 	rm -rf $(WORKING_DIR)/lib
 	rm -rf $(WORKING_DIR)/coverage
-	rm -rf $(WORKING_DIR)/example
+	rm -rf $(WORKING_DIR)/examples
 	rm -rf $(WORKING_DIR)/setupfile
 	rm -f $(WORKING_DIR)/License_Template
 	rm -f $(WORKING_DIR)/License_Template.tmp
@@ -150,6 +150,8 @@ $(INSTALLDIR)/lib/%.js: $(WORKING_DIR)/build/src/%.js
 #  every destination file needs a transpiled
 #  source that is tested
 #
-$(INSTALLDIR)/example/%: $(WORKING_DIR)/build/src/example/%.js
+$(INSTALLDIR)/examples/%: $(WORKING_DIR)/build/src/examples/%.js
 	mkdir -p $(dir $@)
-	cp $< $@
+	echo "#!/usr/bin/env node" > $@
+	cat $< >> $@
+	chmod +x $@
