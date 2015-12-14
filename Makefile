@@ -53,7 +53,7 @@ EXAMPLES:= \
 
 ##
 #  This template has to be appended to all src files for Copyright purposes
-#  
+#
 define LICENSE
 /*
  * This file is part of CoreWorker.
@@ -101,8 +101,8 @@ clean:
 	rm -rf $(WORKING_DIR)/coverage
 	rm -rf $(WORKING_DIR)/example
 	rm -rf $(WORKING_DIR)/setupfile
-	rm -f $(WORKING_DIR)/Licence_Template
-	rm -f $(WORKING_DIR)/Licence_Template.tmp
+	rm -f $(WORKING_DIR)/License_Template
+	rm -f $(WORKING_DIR)/License_Template.tmp
 
 ##
 #  Writes the Header in a template file
