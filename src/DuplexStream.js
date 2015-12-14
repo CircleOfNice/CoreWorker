@@ -38,6 +38,10 @@ export default class DuplexStream extends Writable {
         next();
     }
 
+    /**
+     * process.stdin ends with the readable stream
+     * to process the piped data
+     */
     end() {
         this.instance.end();
     }
