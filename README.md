@@ -129,7 +129,7 @@ try {
 ```
 The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish :astonished:. So ```process.death``` allows you to omit this parameter, even though this isn't recommended and even forbidden when awaiting the ready state of a process.
 
-## Example 3 -Use a process as a stream
+## Example 3 - Use a process as a stream
 This example shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. ```cat file.txt | grep something```), we can combine them with the canonical "pipe" method exposed by every node.js stream:
 
 So let's assume that we want to read a file ```/private/movie/project```, ...
@@ -152,7 +152,7 @@ fs.createReadStream(file)
 ```
 By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes, leveraging all the shiny streaming stuff of node.js.
 
-## Use all process functions at once
+## Example 4 - Use all process functions at once
 Sometimes it is necessary to get notified about multiple state changes of a single instance belonging to a specific process while at the same time interacting with it. 
 
 Accordingly the next example shows you how to work with multiple instance states at once. We use a simple chat application exemplarily, that logs "Chat ready", when it is able to accept messages:
