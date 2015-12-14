@@ -1,6 +1,6 @@
 {
   "name": "core-worker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
@@ -11,9 +11,12 @@
     "url": "git+https://github.com/CircleOfNice/CoreWorker"
   },
   "keywords": [
+    "spawn",
     "Execute",
     "Command",
-    "Line"
+    "Line",
+    "process",
+    "lifecycles"
   ],
   "author": "Circle",
   "license": "GPL-3.0",
@@ -24,7 +27,6 @@
   "devDependencies": {
     "babel": "^5.8.29",
     "babel-eslint": "^4.1.1",
-    "babel-runtime": "^5.8.29",
     "blanket": "^1.1.7",
     "browserify": "^11.1.0",
     "esdoc": "^0.4.1",
@@ -624,6 +626,7 @@
   "dependencies": {
     "@circle/core-meta": "^0.1.1",
     "@circle/core-types": "^0.2.13",
+    "babel-runtime": "^5.8.29",
     "immutable": "^3.7.5",
     "lodash": "^3.10.1",
     "q": "^1.4.1",
