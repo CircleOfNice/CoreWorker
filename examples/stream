@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
  * This file is part of CoreWorker.
  *
@@ -20,7 +21,6 @@
  * Runs a Script that listens on stdin and logs it
  * This example will return a stream
  */
-
 "use strict";
 
 var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
@@ -39,13 +39,6 @@ var _index = require("../index");
 
 var dummyfile = _path2["default"].join(__dirname, "Resources/dummyfile");
 var writeStream = new _stream.Writable();
-
-/** Creates a Process and waits for further action, before the process gets started
- *
- * @param  {String}    command   to execute
- * @param  {Condition} condition checking when process is ready
- * @return {Process}
- */
 var grep = (0, _index.process)("grep first", "");
 var stream = grep.stream();
 

@@ -1,6 +1,6 @@
 {
   "name": "core-worker",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
@@ -13,8 +13,7 @@
   "keywords": [
     "spawn",
     "Execute",
-    "Command",
-    "Line",
+    "Command Line",
     "process",
     "lifecycles"
   ],

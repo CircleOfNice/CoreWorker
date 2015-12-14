@@ -26,7 +26,7 @@ const counterScript = path.join(__dirname, "/Scripts/CounterScript.js");
 const stdinLogger   = path.join(__dirname, "/Scripts/StdinLogger.js");
 const failScript    = path.join(__dirname, "/Scripts/FailScript.js");
 
-describe("CoreExec", function() {
+describe("CoreWorker", function() {
     it("executes an application and waits until it is ready", async function(done) {
         const counter = process(`node ${counterScript}`, "Log No. 10");
 
@@ -155,7 +155,7 @@ describe("CoreExec", function() {
         /*eslint-disable*/
         try {
         /*eslint-enable*/
-            await failProcess.death(100);
+            await failProcess.death(1000);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {
             assert.equal(err.message, "Process was closed unexpectedly. Code: 1", "Message should be closing code with 1");

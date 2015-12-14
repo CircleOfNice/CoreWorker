@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
  * This file is part of CoreWorker.
  *
@@ -20,25 +21,34 @@
  * Runs a Script that increases a counter each millisecond and logs it
  * This example waits until Process is ready
  */
-import path from "path";
-import { process } from "../index";
+"use strict";
 
-const websocketPath = path.join(__dirname, "Resources/Websocket");
+var _regeneratorRuntime = require("babel-runtime/regenerator")["default"];
 
-/**
- * Creates a Process and waits for further action, before the process gets started
- *
- * @param  {String}    command   to execute
- * @param  {Condition} condition checking when process is ready
- * @return {Process}
- */
-const websocket       = process(`node ${websocketPath}`, "Request was upgraded successfully to new Websocket");
-const createWebsocket = async function() {
-    /*eslint-disable*/
-    try {
-    /*eslint-enabe*/
+var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _index = require("../index");
+
+var websocketPath = _path2["default"].join(__dirname, "Resources/Websocket");
+var websocket = (0, _index.process)("node " + websocketPath, "Request was upgraded successfully to new Websocket");
+var createWebsocket = function createWebsocket() {
+  var result;
+  return _regeneratorRuntime.async(function createWebsocket$(context$1$0) {
+    while (1) switch (context$1$0.prev = context$1$0.next) {
+      case 0:
+        context$1$0.prev = 0;
+
+        /*eslint-enabe*/
         console.log("> Creating a websocket");
-        const result = await websocket.ready(1000);
+        context$1$0.next = 4;
+        return _regeneratorRuntime.awrap(websocket.ready(1000));
+
+      case 4:
+        result = context$1$0.sent;
 
         /*
          * If Promise gets resolved, a Result is returned containing ...
@@ -50,10 +60,25 @@ const createWebsocket = async function() {
         console.log("> Shutdown process...");
 
         websocket.kill();
-    } catch(err) {
-        console.log("Failed to create Websocket", err.message);
+        context$1$0.next = 14;
+        break;
+
+      case 10:
+        context$1$0.prev = 10;
+        context$1$0.t0 = context$1$0["catch"](0);
+
+        console.log("Failed to create Websocket", context$1$0.t0.message);
         websocket.kill();
+
+      case 14:
+      case "end":
+        return context$1$0.stop();
     }
+  }, null, this, [[0, 10]]);
 };
 
 createWebsocket();
+
+/*eslint-disable*/
+
+//# sourceMappingURL=ready.js.map

@@ -23,15 +23,8 @@
 import path from "path";
 import { process } from "../index";
 
-/** Creates a Process and waits for further action, before the process gets started
- *
- * @param  {String}    command   to execute
- * @param  {Condition} condition checking when process is ready
- * @return {Process}
- */
 const copyProcess   = process(`cp ${path.join(__dirname, "Resources/dummyfile")} ${path.join(__dirname, "Resources/copiedDummyfile")}`);
 const removeProcess = process(`rm ${path.join(__dirname, "Resources/copiedDummyfile")}`);
-
 const copyAndRemove = async function() {
     /*eslint-disable*/
     try {
