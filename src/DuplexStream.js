@@ -16,13 +16,15 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import { Writable } from "stream";
+import { Transform } from "stream";
 
-export default class DuplexStream extends Writable {
+export default class DuplexStream extends Transform {
     constructor(instance) {
         super();
 
         this.instance = instance;
+
+        this.instance.emitter.on("data", ::this.push);
     }
 
     /**
@@ -32,7 +34,7 @@ export default class DuplexStream extends Writable {
      * @param {String}   encoding of current chunk
      * @param {Function} next     to finalize a chunk
      */
-    _write(chunk, encoding, next) {
+    _transform(chunk, encoding, next) {
         this.instance.write(chunk);
 
         next();
@@ -44,17 +46,5 @@ export default class DuplexStream extends Writable {
      */
     end() {
         this.instance.end();
-    }
-
-    /*
-     * Registers a Stream to pipe in
-     *
-     * @param  {Stream} stream to pipe in
-     * @return {Stream}
-     */
-    pipe(stream) {
-        this.instance.emitter.on("data", ::stream.write);
-
-        return stream;
     }
 }

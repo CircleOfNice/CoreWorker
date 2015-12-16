@@ -172,13 +172,18 @@ describe("Process", function() {
         const stream  = process.stream();
         const pipeSpy = sinon.spy();
 
-        stream.pipe({ write: pipeSpy });
+        stream.pipe({
+            write: pipeSpy,
+            on:    () => {},
+            once:  () => {},
+            emit:  () => {}
+        });
         stream.write("Test");
 
         assert(test.spies().stdin.calledWith(new Buffer("Test")), `stdinSpy was called with wrong args: \n ${test.spies().stdin.lastCall.args}`);
 
         process.instance.emitter.emit("data", "Test2");
-        assert(pipeSpy.calledWith("Test2"), `pipeSpy was called with wrong args: \n ${pipeSpy.lastCall.args}`);
+        assert(pipeSpy.calledWith(new Buffer("Test2")), `pipeSpy was called with wrong args: \n ${pipeSpy.lastCall.args}`);
 
         assert.throws(process.stream, "It should only run one instance");
     });
