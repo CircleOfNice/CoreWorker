@@ -68,10 +68,10 @@ describe("DuplexStream", function() {
         const metrics = prepareTest();
 
         metrics.callbacks.data("First call");
-        assert(metrics.spies.write.calledWith("First call"), "Should be called with 'First Call'");
+        assert(metrics.spies.write.calledWith(new Buffer("First call")), "Should be called with 'First Call'");
 
         metrics.callbacks.data("Second call");
-        assert(metrics.spies.write.calledWith("Second call"), "Should be called with 'Second Call'");
+        assert(metrics.spies.write.calledWith(new Buffer("Second call")), "Should be called with 'Second Call'");
 
         metrics.instance.end();
     });
