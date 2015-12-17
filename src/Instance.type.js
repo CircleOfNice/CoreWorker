@@ -29,6 +29,7 @@ export default T.subtype(T.Object, function(x) {
     return (
         T.Boolean.is(x.isRunning) &&
         T.Boolean.is(x.fulfilled) &&
+        T.Boolean.is(x.isStreaming) &&
         T.Array.is(x.output) &&
         (Result.is(x.lastMatch) || T.Nil.is(x.lastMatch))
     );

@@ -24,6 +24,7 @@ export default class DuplexStream extends Transform {
 
         this.instance = instance;
 
+        this.instance.startStream();
         this.instance.emitter.on("data", ::this.push);
     }
 
