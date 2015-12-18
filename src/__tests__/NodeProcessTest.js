@@ -57,7 +57,7 @@ describe("NodeProcess", function() {
     it("creates a new nodeProcess", function() {
         const nodeProcess = NodeProcess.create("node Test.js", "Started Successfully.");
 
-        assert.deepStrictEqual(keys(nodeProcess.instance), ["isRunning", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
+        assert.deepStrictEqual(keys(nodeProcess.instance), ["isRunning", "isStreaming", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
         assert(!nodeProcess.instance.isRunning, "Process shouldn't run after create");
         assert.equal(nodeProcess.command, "node", "Command should be stored in Process");
         assert.equal(nodeProcess.commandArgs, "Test.js", "CommandArgs should be stored in Process");

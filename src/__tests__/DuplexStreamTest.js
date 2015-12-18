@@ -27,8 +27,9 @@ const getInstance = function(callbacks, spy) {
         emitter: {
             on: (name, cb) => set(callbacks, name, cb)
         },
-        write: chunk => spy(chunk),
-        end:   () => {}
+        startStream: () => {},
+        write:       chunk => spy(chunk),
+        end:         () => {}
     };
 };
 

@@ -84,19 +84,33 @@ NodeProcess.prototype.write = T.func([T.Object], T.Nil, "nodeProcess.write").of(
 });
 
 /**
+ * Signals the instance, that it is streaming
+ */
+NodeProcess.prototype.startStream = T.func([], T.Nil, "nodeProcess.startStream").of(function() {
+    assign(this.instance, {
+        isStreaming: true
+    });
+});
+
+/**
  * Flushs all data piped into stdin
  */
 NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
+    assign(this.instance, {
+        isStreaming: false
+    });
     this.instance.stdin.end();
 });
 
 /**
  * Kills a running instance
+ *
+ * @return {Boolean | Object}
  */
-NodeProcess.prototype.kill = T.func([], T.Nil, "nodeProcess.kill").of(function() {
-    if(!this.isRunning()) return;
+NodeProcess.prototype.kill = T.func([], T.union([T.Boolean, T.Object]), "nodeProcess.kill").of(function() {
+    if(!this.isRunning()) return true;
 
-    this.instance.kill();
+    return this.instance.isStreaming ? this.instance.stdin.pause() : this.instance.kill();
 });
 
 /**
@@ -190,10 +204,11 @@ NodeProcess.create = T.func([T.String, Condition], NodeProcess, "NodeProcess.cre
         commandArgs: splittedCommand.slice(1),
         filter:      filter,
         instance:    {
-            isRunning: false,
-            output:    [],
-            lastMatch: null,
-            fulfilled: false
+            isRunning:   false,
+            isStreaming: false,
+            output:      [],
+            lastMatch:   null,
+            fulfilled:   false
         }
     };
 });
