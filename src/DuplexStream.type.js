@@ -16,12 +16,12 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import T from "@circle/core-types";
+import T from "tcomb";
 import NodeProcess from "./NodeProcess.type";
 
 /**
  * @typedef DuplexStream
  */
-export default T.subtype(T.Object, function(x) {
+export default T.refinement(T.Object, function(x) {
     return NodeProcess.is(x.instance);
 }, "DuplexStream");

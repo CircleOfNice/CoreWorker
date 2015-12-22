@@ -17,20 +17,9 @@
  */
 
 import T from "tcomb";
-import Result from "./Result.type";
 
 /**
- * @typedef Instance
- *
- * @param  {*}       x to be evaluated
- * @return {Boolean}
+ * @typedef {NotNil}
+ * @param   {*}     x value
  */
-export default T.refinement(T.Object, function(x) {
-    return (
-        T.Boolean.is(x.isRunning) &&
-        T.Boolean.is(x.fulfilled) &&
-        T.Boolean.is(x.isStreaming) &&
-        T.Array.is(x.output) &&
-        (Result.is(x.lastMatch) || T.Nil.is(x.lastMatch))
-    );
-}, "Instance");
+export default T.refinement(T.Any, x => !T.Nil.is(x), "NotNil");

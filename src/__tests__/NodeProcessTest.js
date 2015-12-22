@@ -21,7 +21,7 @@ import sinon from "sinon";
 import assert from "assert";
 import { keys, set } from "lodash";
 import { EventEmitter } from "events";
-import T from "@circle/core-types";
+import T from "tcomb";
 import NodeProcess from "../NodeProcess";
 import Result from "../Result";
 import ChildProcess from "child_process";

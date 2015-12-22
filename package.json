@@ -1,6 +1,6 @@
 {
   "name": "core-worker",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
@@ -623,12 +623,11 @@
     }
   },
   "dependencies": {
-    "@circle/core-meta": "^0.1.1",
-    "@circle/core-types": "^0.2.13",
     "babel-runtime": "^5.8.29",
     "immutable": "^3.7.5",
     "lodash": "^3.10.1",
     "q": "^1.4.1",
-    "set-default-value": "0.0.8"
+    "set-default-value": "0.0.8",
+    "tcomb": "^2.5.2"
   }
 }

@@ -22,7 +22,7 @@ import NodeProcess from "./NodeProcess";
 import DuplexStream from "./DuplexStream";
 import TDuplexStream from "./DuplexStream.type";
 import defaults from "set-default-value";
-import T from "@circle/core-types";
+import T from "tcomb";
 import Condition from "./Condition.type";
 import assert from "assert";
 
@@ -35,7 +35,7 @@ import assert from "assert";
 Process.prototype.death = function(maybeTimeout) {
     if(T.Nil.is(maybeTimeout)) this.instance.kill();
 
-    const timeout  = T.Index(defaults(maybeTimeout).to(0));
+    const timeout  = T.Number(defaults(maybeTimeout).to(0));
     const deferred = Q.defer();
 
     this.instance.onDeath(deferred);
@@ -51,7 +51,7 @@ Process.prototype.death = function(maybeTimeout) {
  * @param  {Index}   timeout until instance should be ready
  * @return {Promise}
  */
-Process.prototype.ready = T.func([T.Index], T.Object, "process.ready").of(function(timeout) {
+Process.prototype.ready = T.func([T.Number], T.Object, "process.ready").of(function(timeout) {
     if(this.instance.isRunning() && this.instance.isReady()) return this.instance.lastMatch();
 
     const deferred = Q.defer();

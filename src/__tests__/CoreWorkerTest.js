@@ -28,12 +28,11 @@ const failScript    = path.join(__dirname, "/Scripts/FailScript.js");
 
 describe("CoreWorker", function() {
     it("executes an application and waits until it is ready", async function(done) {
+        this.timeout(5000);
         const counter = process(`node ${counterScript}`, "Log No. 10");
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
-            const result = await counter.ready(500);
+        try { // eslint-disable-line
+            const result = await counter.ready(2000);
 
             assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
             counter.kill();
@@ -46,10 +45,8 @@ describe("CoreWorker", function() {
     it("executes an application and waits until it is ready", async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 5/);
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
-            const result = await counter.ready(500);
+        try { // eslint-disable-line
+            const result = await counter.ready(2000);
 
             assert.deepStrictEqual(result, Result({ data: "Log No. 5" }), "Result should contain 'Log No. 5'");
 
@@ -63,9 +60,7 @@ describe("CoreWorker", function() {
     it("executes an application, waits until it is ready, but exceeds given timeout", async function(done) {
         const counter = process(`node ${counterScript}`, "Log No. 10");
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
+        try { // eslint-disable-line
             const result = await counter.ready(10);
 
             assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
@@ -81,9 +76,7 @@ describe("CoreWorker", function() {
     it("executes an application and waits its death", async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
+        try { // eslint-disable-line
             const result = await counter.death();
 
             result.data
@@ -101,9 +94,7 @@ describe("CoreWorker", function() {
     it("executes an application and waits its death with a spedified timeout", async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
+        try { // eslint-disable-line
             const result = await counter.death(500);
 
             result.data
@@ -121,9 +112,7 @@ describe("CoreWorker", function() {
     it("executes an application, waits its death, but exceeds given timeout", async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
+        try { // eslint-disable-line
             await counter.death(10);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {
@@ -152,9 +141,7 @@ describe("CoreWorker", function() {
     it("executes an application, but terminates unexpectedly", async function(done) {
         const failProcess = process(`node ${failScript}`);
 
-        /*eslint-disable*/
-        try {
-        /*eslint-enable*/
+        try { // eslint-disable-line
             await failProcess.death(1000);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {

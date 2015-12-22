@@ -19,11 +19,12 @@
 import Validator from "./Validator";
 import NodeProcess from "./NodeProcess.type";
 import Condition from "./Condition.type";
-import T from "@circle/core-types";
+import T from "tcomb";
 import { spawn } from "child_process";
 import { assign, first } from "lodash";
 import { EventEmitter } from "events";
 import Result from "./Result";
+import NotNil from "./NotNil.type";
 
 /**
  * Collects data and emits it afterwards
@@ -57,7 +58,7 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 /**
  * Starts the Process of current instance
  */
-NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
+NodeProcess.prototype.run = T.func([], T.Nil, "nodeProcess.run").of(function() {
     if(this.isRunning()) return;
 
     const process = spawn(this.command, this.commandArgs);
@@ -66,7 +67,7 @@ NodeProcess.prototype.run = T.func([], T.Nil, "NodeProcess.run").of(function() {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", (code, signal) => code === 0 || T.NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
+    process.on("close", (code, signal) => code === 0 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -118,7 +119,7 @@ NodeProcess.prototype.kill = T.func([], T.union([T.Boolean, T.Object]), "nodePro
  *
  * @param {Index} code as exit status of the instance
  */
-NodeProcess.prototype.terminate = T.func([T.Index], T.Nil, "nodeProcess.terminate").of(function(code) {
+NodeProcess.prototype.terminate = T.func([T.Number], T.Nil, "nodeProcess.terminate").of(function(code) {
     assign(this.instance, { isRunning: false });
     this.emitter.emit("failure", new Error(`Process was closed unexpectedly. Code: ${code}`));
 });
