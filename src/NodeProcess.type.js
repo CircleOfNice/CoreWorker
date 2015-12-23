@@ -16,7 +16,7 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import T from "@circle/core-types";
+import T from "tcomb";
 import Validator from "./Validator.type";
 import Instance from "./Instance.type";
 

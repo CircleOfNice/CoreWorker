@@ -16,7 +16,7 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import T from "@circle/core-types";
+import T from "tcomb";
 import Condition from "./Condition.type";
 
 /**
@@ -24,5 +24,5 @@ import Condition from "./Condition.type";
  */
 export default T.struct({
     filter:   Condition,
-    validate: T.func([T.String], T.Boolean, "validate")
+    validate: T.Function
 }, "Validator");

@@ -16,15 +16,21 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import { Singleton } from "@circle/core-meta";
-
-@Singleton
 class Increment {
+    static create() {
+        return new Increment();
+    }
+
     constructor() {
         this.counter  = 0;
         this.interval = setInterval(::this.increase, 1);
     }
 
+    /**
+     * Increases the counter by 1
+     *
+     * @return {Nil}
+     */
     increase() {
         this.counter = this.counter + 1;
 
@@ -33,4 +39,4 @@ class Increment {
     }
 }
 
-Increment();
+Increment.create();

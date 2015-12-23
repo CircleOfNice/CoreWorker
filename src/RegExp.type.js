@@ -16,7 +16,7 @@
  * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
-import T from "@circle/core-types";
+import T from "tcomb";
 
 /**
  * @typedef RegExp
@@ -24,6 +24,6 @@ import T from "@circle/core-types";
  * @param  {*}       x to be evaluated
  * @return {Boolean}
  */
-export default T.subtype(T.Object, function(x) {
+export default T.refinement(T.Object, function(x) {
     return x instanceof RegExp;
 }, "RegExp");
