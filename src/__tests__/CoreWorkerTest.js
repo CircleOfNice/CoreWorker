@@ -77,7 +77,7 @@ describe("CoreWorker", function() {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         try { // eslint-disable-line
-            const result = await counter.death();
+            const result = await counter.death(1000);
 
             result.data
                 .slice(0, -1)
