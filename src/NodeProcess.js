@@ -106,12 +106,13 @@ NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
 /**
  * Kills a running instance
  *
- * @return {Boolean | Object}
+ * @return {Boolean}
  */
-NodeProcess.prototype.kill = T.func([], T.union([T.Boolean, T.Object]), "nodeProcess.kill").of(function() {
+NodeProcess.prototype.kill = T.func([], T.Boolean, "nodeProcess.kill").of(function() {
     if(!this.isRunning()) return true;
 
-    return this.instance.isStreaming ? this.instance.stdin.pause() : this.instance.kill();
+    if(this.instance.isStreaming) this.instance.stdin.pause();
+    return this.instance.kill();
 });
 
 /**
