@@ -46,5 +46,5 @@ node_modules
 out
 ../.DS_Store
 .bundle*
-docs
 build
+License_Template
