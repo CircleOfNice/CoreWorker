@@ -1,0 +1,250 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Coreworker by CircleOfNice</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Coreworker</h1>
+        <p>Manage Your Processes - Like a Boss.</p>
+
+        <p class="view"><a href="https://github.com/CircleOfNice/CoreWorker">View the Project on GitHub <small>CircleOfNice/CoreWorker</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/CircleOfNice/CoreWorker/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/CircleOfNice/CoreWorker/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/CircleOfNice/CoreWorker">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="coreworker" class="anchor" href="#coreworker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CoreWorker</h1>
+
+<p><img src="https://scontent-frt3-1.cdninstagram.com/hphotos-xap1/t51.2885-15/e15/11281977_943814572305837_858119153_n.jpg"></p>
+
+<h1>
+<a id="motivation" class="anchor" href="#motivation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Motivation</h1>
+
+<p>Because we believe working with processes in node.js needs too much boilerplate code for most use cases, we reevaluated the current process API and finally built CoreWorker.</p>
+
+<p>CoreWorker aims at simplifying process management by making the most prominent lifecycle events/states explicit so that they can be awaited.</p>
+
+<p>This is done by wrapping some events and hooks around node's internal process module to determine the exact moments they are triggered.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<p>CoreWorker is installable via npm:</p>
+
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-mo">npm install core-worker</span></pre></div>
+
+<h1>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h1>
+
+<p>By default you can import CoreWorker with <code>import { process } from "core-worker";</code>. Just call process with a <code>Command</code> and an optional <code>Condition</code> to receive an instance, where <code>Condition</code> is used to determine the moment it is ready. A command has to use absolute paths and should be the same as on your OS specific command line interface.</p>
+
+<div class="highlight highlight-source-haskell"><pre>typedef process<span class="pl-k">:</span>   <span class="pl-c1">Command</span> <span class="pl-k">-&gt;</span> <span class="pl-c1">Condition</span><span class="pl-k">?</span> <span class="pl-k">-&gt;</span> <span class="pl-c1">Process</span>
+typedef <span class="pl-c1">Command</span><span class="pl-k">:</span>   <span class="pl-c1">String</span>
+typedef <span class="pl-c1">Condition</span><span class="pl-k">:</span> <span class="pl-c1">Nil</span> <span class="pl-k">|</span> <span class="pl-c1">String</span> <span class="pl-k">|</span> <span class="pl-c1">String</span> <span class="pl-k">-&gt;</span> <span class="pl-c1">Boolean</span> <span class="pl-k">|</span> <span class="pl-c1">RegExp</span></pre></div>
+
+<p>Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with <code>instance.kill()</code>.</p>
+
+<div class="highlight highlight-source-haskell"><pre>typedef <span class="pl-c1">Process</span><span class="pl-k">:</span> {
+    ready<span class="pl-k">:</span>  <span class="pl-c1">Timeout</span>  <span class="pl-k">-&gt;</span> <span class="pl-c1">Promise</span>
+    death<span class="pl-k">:</span>  <span class="pl-c1">Timeout</span><span class="pl-k">?</span> <span class="pl-k">-&gt;</span> <span class="pl-c1">Promise</span>
+    stream<span class="pl-k">:</span> <span class="pl-c1">Nil</span>      <span class="pl-k">-&gt;</span> <span class="pl-c1">Stream</span>
+    kill<span class="pl-k">:</span>   <span class="pl-c1">Nil</span>      <span class="pl-k">-&gt;</span> <span class="pl-c1">Nil</span>
+}
+typedef <span class="pl-c1">Timeout</span><span class="pl-k">:</span> <span class="pl-c1">Integer</span> <span class="pl-k">&amp;</span> x <span class="pl-k">&gt;</span> <span class="pl-c1">0</span></pre></div>
+
+<p><code>instance.ready</code> or <code>instance.death</code> will return a Promise object, that either gets fullfilled with a <code>Result</code> or rejected with an <code>Error</code>. If you set a <code>RegExp</code> as the condition, <code>Result</code> will contain the matched string - otherwise there will be <code>Nil</code>.</p>
+
+<div class="highlight highlight-source-haskell"><pre>typedef <span class="pl-c1">Result</span><span class="pl-k">:</span>  {
+    <span class="pl-k">data</span><span class="pl-k">:</span> <span class="pl-c1">String</span> <span class="pl-k">|</span> <span class="pl-c1">Nil</span>
+}</pre></div>
+
+<p><code>ìnstance.stream</code> exposes <code>instance.stdin</code> and <code>instance.stdout</code> / <code>instance.stderr</code> as a stream. Accordingly you can prepend a readable stream to your instance and/or pipe your stream into a writable stream.</p>
+
+<div class="highlight highlight-source-haskell"><pre>typedef <span class="pl-c1">Stream</span><span class="pl-k">:</span> {
+    write<span class="pl-k">:</span> <span class="pl-c1">String</span> <span class="pl-k">|</span> <span class="pl-c1">Buffer</span> <span class="pl-k">-&gt;</span> <span class="pl-c1">Nil</span>
+    pipe<span class="pl-k">:</span>  <span class="pl-c1">Stream</span>          <span class="pl-k">-&gt;</span> <span class="pl-c1">Nil</span>
+}</pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<p>If you just want to wait until some ready condition is reached, create a process with your desired command and your requirement for the ready state of the process. The condition is used to filter incoming data from <code>instance.stdout</code> / <code>instance.stderr</code> until it is triggered. In this case the process is in it's ready state, which can be reached in three different ways:</p>
+
+<ol>
+<li>The <code>condition</code> is a string and the output contains this string</li>
+<li>The <code>condition</code> is a regular expression and the output is a match</li>
+<li>The <code>condition</code> is a function, takes the output and returns <code>true</code>
+</li>
+</ol>
+
+<p>You can now await the ready state with a timeout:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">const</span> <span class="pl-c1">result</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>your command<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>condition<span class="pl-pds">"</span></span>).<span class="pl-en">ready</span>(<span class="pl-c1">1000</span>);</pre></div>
+
+<p>As shown in the example below, you can wait until your process has finished. This time a condition does not need to be set, unless you want to wait until the process is ready, too. Afterwards the finished state is awaitable with or without a specified timeout:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">const</span> <span class="pl-c1">result</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>your command<span class="pl-pds">"</span></span>).<span class="pl-en">death</span>();</pre></div>
+
+<p>If you want to compose a chain of streams containing your process, you can use <code>instance.stream</code> to write data into <code>instance.stdin</code> and read data out of <code>instance.stdout</code> / <code>instance.stderr</code>.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-smi">readstream</span>.<span class="pl-en">pipe</span>(<span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>your command<span class="pl-pds">"</span></span>).<span class="pl-en">stream</span>()).<span class="pl-en">pipe</span>(writestream);</pre></div>
+
+<h1>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Examples</h1>
+
+<p>The following examples present some common use cases and how they are mastered using CoreWorker:</p>
+
+<h2>
+<a id="example-1---wait-until-a-process-is-ready" class="anchor" href="#example-1---wait-until-a-process-is-ready" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 1 - Wait until a process is ready</h2>
+
+<p>Let's suppose we want to wait until our HTTP-Server is ready - but no longer than 1000 milliseconds.
+So first we write a simple server script ...</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">//Server.js</span>
+<span class="pl-k">const</span> <span class="pl-c1">server</span> <span class="pl-k">=</span> <span class="pl-smi">http</span>.<span class="pl-en">createServer</span>(<span class="pl-k">...</span>);
+
+<span class="pl-smi">server</span>.<span class="pl-en">listen</span>(<span class="pl-c1">1337</span>, <span class="pl-s"><span class="pl-pds">"</span>127.0.0.1<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>() {
+    <span class="pl-c">// This log will notify our main process when the server is ready to use</span>
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">"</span>Server is ready.<span class="pl-pds">"</span></span>);
+});</pre></div>
+
+<p>... and finally execute it with CoreWorker:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">//startServer.js</span>
+<span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">try</span> {
+    <span class="pl-c">// Here we define "Server is ready" as our condiition </span>
+    <span class="pl-c">// and use a timeout of 1000ms.</span>
+    <span class="pl-c">// Accordingly, the process gets ready when a log </span>
+    <span class="pl-c">// contains this string within the given timeout.</span>
+    <span class="pl-k">const</span> <span class="pl-c1">result</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>node Server.js<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Server is ready.<span class="pl-pds">"</span></span>).<span class="pl-en">ready</span>(<span class="pl-c1">1000</span>);
+
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(result);
+} <span class="pl-k">catch</span>(err) {
+    <span class="pl-c">// handle err</span>
+}</pre></div>
+
+<p>The example will start the HTTP-Server and returns a <code>Promise</code>, that either gets resolved with a <code>Result</code> or rejected with an <code>Error</code>. </p>
+
+<p>CoreWorker now evaluates any output with the given <code>Condition</code> (in this case "Server is ready."). If it is triggered within 1000 milliseconds, the promise gets resolved with an empty <code>Result</code> - otherwise it gets rejected.</p>
+
+<p>Keep in mind, that <code>Result</code> can also return the matched string, if your <code>Condition</code> is a regular expression.</p>
+
+<h2>
+<a id="example-2---wait-until-a-process-has-finished" class="anchor" href="#example-2---wait-until-a-process-has-finished" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 2 - Wait until a process has finished</h2>
+
+<p>This example shows how to wait for a process to be successfully executed and closed.</p>
+
+<p>This time we want to copy a given file, named <code>/path/to/file</code> with the <code>cp</code>-command into a new location <code>/newLocation/copiedFile</code> and wait until this operation has successfully finished:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">try</span> {
+    <span class="pl-k">const</span> <span class="pl-c1">result</span> <span class="pl-k">=</span> <span class="pl-k">await</span> <span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>cp path/to/file /newLocation/newFile<span class="pl-pds">"</span></span>).<span class="pl-en">death</span>();
+
+    <span class="pl-c">// work with result</span>
+} <span class="pl-k">catch</span>(err) {
+    <span class="pl-c">// handle err</span>
+}</pre></div>
+
+<p>The example ignores the timeout, since we promise that only this time it's really acceptable to wait until the end of days for our copy operation to finish <img class="emoji" title=":astonished:" alt=":astonished:" src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f632.png" height="20" width="20" align="absmiddle">. So <code>process.death</code> allows you to omit this parameter, even though this isn't recommended and even forbidden when awaiting the ready state of a process.</p>
+
+<h2>
+<a id="example-3---use-a-process-as-a-stream" class="anchor" href="#example-3---use-a-process-as-a-stream" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 3 - Use a process as a stream</h2>
+
+<p>This example shows how to compose single processes unix-style. But instead of using the pipe operator | (e.g. <code>cat file.txt | grep something</code>), we can combine them with the canonical "pipe" method exposed by every node.js stream:</p>
+
+<p>So let's assume that we want to read a file <code>/private/movie/project</code>, ...</p>
+
+<pre><code>It is a period of civil war. Rebel spaceships, striking from a hidden base,
+have won their first victory against the evil Galactic Empire.
+During the battle, Rebel spies managed to steal secret plans to the Empire's ultimate weapon,
+the DEATH STAR, an armored space station with enough power to destroy an entire planet.
+Pursued by the Empire's sinister agents, Princess Leia races home aboard her starship, 
+custodian of the stolen plans that can save her people and restore freedom to the galaxy . . .
+</code></pre>
+
+<p>... grep for "galaxy" and write the results to <code>/ocurrences</code>:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>CoreWorker<span class="pl-pds">"</span></span>;
+<span class="pl-k">import</span> <span class="pl-smi">fs</span> <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>fs<span class="pl-pds">"</span></span>;
+
+<span class="pl-smi">fs</span>.<span class="pl-en">createReadStream</span>(file)
+    .<span class="pl-en">pipe</span>(<span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>grep galaxy<span class="pl-pds">"</span></span>).<span class="pl-en">stream</span>())
+    .<span class="pl-en">pipe</span>(<span class="pl-smi">fs</span>.<span class="pl-en">createWriteStream</span>(<span class="pl-s"><span class="pl-pds">"</span>/ocurrences<span class="pl-pds">"</span></span>));</pre></div>
+
+<p>By using processes as streams you are generally able to create language agnostic and easily manageable data transform pipelines out of single processes, leveraging all the shiny streaming stuff of node.js.</p>
+
+<h2>
+<a id="example-4---use-all-process-functions-at-once" class="anchor" href="#example-4---use-all-process-functions-at-once" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example 4 - Use all process functions at once</h2>
+
+<p>Sometimes it is necessary to get notified about multiple state changes of a single instance belonging to a specific process while at the same time interacting with it. </p>
+
+<p>Accordingly the next example shows you how to work with multiple instance states at once. We use a simple chat application exemplarily, that logs "Chat ready", when it is able to accept messages:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">import</span> { <span class="pl-smi">process</span> } <span class="pl-k">from</span> <span class="pl-s"><span class="pl-pds">"</span>core-worker<span class="pl-pds">"</span></span>;
+
+<span class="pl-k">const</span> <span class="pl-c1">simpleChat</span> <span class="pl-k">=</span> <span class="pl-c1">process</span>(<span class="pl-s"><span class="pl-pds">"</span>node chat.js<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>Chat ready<span class="pl-pds">"</span></span>);
+
+<span class="pl-c1">setTimeout</span>(() <span class="pl-k">=&gt;</span> <span class="pl-smi">simpleChat</span>.<span class="pl-en">kill</span>(), <span class="pl-c1">360000</span>); <span class="pl-c">// wait an hour and close the chat</span>
+
+<span class="pl-smi">simpleChat</span>.<span class="pl-en">ready</span>(<span class="pl-c1">500</span>)
+    .<span class="pl-en">then</span>(<span class="pl-en">console</span>.<span class="pl-smi">log</span>.<span class="pl-en">bind</span>(<span class="pl-en">console</span>, <span class="pl-s"><span class="pl-pds">"</span>You are now able to send messages.<span class="pl-pds">"</span></span>))
+    .<span class="pl-en">then</span>(<span class="pl-k">::</span><span class="pl-smi">simpleChat</span>.<span class="pl-smi">death</span>)
+    .<span class="pl-en">then</span>(<span class="pl-en">console</span>.<span class="pl-smi">log</span>.<span class="pl-en">bind</span>(<span class="pl-en">console</span>, <span class="pl-s"><span class="pl-pds">"</span>Chat closed<span class="pl-pds">"</span></span>))
+    .<span class="pl-en">catch</span>(() <span class="pl-k">=&gt;</span> <span class="pl-c">/* handle err */</span>);</pre></div>
+
+<p>Please note that <code>instance.stream</code> would throw an error, if <code>instance.ready</code> and/or <code>instance.death</code> is executed earlier.</p>
+
+<h1>
+<a id="testing" class="anchor" href="#testing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Testing</h1>
+
+<p>You can test CoreWorker with mocha by executing <code>make test</code> in the root directory of the project.</p>
+
+<h1>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h1>
+
+<p>If you want to contribute to this repository, please ensure ...</p>
+
+<ul>
+<li>to use <code>make</code> for development (it validates the source code and transpiles it to <code>/lib</code>).</li>
+<li>to follow the existing coding style.</li>
+<li>to use the linting tools that are listed in the <code>package.json</code> (which you get for free when using <code>make</code>).</li>
+<li>to add and/or customize unit tests for any changed code.</li>
+<li>to reference the corresponding issue in your pull request with a small description of your changes.</li>
+</ul>
+
+<p>All contributors are listed in the <code>AUTHORS</code> file, sorted by the time of their first contribution.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/CircleOfNice">CircleOfNice</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
