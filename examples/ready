@@ -42,7 +42,7 @@ var createWebsocket = function createWebsocket() {
       case 0:
         context$1$0.prev = 0;
 
-        /*eslint-enabe*/
+        /*eslint-enable*/
         console.log("> Creating a websocket");
         context$1$0.next = 4;
         return _regeneratorRuntime.awrap(websocket.ready(1000));

@@ -1,0 +1,16 @@
+{
+  "coverage": "40%",
+  "expectCount": 5,
+  "actualCount": 2,
+  "files": {
+    "src/DuplexStream.js": {
+      "expectCount": 5,
+      "actualCount": 2,
+      "undocumentLines": [
+        21,
+        22,
+        25
+      ]
+    }
+  }
+}

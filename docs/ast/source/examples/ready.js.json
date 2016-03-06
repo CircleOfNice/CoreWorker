@@ -1,0 +1,1622 @@
+{
+  "type": "Program",
+  "start": 0,
+  "end": 1882,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 52,
+      "column": 0
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "start": 864,
+      "end": 888,
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 24
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 871,
+          "end": 875,
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 7
+            },
+            "end": {
+              "line": 23,
+              "column": 11
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 871,
+            "end": 875,
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 7
+              },
+              "end": {
+                "line": 23,
+                "column": 11
+              }
+            },
+            "name": "path",
+            "leadingComments": null
+          },
+          "leadingComments": null
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 881,
+        "end": 887,
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 17
+          },
+          "end": {
+            "line": 23,
+            "column": 23
+          }
+        },
+        "value": "path",
+        "rawValue": "path",
+        "raw": "\"path\""
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)\n ",
+          "start": 0,
+          "end": 739,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          },
+          "range": [
+            0,
+            739
+          ]
+        },
+        {
+          "type": "Block",
+          "value": "\n * Runs a Script that increases a counter each millisecond and logs it\n * This example waits until Process is ready\n ",
+          "start": 741,
+          "end": 863,
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 0
+            },
+            "end": {
+              "line": 22,
+              "column": 3
+            }
+          },
+          "range": [
+            741,
+            863
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ImportDeclaration",
+      "start": 889,
+      "end": 924,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 35
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportSpecifier",
+          "start": 898,
+          "end": 905,
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 9
+            },
+            "end": {
+              "line": 24,
+              "column": 16
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "start": 898,
+            "end": 905,
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 9
+              },
+              "end": {
+                "line": 24,
+                "column": 16
+              }
+            },
+            "name": "process"
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 898,
+            "end": 905,
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 9
+              },
+              "end": {
+                "line": 24,
+                "column": 16
+              }
+            },
+            "name": "process"
+          }
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 913,
+        "end": 923,
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 24
+          },
+          "end": {
+            "line": 24,
+            "column": 34
+          }
+        },
+        "value": "../index",
+        "rawValue": "../index",
+        "raw": "\"../index\""
+      }
+    },
+    {
+      "type": "VariableDeclaration",
+      "start": 926,
+      "end": 994,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 68
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "start": 932,
+          "end": 993,
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 6
+            },
+            "end": {
+              "line": 26,
+              "column": 67
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 932,
+            "end": 945,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 6
+              },
+              "end": {
+                "line": 26,
+                "column": 19
+              }
+            },
+            "name": "websocketPath"
+          },
+          "init": {
+            "type": "CallExpression",
+            "start": 950,
+            "end": 993,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 24
+              },
+              "end": {
+                "line": 26,
+                "column": 67
+              }
+            },
+            "callee": {
+              "type": "MemberExpression",
+              "start": 950,
+              "end": 959,
+              "loc": {
+                "start": {
+                  "line": 26,
+                  "column": 24
+                },
+                "end": {
+                  "line": 26,
+                  "column": 33
+                }
+              },
+              "object": {
+                "type": "Identifier",
+                "start": 950,
+                "end": 954,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 24
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 28
+                  }
+                },
+                "name": "path"
+              },
+              "property": {
+                "type": "Identifier",
+                "start": 955,
+                "end": 959,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 29
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 33
+                  }
+                },
+                "name": "join"
+              },
+              "computed": false
+            },
+            "arguments": [
+              {
+                "type": "Identifier",
+                "start": 960,
+                "end": 969,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 34
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 43
+                  }
+                },
+                "name": "__dirname"
+              },
+              {
+                "type": "Literal",
+                "start": 971,
+                "end": 992,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 45
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 66
+                  }
+                },
+                "value": "Resources/Websocket",
+                "rawValue": "Resources/Websocket",
+                "raw": "\"Resources/Websocket\""
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "VariableDeclaration",
+      "start": 995,
+      "end": 1106,
+      "loc": {
+        "start": {
+          "line": 27,
+          "column": 0
+        },
+        "end": {
+          "line": 27,
+          "column": 111
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "start": 1001,
+          "end": 1105,
+          "loc": {
+            "start": {
+              "line": 27,
+              "column": 6
+            },
+            "end": {
+              "line": 27,
+              "column": 110
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 1001,
+            "end": 1010,
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 6
+              },
+              "end": {
+                "line": 27,
+                "column": 15
+              }
+            },
+            "name": "websocket"
+          },
+          "init": {
+            "type": "CallExpression",
+            "start": 1019,
+            "end": 1105,
+            "loc": {
+              "start": {
+                "line": 27,
+                "column": 24
+              },
+              "end": {
+                "line": 27,
+                "column": 110
+              }
+            },
+            "callee": {
+              "type": "Identifier",
+              "start": 1019,
+              "end": 1026,
+              "loc": {
+                "start": {
+                  "line": 27,
+                  "column": 24
+                },
+                "end": {
+                  "line": 27,
+                  "column": 31
+                }
+              },
+              "name": "process"
+            },
+            "arguments": [
+              {
+                "type": "TemplateLiteral",
+                "start": 1027,
+                "end": 1050,
+                "loc": {
+                  "start": {
+                    "line": 27,
+                    "column": 32
+                  },
+                  "end": {
+                    "line": 27,
+                    "column": 55
+                  }
+                },
+                "expressions": [
+                  {
+                    "type": "Identifier",
+                    "start": 1035,
+                    "end": 1048,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 40
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 53
+                      }
+                    },
+                    "name": "websocketPath"
+                  }
+                ],
+                "quasis": [
+                  {
+                    "type": "TemplateElement",
+                    "start": 1028,
+                    "end": 1033,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 33
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 38
+                      }
+                    },
+                    "value": {
+                      "raw": "node ",
+                      "cooked": "node "
+                    },
+                    "tail": false
+                  },
+                  {
+                    "type": "TemplateElement",
+                    "start": 1049,
+                    "end": 1049,
+                    "loc": {
+                      "start": {
+                        "line": 27,
+                        "column": 54
+                      },
+                      "end": {
+                        "line": 27,
+                        "column": 54
+                      }
+                    },
+                    "value": {
+                      "raw": "",
+                      "cooked": ""
+                    },
+                    "tail": true
+                  }
+                ]
+              },
+              {
+                "type": "Literal",
+                "start": 1052,
+                "end": 1104,
+                "loc": {
+                  "start": {
+                    "line": 27,
+                    "column": 57
+                  },
+                  "end": {
+                    "line": 27,
+                    "column": 109
+                  }
+                },
+                "value": "Request was upgraded successfully to new Websocket",
+                "rawValue": "Request was upgraded successfully to new Websocket",
+                "raw": "\"Request was upgraded successfully to new Websocket\""
+              }
+            ]
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "VariableDeclaration",
+      "start": 1107,
+      "end": 1861,
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 49,
+          "column": 2
+        }
+      },
+      "declarations": [
+        {
+          "type": "VariableDeclarator",
+          "start": 1113,
+          "end": 1860,
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 6
+            },
+            "end": {
+              "line": 49,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 1113,
+            "end": 1128,
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 6
+              },
+              "end": {
+                "line": 28,
+                "column": 21
+              }
+            },
+            "name": "createWebsocket"
+          },
+          "init": {
+            "type": "FunctionExpression",
+            "start": 1131,
+            "end": 1860,
+            "loc": {
+              "start": {
+                "line": 28,
+                "column": 24
+              },
+              "end": {
+                "line": 49,
+                "column": 1
+              }
+            },
+            "id": {
+              "type": "Identifier",
+              "start": 1113,
+              "end": 1128,
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 6
+                },
+                "end": {
+                  "line": 28,
+                  "column": 21
+                }
+              },
+              "name": "createWebsocket"
+            },
+            "generator": false,
+            "expression": false,
+            "async": true,
+            "params": [],
+            "body": {
+              "type": "BlockStatement",
+              "start": 1148,
+              "end": 1860,
+              "loc": {
+                "start": {
+                  "line": 28,
+                  "column": 41
+                },
+                "end": {
+                  "line": 49,
+                  "column": 1
+                }
+              },
+              "body": [
+                {
+                  "type": "TryStatement",
+                  "start": 1177,
+                  "end": 1858,
+                  "loc": {
+                    "start": {
+                      "line": 30,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 48,
+                      "column": 5
+                    }
+                  },
+                  "block": {
+                    "type": "BlockStatement",
+                    "start": 1181,
+                    "end": 1749,
+                    "loc": {
+                      "start": {
+                        "line": 30,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 45,
+                        "column": 5
+                      }
+                    },
+                    "body": [
+                      {
+                        "type": "ExpressionStatement",
+                        "start": 1213,
+                        "end": 1251,
+                        "loc": {
+                          "start": {
+                            "line": 32,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 32,
+                            "column": 46
+                          }
+                        },
+                        "expression": {
+                          "type": "CallExpression",
+                          "start": 1213,
+                          "end": 1250,
+                          "loc": {
+                            "start": {
+                              "line": 32,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 32,
+                              "column": 45
+                            }
+                          },
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start": 1213,
+                            "end": 1224,
+                            "loc": {
+                              "start": {
+                                "line": 32,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 32,
+                                "column": 19
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 1213,
+                              "end": 1220,
+                              "loc": {
+                                "start": {
+                                  "line": 32,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 32,
+                                  "column": 15
+                                }
+                              },
+                              "name": "console",
+                              "leadingComments": null
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 1221,
+                              "end": 1224,
+                              "loc": {
+                                "start": {
+                                  "line": 32,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 32,
+                                  "column": 19
+                                }
+                              },
+                              "name": "log"
+                            },
+                            "computed": false,
+                            "leadingComments": null
+                          },
+                          "arguments": [
+                            {
+                              "type": "Literal",
+                              "start": 1225,
+                              "end": 1249,
+                              "loc": {
+                                "start": {
+                                  "line": 32,
+                                  "column": 20
+                                },
+                                "end": {
+                                  "line": 32,
+                                  "column": 44
+                                }
+                              },
+                              "value": "> Creating a websocket",
+                              "rawValue": "> Creating a websocket",
+                              "raw": "\"> Creating a websocket\""
+                            }
+                          ],
+                          "leadingComments": null
+                        },
+                        "leadingComments": [
+                          {
+                            "type": "Block",
+                            "value": "eslint-enable",
+                            "start": 1187,
+                            "end": 1204,
+                            "loc": {
+                              "start": {
+                                "line": 31,
+                                "column": 4
+                              },
+                              "end": {
+                                "line": 31,
+                                "column": 21
+                              }
+                            },
+                            "range": [
+                              1187,
+                              1204
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "VariableDeclaration",
+                        "start": 1260,
+                        "end": 1303,
+                        "loc": {
+                          "start": {
+                            "line": 33,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 33,
+                            "column": 51
+                          }
+                        },
+                        "declarations": [
+                          {
+                            "type": "VariableDeclarator",
+                            "start": 1266,
+                            "end": 1302,
+                            "loc": {
+                              "start": {
+                                "line": 33,
+                                "column": 14
+                              },
+                              "end": {
+                                "line": 33,
+                                "column": 50
+                              }
+                            },
+                            "id": {
+                              "type": "Identifier",
+                              "start": 1266,
+                              "end": 1272,
+                              "loc": {
+                                "start": {
+                                  "line": 33,
+                                  "column": 14
+                                },
+                                "end": {
+                                  "line": 33,
+                                  "column": 20
+                                }
+                              },
+                              "name": "result"
+                            },
+                            "init": {
+                              "type": "AwaitExpression",
+                              "start": 1275,
+                              "end": 1302,
+                              "loc": {
+                                "start": {
+                                  "line": 33,
+                                  "column": 23
+                                },
+                                "end": {
+                                  "line": 33,
+                                  "column": 50
+                                }
+                              },
+                              "all": false,
+                              "argument": {
+                                "type": "CallExpression",
+                                "start": 1281,
+                                "end": 1302,
+                                "loc": {
+                                  "start": {
+                                    "line": 33,
+                                    "column": 29
+                                  },
+                                  "end": {
+                                    "line": 33,
+                                    "column": 50
+                                  }
+                                },
+                                "callee": {
+                                  "type": "MemberExpression",
+                                  "start": 1281,
+                                  "end": 1296,
+                                  "loc": {
+                                    "start": {
+                                      "line": 33,
+                                      "column": 29
+                                    },
+                                    "end": {
+                                      "line": 33,
+                                      "column": 44
+                                    }
+                                  },
+                                  "object": {
+                                    "type": "Identifier",
+                                    "start": 1281,
+                                    "end": 1290,
+                                    "loc": {
+                                      "start": {
+                                        "line": 33,
+                                        "column": 29
+                                      },
+                                      "end": {
+                                        "line": 33,
+                                        "column": 38
+                                      }
+                                    },
+                                    "name": "websocket"
+                                  },
+                                  "property": {
+                                    "type": "Identifier",
+                                    "start": 1291,
+                                    "end": 1296,
+                                    "loc": {
+                                      "start": {
+                                        "line": 33,
+                                        "column": 39
+                                      },
+                                      "end": {
+                                        "line": 33,
+                                        "column": 44
+                                      }
+                                    },
+                                    "name": "ready"
+                                  },
+                                  "computed": false
+                                },
+                                "arguments": [
+                                  {
+                                    "type": "Literal",
+                                    "start": 1297,
+                                    "end": 1301,
+                                    "loc": {
+                                      "start": {
+                                        "line": 33,
+                                        "column": 45
+                                      },
+                                      "end": {
+                                        "line": 33,
+                                        "column": 49
+                                      }
+                                    },
+                                    "value": 1000,
+                                    "rawValue": 1000,
+                                    "raw": "1000"
+                                  }
+                                ]
+                              }
+                            }
+                          }
+                        ],
+                        "kind": "const",
+                        "trailingComments": [
+                          {
+                            "type": "Block",
+                            "value": "\n         * If Promise gets resolved, a Result is returned containing ...\n         *\n         * condition === Regex                            --> { data: MatchedString }\n         * condition === String || condition === Function --> { data: null }\n         ",
+                            "start": 1313,
+                            "end": 1574,
+                            "loc": {
+                              "start": {
+                                "line": 35,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 40,
+                                "column": 11
+                              }
+                            },
+                            "range": [
+                              1313,
+                              1574
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ExpressionStatement",
+                        "start": 1583,
+                        "end": 1670,
+                        "loc": {
+                          "start": {
+                            "line": 41,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 41,
+                            "column": 95
+                          }
+                        },
+                        "expression": {
+                          "type": "CallExpression",
+                          "start": 1583,
+                          "end": 1669,
+                          "loc": {
+                            "start": {
+                              "line": 41,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 41,
+                              "column": 94
+                            }
+                          },
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start": 1583,
+                            "end": 1594,
+                            "loc": {
+                              "start": {
+                                "line": 41,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 41,
+                                "column": 19
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 1583,
+                              "end": 1590,
+                              "loc": {
+                                "start": {
+                                  "line": 41,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 41,
+                                  "column": 15
+                                }
+                              },
+                              "name": "console",
+                              "leadingComments": null
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 1591,
+                              "end": 1594,
+                              "loc": {
+                                "start": {
+                                  "line": 41,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 41,
+                                  "column": 19
+                                }
+                              },
+                              "name": "log"
+                            },
+                            "computed": false,
+                            "leadingComments": null
+                          },
+                          "arguments": [
+                            {
+                              "type": "Literal",
+                              "start": 1595,
+                              "end": 1660,
+                              "loc": {
+                                "start": {
+                                  "line": 41,
+                                  "column": 20
+                                },
+                                "end": {
+                                  "line": 41,
+                                  "column": 85
+                                }
+                              },
+                              "value": "> Websocket is ready to use, returning the following result: \n",
+                              "rawValue": "> Websocket is ready to use, returning the following result: \n",
+                              "raw": "\"> Websocket is ready to use, returning the following result: \\n\""
+                            },
+                            {
+                              "type": "Identifier",
+                              "start": 1662,
+                              "end": 1668,
+                              "loc": {
+                                "start": {
+                                  "line": 41,
+                                  "column": 87
+                                },
+                                "end": {
+                                  "line": 41,
+                                  "column": 93
+                                }
+                              },
+                              "name": "result"
+                            }
+                          ],
+                          "leadingComments": null
+                        },
+                        "leadingComments": [
+                          {
+                            "type": "Block",
+                            "value": "\n         * If Promise gets resolved, a Result is returned containing ...\n         *\n         * condition === Regex                            --> { data: MatchedString }\n         * condition === String || condition === Function --> { data: null }\n         ",
+                            "start": 1313,
+                            "end": 1574,
+                            "loc": {
+                              "start": {
+                                "line": 35,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 40,
+                                "column": 11
+                              }
+                            },
+                            "range": [
+                              1313,
+                              1574
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "ExpressionStatement",
+                        "start": 1679,
+                        "end": 1716,
+                        "loc": {
+                          "start": {
+                            "line": 42,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 42,
+                            "column": 45
+                          }
+                        },
+                        "expression": {
+                          "type": "CallExpression",
+                          "start": 1679,
+                          "end": 1715,
+                          "loc": {
+                            "start": {
+                              "line": 42,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 42,
+                              "column": 44
+                            }
+                          },
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start": 1679,
+                            "end": 1690,
+                            "loc": {
+                              "start": {
+                                "line": 42,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 42,
+                                "column": 19
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 1679,
+                              "end": 1686,
+                              "loc": {
+                                "start": {
+                                  "line": 42,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 42,
+                                  "column": 15
+                                }
+                              },
+                              "name": "console"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 1687,
+                              "end": 1690,
+                              "loc": {
+                                "start": {
+                                  "line": 42,
+                                  "column": 16
+                                },
+                                "end": {
+                                  "line": 42,
+                                  "column": 19
+                                }
+                              },
+                              "name": "log"
+                            },
+                            "computed": false
+                          },
+                          "arguments": [
+                            {
+                              "type": "Literal",
+                              "start": 1691,
+                              "end": 1714,
+                              "loc": {
+                                "start": {
+                                  "line": 42,
+                                  "column": 20
+                                },
+                                "end": {
+                                  "line": 42,
+                                  "column": 43
+                                }
+                              },
+                              "value": "> Shutdown process...",
+                              "rawValue": "> Shutdown process...",
+                              "raw": "\"> Shutdown process...\""
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "type": "ExpressionStatement",
+                        "start": 1726,
+                        "end": 1743,
+                        "loc": {
+                          "start": {
+                            "line": 44,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 44,
+                            "column": 25
+                          }
+                        },
+                        "expression": {
+                          "type": "CallExpression",
+                          "start": 1726,
+                          "end": 1742,
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 24
+                            }
+                          },
+                          "callee": {
+                            "type": "MemberExpression",
+                            "start": 1726,
+                            "end": 1740,
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 22
+                              }
+                            },
+                            "object": {
+                              "type": "Identifier",
+                              "start": 1726,
+                              "end": 1735,
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 17
+                                }
+                              },
+                              "name": "websocket"
+                            },
+                            "property": {
+                              "type": "Identifier",
+                              "start": 1736,
+                              "end": 1740,
+                              "loc": {
+                                "start": {
+                                  "line": 44,
+                                  "column": 18
+                                },
+                                "end": {
+                                  "line": 44,
+                                  "column": 22
+                                }
+                              },
+                              "name": "kill"
+                            },
+                            "computed": false
+                          },
+                          "arguments": []
+                        }
+                      }
+                    ],
+                    "leadingComments": null
+                  },
+                  "handler": {
+                    "type": "CatchClause",
+                    "start": 1750,
+                    "end": 1858,
+                    "loc": {
+                      "start": {
+                        "line": 45,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 48,
+                        "column": 5
+                      }
+                    },
+                    "param": {
+                      "type": "Identifier",
+                      "start": 1756,
+                      "end": 1759,
+                      "loc": {
+                        "start": {
+                          "line": 45,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 45,
+                          "column": 15
+                        }
+                      },
+                      "name": "err"
+                    },
+                    "body": {
+                      "type": "BlockStatement",
+                      "start": 1761,
+                      "end": 1858,
+                      "loc": {
+                        "start": {
+                          "line": 45,
+                          "column": 17
+                        },
+                        "end": {
+                          "line": 48,
+                          "column": 5
+                        }
+                      },
+                      "body": [
+                        {
+                          "type": "ExpressionStatement",
+                          "start": 1771,
+                          "end": 1826,
+                          "loc": {
+                            "start": {
+                              "line": 46,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 46,
+                              "column": 63
+                            }
+                          },
+                          "expression": {
+                            "type": "CallExpression",
+                            "start": 1771,
+                            "end": 1825,
+                            "loc": {
+                              "start": {
+                                "line": 46,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 46,
+                                "column": 62
+                              }
+                            },
+                            "callee": {
+                              "type": "MemberExpression",
+                              "start": 1771,
+                              "end": 1782,
+                              "loc": {
+                                "start": {
+                                  "line": 46,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 46,
+                                  "column": 19
+                                }
+                              },
+                              "object": {
+                                "type": "Identifier",
+                                "start": 1771,
+                                "end": 1778,
+                                "loc": {
+                                  "start": {
+                                    "line": 46,
+                                    "column": 8
+                                  },
+                                  "end": {
+                                    "line": 46,
+                                    "column": 15
+                                  }
+                                },
+                                "name": "console"
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "start": 1779,
+                                "end": 1782,
+                                "loc": {
+                                  "start": {
+                                    "line": 46,
+                                    "column": 16
+                                  },
+                                  "end": {
+                                    "line": 46,
+                                    "column": 19
+                                  }
+                                },
+                                "name": "log"
+                              },
+                              "computed": false
+                            },
+                            "arguments": [
+                              {
+                                "type": "Literal",
+                                "start": 1783,
+                                "end": 1811,
+                                "loc": {
+                                  "start": {
+                                    "line": 46,
+                                    "column": 20
+                                  },
+                                  "end": {
+                                    "line": 46,
+                                    "column": 48
+                                  }
+                                },
+                                "value": "Failed to create Websocket",
+                                "rawValue": "Failed to create Websocket",
+                                "raw": "\"Failed to create Websocket\""
+                              },
+                              {
+                                "type": "MemberExpression",
+                                "start": 1813,
+                                "end": 1824,
+                                "loc": {
+                                  "start": {
+                                    "line": 46,
+                                    "column": 50
+                                  },
+                                  "end": {
+                                    "line": 46,
+                                    "column": 61
+                                  }
+                                },
+                                "object": {
+                                  "type": "Identifier",
+                                  "start": 1813,
+                                  "end": 1816,
+                                  "loc": {
+                                    "start": {
+                                      "line": 46,
+                                      "column": 50
+                                    },
+                                    "end": {
+                                      "line": 46,
+                                      "column": 53
+                                    }
+                                  },
+                                  "name": "err"
+                                },
+                                "property": {
+                                  "type": "Identifier",
+                                  "start": 1817,
+                                  "end": 1824,
+                                  "loc": {
+                                    "start": {
+                                      "line": 46,
+                                      "column": 54
+                                    },
+                                    "end": {
+                                      "line": 46,
+                                      "column": 61
+                                    }
+                                  },
+                                  "name": "message"
+                                },
+                                "computed": false
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "type": "ExpressionStatement",
+                          "start": 1835,
+                          "end": 1852,
+                          "loc": {
+                            "start": {
+                              "line": 47,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 47,
+                              "column": 25
+                            }
+                          },
+                          "expression": {
+                            "type": "CallExpression",
+                            "start": 1835,
+                            "end": 1851,
+                            "loc": {
+                              "start": {
+                                "line": 47,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 47,
+                                "column": 24
+                              }
+                            },
+                            "callee": {
+                              "type": "MemberExpression",
+                              "start": 1835,
+                              "end": 1849,
+                              "loc": {
+                                "start": {
+                                  "line": 47,
+                                  "column": 8
+                                },
+                                "end": {
+                                  "line": 47,
+                                  "column": 22
+                                }
+                              },
+                              "object": {
+                                "type": "Identifier",
+                                "start": 1835,
+                                "end": 1844,
+                                "loc": {
+                                  "start": {
+                                    "line": 47,
+                                    "column": 8
+                                  },
+                                  "end": {
+                                    "line": 47,
+                                    "column": 17
+                                  }
+                                },
+                                "name": "websocket"
+                              },
+                              "property": {
+                                "type": "Identifier",
+                                "start": 1845,
+                                "end": 1849,
+                                "loc": {
+                                  "start": {
+                                    "line": 47,
+                                    "column": 18
+                                  },
+                                  "end": {
+                                    "line": 47,
+                                    "column": 22
+                                  }
+                                },
+                                "name": "kill"
+                              },
+                              "computed": false
+                            },
+                            "arguments": []
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  "guardedHandlers": [],
+                  "finalizer": null,
+                  "leadingComments": [
+                    {
+                      "type": "Block",
+                      "value": "eslint-disable",
+                      "start": 1154,
+                      "end": 1172,
+                      "loc": {
+                        "start": {
+                          "line": 29,
+                          "column": 4
+                        },
+                        "end": {
+                          "line": 29,
+                          "column": 22
+                        }
+                      },
+                      "range": [
+                        1154,
+                        1172
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "kind": "const"
+    },
+    {
+      "type": "ExpressionStatement",
+      "start": 1863,
+      "end": 1881,
+      "loc": {
+        "start": {
+          "line": 51,
+          "column": 0
+        },
+        "end": {
+          "line": 51,
+          "column": 18
+        }
+      },
+      "expression": {
+        "type": "CallExpression",
+        "start": 1863,
+        "end": 1880,
+        "loc": {
+          "start": {
+            "line": 51,
+            "column": 0
+          },
+          "end": {
+            "line": 51,
+            "column": 17
+          }
+        },
+        "callee": {
+          "type": "Identifier",
+          "start": 1863,
+          "end": 1878,
+          "loc": {
+            "start": {
+              "line": 51,
+              "column": 0
+            },
+            "end": {
+              "line": 51,
+              "column": 15
+            }
+          },
+          "name": "createWebsocket"
+        },
+        "arguments": []
+      }
+    }
+  ]
+}

@@ -28,7 +28,7 @@ const websocket       = process(`node ${websocketPath}`, "Request was upgraded s
 const createWebsocket = async function() {
     /*eslint-disable*/
     try {
-    /*eslint-enabe*/
+    /*eslint-enable*/
         console.log("> Creating a websocket");
         const result = await websocket.ready(1000);
 

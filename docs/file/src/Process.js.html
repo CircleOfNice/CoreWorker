@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/Process.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git+https://github.com/CircleOfNice/CoreWorker">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/DuplexStream.js~DuplexStream.html">DuplexStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Condition">Condition</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DuplexStream">DuplexStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Instance">Instance</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeProcess">NodeProcess</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-null">null</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Process">Process</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-RegExp">RegExp</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Result">Result</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Validator">Validator</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Process.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/*
+ * This file is part of CoreWorker.
+ *
+ * CoreWorker is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * CoreWorker is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with CoreWorker.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ *
+ * Copyright 2015 TeeAge-Beatz UG (haftungsbeschr&#xE4;nkt)
+ */
+
+import Q from &quot;q&quot;;
+import Process from &quot;./Process.type&quot;;
+import NodeProcess from &quot;./NodeProcess&quot;;
+import DuplexStream from &quot;./DuplexStream&quot;;
+import TDuplexStream from &quot;./DuplexStream.type&quot;;
+import defaults from &quot;set-default-value&quot;;
+import T from &quot;tcomb&quot;;
+import Condition from &quot;./Condition.type&quot;;
+import assert from &quot;assert&quot;;
+
+/**
+ * Awaits the death of a (running) process
+ *
+ * @param  {Index?}  maybeTimeout until process should have died
+ * @return {Promise}
+ */
+Process.prototype.death = function(maybeTimeout) {
+    if(T.Nil.is(maybeTimeout)) this.instance.kill();
+
+    const timeout  = T.Number(defaults(maybeTimeout).to(0));
+    const deferred = Q.defer();
+
+    this.instance.onDeath(deferred);
+    this.instance.run();
+    setTimeout(() =&gt; timeout === 0 ? null : this.instance.timeout(deferred), timeout);
+
+    return deferred.promise;
+};
+
+/**
+ * Awaits the initialized process
+ *
+ * @param  {Index}   timeout until instance should be ready
+ * @return {Promise}
+ */
+Process.prototype.ready = T.func([T.Number], T.Object, &quot;process.ready&quot;).of(function(timeout) {
+    if(this.instance.isRunning() &amp;&amp; this.instance.isReady()) return this.instance.lastMatch();
+
+    const deferred = Q.defer();
+
+    this.instance.onReady(deferred.resolve);
+    this.instance.run();
+    setTimeout(() =&gt; this.instance.timeout(deferred), timeout);
+
+    return deferred.promise;
+});
+
+/**
+ * Starts a new DuplexStream, listening on DataOutput of a new Process-Instance
+ *
+ * @return {DuplexStream}
+ */
+Process.prototype.stream = T.func([], TDuplexStream, &quot;process.stream&quot;).of(function() {
+    assert(!this.instance.isRunning(), &quot;Can&apos;t use stream after process initialization&quot;);
+
+    this.instance.run();
+
+    return new DuplexStream(this.instance);
+});
+
+/**
+ * Kills a running Process
+ *
+ * @param {String} signal to kill the process
+ */
+Process.prototype.kill = T.func([], T.Nil, &quot;process.kill&quot;).of(function() {
+    this.instance.kill();
+});
+
+/**
+ * Creates a new Process
+ *
+ * @param  {String}    command   executed in Process
+ * @param  {Condition} condition as filter
+ * @return {Process}
+ */
+Process.create = function(command, condition = &quot;&quot;) {
+    return Process({
+        instance: NodeProcess.create(T.String(command), Condition(condition))
+    });
+};
+
+export default Process;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.5)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
