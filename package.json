@@ -628,7 +628,6 @@
     "lodash": "^3.10.1",
     "q": "^1.4.1",
     "set-default-value": "0.0.8",
-    "source-map-support": "^0.3.3",
     "tcomb": "^2.5.2"
   }
 }
