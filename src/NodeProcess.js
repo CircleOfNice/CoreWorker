@@ -56,11 +56,11 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 });
 
 /**
- * Returns the last output line
+ * Returns the last process output
  */
 NodeProcess.prototype.lastOutput = T.func([], T.Object, "nodeProcess.lastOutput").of(function() {
     return assign({}, {
-        lastOutput: this.instance.output[ this.instance.output.length - 1 ]
+        lastOutput: this.instance.output.last
     });
 });
 
@@ -143,11 +143,11 @@ NodeProcess.prototype.finish = T.func([], T.Nil, "nodeProcess.finish").of(functi
 });
 
 /**
- * Timeouts the process by rejecting the promise
+ * Timeouts the process by rejecting the promise and throwing an error
  *
- * @param {Promise} deferred executed to get rejected after timeout
+ * @param {Promise} executed deferred to get rejected after timeout
  */
-NodeProcess.prototype.timeout = T.func([T.Object], T.Nil, "nodeProcess.onTimeout").of(function(deferred) {
+NodeProcess.prototype.throwTimeoutError = T.func([T.Object], T.Nil, "nodeProcess.onTimeout").of(function(deferred) {
     const output = this.lastOutput();
     const errorMessage = T.Nil.is(output.lastOutput) ? "Timeout exceeded." : `Timeout exceeded. Last process output is: ${output.lastOutput}`;
 
