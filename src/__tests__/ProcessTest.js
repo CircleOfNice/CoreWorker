@@ -21,6 +21,7 @@ import assert from "assert";
 import Process from "../Process";
 import NodeProcess from "../NodeProcess";
 import { assign } from "lodash";
+import TimeoutError from "../TimeoutError";
 
 const test = (function() {
     const parameters = {
@@ -126,6 +127,7 @@ describe("Process", function() {
         instance.ready(2).then(function() {
             done(new Error("Promise shouldn't get resolved"));
         }).catch(function(err) {
+            assert(TimeoutError.is(err));
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
@@ -158,6 +160,7 @@ describe("Process", function() {
         instance.death(1).then(function() {
             done(new Error("Promise shouldn't get resolved."));
         }).catch(function(err) {
+            assert(TimeoutError.is(err));
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
