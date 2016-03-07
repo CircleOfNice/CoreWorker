@@ -42,7 +42,7 @@ Process.prototype.death = function(maybeTimeout) {
 
     this.instance.onDeath(deferred);
     this.instance.run();
-    setTimeout(() => timeout === 0 ? null : deferred.reject(TimeoutError.create(last(this.instance.output))), timeout);
+    setTimeout(() => timeout === 0 ? null : deferred.reject(TimeoutError.create(last(this.instance.instance.output))), timeout);
 
     return deferred.promise;
 };
@@ -60,7 +60,7 @@ Process.prototype.ready = T.func([T.Number], T.Object, "process.ready").of(funct
 
     this.instance.onReady(deferred.resolve);
     this.instance.run();
-    setTimeout(deferred.reject, timeout, TimeoutError.create(last(this.instance.output)));
+    setTimeout(() => deferred.reject(TimeoutError.create(last(this.instance.instance.output))), timeout);
 
     return deferred.promise;
 });

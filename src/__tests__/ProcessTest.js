@@ -122,12 +122,12 @@ describe("Process", function() {
     it("runs a new Instance and waits until it is ready exceeding given timeout", function(done) {
         test.set({ resolve: "TestString" });
 
-        const instance = Process.create("node Test.js", "TestString");
+        const instance = Process.create("node Test.js", "Foobar");
 
         instance.ready(2).then(function() {
             done(new Error("Promise shouldn't get resolved"));
         }).catch(function(err) {
-            assert(TimeoutError.is(err));
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
@@ -160,7 +160,7 @@ describe("Process", function() {
         instance.death(1).then(function() {
             done(new Error("Promise shouldn't get resolved."));
         }).catch(function(err) {
-            assert(TimeoutError.is(err));
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
