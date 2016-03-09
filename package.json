@@ -24,21 +24,21 @@
   },
   "homepage": "https://github.com/CircleOfNice/CoreWorker#readme",
   "devDependencies": {
-    "babel": "^5.8.29",
-    "babel-eslint": "^4.1.1",
+    "babel": "^6.5.2",
+    "babel-eslint": "^5.0.0",
     "blanket": "^1.1.7",
-    "browserify": "^11.1.0",
+    "browserify": "^13.0.0",
     "esdoc": "^0.4.1",
-    "esdoc-es7-plugin": "0.0.2",
-    "eslint": "^1.9.0",
+    "esdoc-es7-plugin": "0.0.3",
+    "eslint": "^2.3.0",
     "istanbul": "^0.4.0",
     "jstransform": "^11.0.3",
     "mocha": "^2.3.2",
     "mocha-istanbul": "^0.2.0",
     "proxyquire": "^1.7.2",
-    "remap-istanbul": "^0.3.1",
+    "remap-istanbul": "^0.5.1",
     "sinon": "^1.16.1",
-    "source-map-support": "^0.3.3"
+    "source-map-support": "^0.4.0"
   },
   "eslintConfig": {
     "parser": "babel-eslint",
@@ -623,11 +623,11 @@
     }
   },
   "dependencies": {
-    "babel-runtime": "^5.8.29",
+    "babel-runtime": "^6.6.1",
     "immutable": "^3.7.5",
-    "lodash": "^3.10.1",
+    "lodash": "^4.6.1",
     "q": "^1.4.1",
     "set-default-value": "0.0.8",
-    "tcomb": "^2.5.2"
+    "tcomb": "^3.0.0"
   }
 }
