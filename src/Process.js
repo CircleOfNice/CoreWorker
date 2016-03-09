@@ -25,8 +25,6 @@ import defaults from "set-default-value";
 import T from "tcomb";
 import Condition from "./Condition.type";
 import assert from "assert";
-import { last } from "lodash";
-import TimeoutError from "./TimeoutError";
 
 /**
  * Awaits the death of a (running) process
@@ -41,8 +39,8 @@ Process.prototype.death = function(maybeTimeout) {
     const deferred = Q.defer();
 
     this.instance.onDeath(deferred);
-    this.instance.run();
-    setTimeout(() => timeout === 0 ? null : deferred.reject(TimeoutError.create(last(this.instance.instance.output))), timeout);
+    this.instance.onTimeout(deferred);
+    this.instance.run(timeout);
 
     return deferred.promise;
 };
@@ -59,8 +57,8 @@ Process.prototype.ready = T.func([T.Number], T.Object, "process.ready").of(funct
     const deferred = Q.defer();
 
     this.instance.onReady(deferred.resolve);
-    this.instance.run();
-    setTimeout(() => deferred.reject(TimeoutError.create(last(this.instance.instance.output))), timeout);
+    this.instance.onTimeout(deferred);
+    this.instance.run(timeout);
 
     return deferred.promise;
 });
