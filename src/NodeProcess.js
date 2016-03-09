@@ -26,7 +26,6 @@ import { EventEmitter } from "events";
 import Result from "./Result";
 import NotNil from "./NotNil.type";
 import TimeoutError from "./TimeoutError";
-import defaults from "set-default-value";
 
 /**
  * Collects data and emits it afterwards
@@ -62,11 +61,10 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
  *
  * @param {Index?} maybeTimeout after that a timeout event gets emitted
  */
-NodeProcess.prototype.run = function(maybeTimeout) {
+NodeProcess.prototype.run = function(timeout = 0) {
     if(this.isRunning()) return;
 
     const process = spawn(this.command, this.commandArgs);
-    const timeout = defaults(maybeTimeout).to(0);
 
     this.emitter.on("data", data => this.store(data.toString()));
     this.emitter.on("data", data => this.validate(data.toString()));
