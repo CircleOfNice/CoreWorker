@@ -42,7 +42,7 @@ var createWebsocket = function createWebsocket() {
       case 0:
         context$1$0.prev = 0;
 
-        /*eslint-enable*/
+        /* eslint-enable */
         console.log("> Creating a websocket");
         context$1$0.next = 4;
         return _regeneratorRuntime.awrap(websocket.ready(1000));
@@ -79,6 +79,6 @@ var createWebsocket = function createWebsocket() {
 
 createWebsocket();
 
-/*eslint-disable*/
+/* eslint-disable */
 
 //# sourceMappingURL=ready.js.map
