@@ -39,8 +39,8 @@ Process.prototype.death = function(maybeTimeout) {
     const deferred = Q.defer();
 
     this.instance.onDeath(deferred);
-    this.instance.run();
-    setTimeout(() => timeout === 0 ? null : deferred.reject(new Error("Timeout exceeded.")), timeout);
+    this.instance.onTimeout(deferred);
+    this.instance.run(timeout);
 
     return deferred.promise;
 };
@@ -57,8 +57,8 @@ Process.prototype.ready = T.func([T.Number], T.Object, "process.ready").of(funct
     const deferred = Q.defer();
 
     this.instance.onReady(deferred.resolve);
-    this.instance.run();
-    setTimeout(deferred.reject, timeout, new Error("Timeout exceeded."));
+    this.instance.onTimeout(deferred);
+    this.instance.run(timeout);
 
     return deferred.promise;
 });

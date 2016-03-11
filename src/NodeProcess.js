@@ -21,10 +21,11 @@ import NodeProcess from "./NodeProcess.type";
 import Condition from "./Condition.type";
 import T from "tcomb";
 import { spawn } from "child_process";
-import { assign, first } from "lodash";
+import { assign, first, last } from "lodash";
 import { EventEmitter } from "events";
 import Result from "./Result";
 import NotNil from "./NotNil.type";
+import TimeoutError from "./TimeoutError";
 
 /**
  * Collects data and emits it afterwards
@@ -57,8 +58,10 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 
 /**
  * Starts the Process of current instance
+ *
+ * @param {Index?} maybeTimeout after that a timeout event gets emitted
  */
-NodeProcess.prototype.run = T.func([], T.Nil, "nodeProcess.run").of(function() {
+NodeProcess.prototype.run = function(timeout = 0) {
     if(this.isRunning()) return;
 
     const process = spawn(this.command, this.commandArgs);
@@ -73,7 +76,8 @@ NodeProcess.prototype.run = T.func([], T.Nil, "nodeProcess.run").of(function() {
         isRunning: true,
         kill:      process.kill
     });
-});
+    setTimeout(() => timeout > 0 ? this.emitter.emit("timeout") : null, timeout);
+};
 
 /**
  * Streams data in process.stdin
@@ -159,6 +163,15 @@ NodeProcess.prototype.onReady = T.func([T.Function], T.Nil, "nodeProcess.onReady
  */
 NodeProcess.prototype.onData = T.func([T.Function], T.Nil, "nodeProcess.onData").of(function(cb) {
     this.emitter.on("data", cb);
+});
+
+/**
+ * Stores a deferrable that will be rejected on an emitted timeout event
+ *
+ * @param {Promise} deferred to be rejected on timeout event
+ */
+NodeProcess.prototype.onTimeout = T.func([T.Object], T.Nil, "nodeProcess.onTimeout").of(function(deferred) {
+    this.emitter.on("timeout", () => deferred.reject(TimeoutError.create(last(this.instance.output))));
 });
 
 /**

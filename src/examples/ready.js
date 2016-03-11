@@ -26,9 +26,9 @@ import { process } from "../index";
 const websocketPath   = path.join(__dirname, "Resources/Websocket");
 const websocket       = process(`node ${websocketPath}`, "Request was upgraded successfully to new Websocket");
 const createWebsocket = async function() {
-    /*eslint-disable*/
+    /* eslint-disable */
     try {
-    /*eslint-enabe*/
+    /* eslint-enable */
         console.log("> Creating a websocket");
         const result = await websocket.ready(1000);
 

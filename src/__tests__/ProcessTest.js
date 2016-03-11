@@ -21,14 +21,16 @@ import assert from "assert";
 import Process from "../Process";
 import NodeProcess from "../NodeProcess";
 import { assign } from "lodash";
+import TimeoutError from "../TimeoutError";
 
 const test = (function() {
     const parameters = {
         promises: [],
         resolve:  null,
         spies:    {
-            kill:  sinon.spy(),
-            stdin: sinon.spy()
+            kill:   sinon.spy(),
+            stdin:  sinon.spy(),
+            stdout: sinon.spy()
         }
     };
 
@@ -38,6 +40,8 @@ const test = (function() {
         set:   params => assign(parameters, params)
     };
 }());
+
+const write = chunk => test.spies().stdin(chunk);
 
 const run = function() {
     assign(this.instance, {
@@ -49,7 +53,6 @@ const run = function() {
         const resolvedValue = test.all().resolve;
 
         promises.forEach(resolve => resolve(resolvedValue));
-
         assign(this.instance, {
             isRunning: false,
             fulfilled: true,
@@ -58,6 +61,28 @@ const run = function() {
 
         test.set({ promises: [] });
     }.bind(this), 3);
+};
+
+const runTimingout = function() {
+    assign(this.instance, {
+        isRunning: true
+    });
+    setTimeout(function() {
+        this.emitter.emit("timeout");
+    }.bind(this), 2);
+};
+
+const runWithConsoleOutput = function() {
+    assign(this.instance, {
+        isRunning: true
+    });
+    this.emitter.on("data", data => this.store(data.toString()));
+    this.emitter.on("data", data => this.validate(data.toString()));
+    this.emitter.emit("data", "Foo");
+    this.emitter.emit("data", "Bar");
+    setTimeout(function() {
+        this.emitter.emit("timeout");
+    }.bind(this), 2);
 };
 
 const onReady = function(resolve) {
@@ -76,7 +101,10 @@ const kill = function(reason) {
     test.spies().kill(reason);
 };
 
-const write = chunk => test.spies().stdin(chunk);
+const restoreAndSet = function(toRestore, toSet, functionName, stubFunction) {
+    toRestore.restore();
+    sinon.stub(toSet, functionName, stubFunction);
+};
 
 describe("Process", function() {
     before(function() {
@@ -119,18 +147,39 @@ describe("Process", function() {
     });
 
     it("runs a new Instance and waits until it is ready exceeding given timeout", function(done) {
-        test.set({ resolve: "TestString" });
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", runTimingout);
 
         const instance = Process.create("node Test.js", "TestString");
 
-        instance.ready(2).then(function() {
+        instance.ready(3).then(function() {
             done(new Error("Promise shouldn't get resolved"));
         }).catch(function(err) {
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
 
         this.clock.tick(2);
+
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", run);
+    });
+
+    it("runs a new Instance, waits until it is ready exceeding given timeout and checks last process output in error", function(done) {
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", runWithConsoleOutput);
+
+        const instance = Process.create("node Test.js", "TestString");
+
+        instance.ready(3).then(function() {
+            done(new Error("Promise shouldn't get resolved"));
+        }).catch(function(err) {
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
+            assert.equal(err.message, "Timeout exceeded. Last process output is: Bar");
+            done();
+        });
+
+        this.clock.tick(2);
+
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", run);
     });
 
     it("runs a new Instance and waits until death", function(done) {
@@ -151,18 +200,39 @@ describe("Process", function() {
     });
 
     it("runs a new Instance and waits until death exceeding given timeout", function(done) {
-        test.set({ resolve: "<error> TestString" });
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", runTimingout);
 
         const instance = Process.create("node Test.js", "TestString");
 
         instance.death(1).then(function() {
             done(new Error("Promise shouldn't get resolved."));
         }).catch(function(err) {
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
             assert.equal(err.message, "Timeout exceeded.");
             done();
         });
 
-        this.clock.tick(1);
+        this.clock.tick(2);
+
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", run);
+    });
+
+    it("runs a new Instance, waits until death exceeding given timeout and checks last process output in error", function(done) {
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", runWithConsoleOutput);
+
+        const instance = Process.create("node Test.js", "TestString");
+
+        instance.death(1).then(function() {
+            done(new Error("Promise shouldn't get resolved."));
+        }).catch(function(err) {
+            assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
+            assert.equal(err.message, "Timeout exceeded. Last process output is: Bar");
+            done();
+        });
+
+        this.clock.tick(2);
+
+        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", run);
     });
 
     it("runs a new Instance and returns a stream", function() {

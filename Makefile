@@ -136,7 +136,7 @@ $(WORKING_DIR)/src/%.js: $(WORKING_DIR)/License_Template
 $(WORKING_DIR)/build/src/%.js: $(WORKING_DIR)/src/%.js $(WORKING_DIR)/setupfile
 	mkdir -p $(dir $@)
 	$(WORKING_DIR)/node_modules/.bin/eslint $<
-	$(WORKING_DIR)/node_modules/.bin/babel $< --out-file $@ --optional runtime --stage 0 --source-maps
+	$(WORKING_DIR)/node_modules/.bin/babel $< --out-file $@ --source-maps --presets stage-0,es2015 --plugins transform-runtime,transform-class-properties
 
 ##
 #  every destination file needs a transpiled
