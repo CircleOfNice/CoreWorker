@@ -1,0 +1,441 @@
+{
+  "type": "Program",
+  "start": 0,
+  "end": 860,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 27,
+      "column": 0
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "start": 741,
+      "end": 763,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 22
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 748,
+          "end": 749,
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 7
+            },
+            "end": {
+              "line": 19,
+              "column": 8
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 748,
+            "end": 749,
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 7
+              },
+              "end": {
+                "line": 19,
+                "column": 8
+              }
+            },
+            "name": "T",
+            "leadingComments": null
+          },
+          "leadingComments": null
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 755,
+        "end": 762,
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 14
+          },
+          "end": {
+            "line": 19,
+            "column": 21
+          }
+        },
+        "value": "tcomb",
+        "rawValue": "tcomb",
+        "raw": "\"tcomb\""
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)\n ",
+          "start": 0,
+          "end": 739,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          },
+          "range": [
+            0,
+            739
+          ]
+        }
+      ],
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @typedef Result\n ",
+          "start": 765,
+          "end": 791,
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 3
+            }
+          },
+          "range": [
+            765,
+            791
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "start": 792,
+      "end": 859,
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 13
+        }
+      },
+      "declaration": {
+        "type": "CallExpression",
+        "start": 807,
+        "end": 858,
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 15
+          },
+          "end": {
+            "line": 26,
+            "column": 12
+          }
+        },
+        "callee": {
+          "type": "MemberExpression",
+          "start": 807,
+          "end": 815,
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 15
+            },
+            "end": {
+              "line": 24,
+              "column": 23
+            }
+          },
+          "object": {
+            "type": "Identifier",
+            "start": 807,
+            "end": 808,
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 15
+              },
+              "end": {
+                "line": 24,
+                "column": 16
+              }
+            },
+            "name": "T",
+            "leadingComments": null
+          },
+          "property": {
+            "type": "Identifier",
+            "start": 809,
+            "end": 815,
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 17
+              },
+              "end": {
+                "line": 24,
+                "column": 23
+              }
+            },
+            "name": "struct"
+          },
+          "computed": false,
+          "leadingComments": null
+        },
+        "arguments": [
+          {
+            "type": "ObjectExpression",
+            "start": 816,
+            "end": 847,
+            "loc": {
+              "start": {
+                "line": 24,
+                "column": 24
+              },
+              "end": {
+                "line": 26,
+                "column": 1
+              }
+            },
+            "properties": [
+              {
+                "type": "Property",
+                "start": 822,
+                "end": 845,
+                "loc": {
+                  "start": {
+                    "line": 25,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 25,
+                    "column": 27
+                  }
+                },
+                "method": false,
+                "shorthand": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 822,
+                  "end": 826,
+                  "loc": {
+                    "start": {
+                      "line": 25,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 8
+                    }
+                  },
+                  "name": "data"
+                },
+                "value": {
+                  "type": "CallExpression",
+                  "start": 828,
+                  "end": 845,
+                  "loc": {
+                    "start": {
+                      "line": 25,
+                      "column": 10
+                    },
+                    "end": {
+                      "line": 25,
+                      "column": 27
+                    }
+                  },
+                  "callee": {
+                    "type": "MemberExpression",
+                    "start": 828,
+                    "end": 835,
+                    "loc": {
+                      "start": {
+                        "line": 25,
+                        "column": 10
+                      },
+                      "end": {
+                        "line": 25,
+                        "column": 17
+                      }
+                    },
+                    "object": {
+                      "type": "Identifier",
+                      "start": 828,
+                      "end": 829,
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 10
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 11
+                        }
+                      },
+                      "name": "T"
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 830,
+                      "end": 835,
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 12
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 17
+                        }
+                      },
+                      "name": "maybe"
+                    },
+                    "computed": false
+                  },
+                  "arguments": [
+                    {
+                      "type": "MemberExpression",
+                      "start": 836,
+                      "end": 844,
+                      "loc": {
+                        "start": {
+                          "line": 25,
+                          "column": 18
+                        },
+                        "end": {
+                          "line": 25,
+                          "column": 26
+                        }
+                      },
+                      "object": {
+                        "type": "Identifier",
+                        "start": 836,
+                        "end": 837,
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 18
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 19
+                          }
+                        },
+                        "name": "T"
+                      },
+                      "property": {
+                        "type": "Identifier",
+                        "start": 838,
+                        "end": 844,
+                        "loc": {
+                          "start": {
+                            "line": 25,
+                            "column": 20
+                          },
+                          "end": {
+                            "line": 25,
+                            "column": 26
+                          }
+                        },
+                        "name": "String"
+                      },
+                      "computed": false
+                    }
+                  ]
+                },
+                "kind": "init"
+              }
+            ]
+          },
+          {
+            "type": "Literal",
+            "start": 849,
+            "end": 857,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 3
+              },
+              "end": {
+                "line": 26,
+                "column": 11
+              }
+            },
+            "value": "Result",
+            "rawValue": "Result",
+            "raw": "\"Result\""
+          }
+        ],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @typedef Result\n ",
+            "start": 765,
+            "end": 791,
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 0
+              },
+              "end": {
+                "line": 23,
+                "column": 3
+              }
+            },
+            "range": [
+              765,
+              791
+            ]
+          }
+        ],
+        "trailingComments": []
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @typedef Result\n ",
+          "start": 765,
+          "end": 791,
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 0
+            },
+            "end": {
+              "line": 23,
+              "column": 3
+            }
+          },
+          "range": [
+            765,
+            791
+          ]
+        }
+      ]
+    }
+  ]
+}
