@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+"use strict";
+
 /*
  * This file is part of CoreWorker.
  *
@@ -18,8 +20,6 @@
  */
 
 // It does nothing, but getting copied by ../death.js
-
-"use strict";
 
 var firstArgument = "My First String";
 

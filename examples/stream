@@ -1,4 +1,20 @@
 #!/usr/bin/env node
+"use strict";
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _fs = require("fs");
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _stream = require("stream");
+
+var _index = require("../index");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /*
  * This file is part of CoreWorker.
  *
@@ -21,23 +37,9 @@
  * Runs a Script that listens on stdin and logs it
  * This example will return a stream
  */
-"use strict";
 
-var _interopRequireDefault = require("babel-runtime/helpers/interop-require-default")["default"];
 
-var _path = require("path");
-
-var _path2 = _interopRequireDefault(_path);
-
-var _fs = require("fs");
-
-var _fs2 = _interopRequireDefault(_fs);
-
-var _stream = require("stream");
-
-var _index = require("../index");
-
-var dummyfile = _path2["default"].join(__dirname, "Resources/dummyfile");
+var dummyfile = _path2.default.join(__dirname, "Resources/dummyfile");
 var writeStream = new _stream.Writable();
 var grep = (0, _index.process)("grep first", "");
 var stream = grep.stream();
@@ -49,6 +51,6 @@ writeStream.write = function (output) {
   grep.kill();
 };
 
-_fs2["default"].createReadStream(dummyfile).pipe(stream).pipe(writeStream);
+_fs2.default.createReadStream(dummyfile).pipe(stream).pipe(writeStream);
 
 //# sourceMappingURL=stream.js.map
