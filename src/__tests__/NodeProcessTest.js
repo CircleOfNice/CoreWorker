@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
+ * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
 /* eslint max-statements: [2, 12] */

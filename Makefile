@@ -5,6 +5,11 @@
 #
 SHELL:=/bin/bash
 
+###
+# Current Year
+#
+YEAR:=$(shell date "+%Y")
+
 ##
 #  root directory (Makefile location)
 #
@@ -70,7 +75,7 @@ define LICENSE
  * You should have received a copy of the GNU General Public License
  * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)
+ * Copyright $(YEAR) TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
 endef
@@ -122,11 +127,11 @@ $(WORKING_DIR)/setupfile:
 #  this will trigger a rebuild too
 #
 $(WORKING_DIR)/src/%.js: $(WORKING_DIR)/License_Template
-	@if ! grep -q "Copyright 2015 TeeAge-Beatz UG (haftungsbeschränkt)" $@;then \
-		cp $< "$<.tmp"; \
-		cat $@ >> "$<.tmp"; \
+	@if ! grep -q "under the terms of the GNU General Public License" $@;then \
+		cp $< "$@.tmp"; \
+		cat $@ >> "$@.tmp"; \
 		rm $@; \
-		mv "$<.tmp" "$@"; \
+		mv "$@.tmp" "$@"; \
 	fi
 
 ##
