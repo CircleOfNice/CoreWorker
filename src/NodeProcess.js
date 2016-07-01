@@ -59,7 +59,7 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 /**
  * Starts the Process of current instance
  *
- * @param {Index?} maybeTimeout after that a timeout event gets emitted
+ * @param {Index} timeout after that a timeout event gets emitted
  */
 NodeProcess.prototype.run = function(timeout = 0) {
     if(this.isRunning()) return;
@@ -153,7 +153,7 @@ NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, "nodeProcess.onDeath")
  * @param  {Function} cb executed, when process is ready
  */
 NodeProcess.prototype.onReady = T.func([T.Function], T.Nil, "nodeProcess.onReady").of(function(cb) {
-    this.emitter.on("ready", cb);
+    this.emitter.on("ready", () => cb(this.instance));
 });
 
 /**

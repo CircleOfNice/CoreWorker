@@ -19,6 +19,7 @@
 import { process } from "../index";
 import assert from "assert";
 import Result from "../Result.type";
+import T from "tcomb";
 import { Writable } from "stream";
 import path from "path";
 
@@ -34,7 +35,21 @@ describe("CoreWorker", function() {
         try { // eslint-disable-line
             const result = await counter.ready(2000);
 
-            assert.deepStrictEqual(result, Result({ data: null }), "Result should contain null");
+            assert.deepStrictEqual(result.output, [
+                "Log No. 1\n",
+                "Log No. 2\n",
+                "Log No. 3\n",
+                "Log No. 4\n",
+                "Log No. 5\n",
+                "Log No. 6\n",
+                "Log No. 7\n",
+                "Log No. 8\n",
+                "Log No. 9\n",
+                "Log No. 10\n"
+            ]);
+
+            assert.equal(result.isRunning, true, "Expected process to be running");
+            assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
             counter.kill();
             done();
         } catch(err) {
@@ -46,9 +61,18 @@ describe("CoreWorker", function() {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 5/);
 
         try { // eslint-disable-line
-            const result = await counter.ready(2000);
+            const result = await counter.ready(2000); // eslint-disable-line
 
-            assert.deepStrictEqual(result, Result({ data: "Log No. 5" }), "Result should contain 'Log No. 5'");
+            assert.deepStrictEqual(result.output, [
+                "Log No. 1\n",
+                "Log No. 2\n",
+                "Log No. 3\n",
+                "Log No. 4\n",
+                "Log No. 5\n"
+            ]);
+
+            assert.equal(result.isRunning, true, "Expected process to be running");
+            assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
 
             counter.kill();
             done();
