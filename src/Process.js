@@ -33,8 +33,6 @@ import assert from "assert";
  * @return {Promise}
  */
 Process.prototype.death = function(maybeTimeout) {
-    if(T.Nil.is(maybeTimeout)) this.instance.kill();
-
     const timeout  = T.Number(defaults(maybeTimeout).to(0));
     const deferred = Q.defer();
 
