@@ -22,6 +22,7 @@ import Process from "../Process";
 import NodeProcess from "../NodeProcess";
 import { assign } from "lodash";
 import TimeoutError from "../TimeoutError";
+import { Writable } from "stream";
 
 const test = (function() {
     const parameters = {
@@ -235,19 +236,20 @@ describe("Process", function() {
         restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, "run", run);
     });
 
-    it("runs a new Instance and returns a stream", function() {
+    it("runs a new Instance and returns a stream", function() { // eslint-disable-line
         test.set({ resolve: "TestString" });
 
-        const process = Process.create("node Test.js", "TestString");
-        const stream  = process.stream();
-        const pipeSpy = sinon.spy();
-
-        stream.pipe({
-            write: pipeSpy,
-            on:    () => {},
-            once:  () => {},
-            emit:  () => {}
+        const process   = Process.create("node Test.js", "TestString");
+        const stream    = process.stream();
+        const pipeSpy   = sinon.spy();
+        const streamSpy = new Writable({ // eslint-disable-line
+            "write": (data, enc, next) => {
+                pipeSpy(data);
+                next();
+            }
         });
+
+        stream.pipe(streamSpy);
         stream.write("Test");
 
         assert(test.spies().stdin.calledWith(new Buffer("Test")), `stdinSpy was called with wrong args: \n ${test.spies().stdin.lastCall.args}`);

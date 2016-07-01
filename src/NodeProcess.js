@@ -26,6 +26,7 @@ import { EventEmitter } from "events";
 import Result from "./Result";
 import NotNil from "./NotNil.type";
 import TimeoutError from "./TimeoutError";
+import Q from "q";
 
 /**
  * Collects data and emits it afterwards
@@ -59,7 +60,7 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 /**
  * Starts the Process of current instance
  *
- * @param {Index?} maybeTimeout after that a timeout event gets emitted
+ * @param {Index?} timeout after that a timeout event gets emitted
  */
 NodeProcess.prototype.run = function(timeout = 0) {
     if(this.isRunning()) return;
@@ -110,13 +111,23 @@ NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
 /**
  * Kills a running instance
  *
- * @return {Boolean}
+ * @return {Promise}
  */
-NodeProcess.prototype.kill = T.func([], T.Boolean, "nodeProcess.kill").of(function() {
-    if(!this.isRunning()) return true;
+NodeProcess.prototype.kill = T.func([], T.Object, "nodeProcess.kill").of(function() {
+    const deferred     = Q.defer();
+    const onNotRunning = () => {
+        deferred.reject(new Error("Instance isn't running"));
 
-    if(this.instance.isStreaming) this.instance.stdin.pause();
-    return this.instance.kill();
+        return deferred.promise;
+    };
+
+    if(!this.isRunning) return onNotRunning();
+
+    this.onDeath(deferred);
+    this.instance.isStreaming && this.instance.stdin.pause(); // eslint-disable-line
+    this.instance.kill();
+
+    return deferred.promise;
 });
 
 /**
@@ -153,7 +164,7 @@ NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, "nodeProcess.onDeath")
  * @param  {Function} cb executed, when process is ready
  */
 NodeProcess.prototype.onReady = T.func([T.Function], T.Nil, "nodeProcess.onReady").of(function(cb) {
-    this.emitter.on("ready", cb);
+    this.emitter.on("ready", () => cb(this.instance));
 });
 
 /**

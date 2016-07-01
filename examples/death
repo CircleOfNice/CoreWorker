@@ -44,7 +44,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var copyProcess = (0, _index.process)("cp " + _path2.default.join(__dirname, "Resources/dummyfile") + " " + _path2.default.join(__dirname, "Resources/copiedDummyfile"));
 var removeProcess = (0, _index.process)("rm " + _path2.default.join(__dirname, "Resources/copiedDummyfile"));
 var copyAndRemove = function () {
-    var ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+    var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
         return _regenerator2.default.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
@@ -81,8 +81,9 @@ var copyAndRemove = function () {
             }
         }, _callee, this, [[0, 11]]);
     }));
+
     return function copyAndRemove() {
-        return ref.apply(this, arguments);
+        return _ref.apply(this, arguments);
     };
 }();
 
