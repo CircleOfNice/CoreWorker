@@ -35,18 +35,19 @@ describe("CoreWorker", function() {
         try { // eslint-disable-line
             const result = await counter.ready(2000);
 
-            assert.deepStrictEqual(result.output, [
-                "Log No. 1\n",
-                "Log No. 2\n",
-                "Log No. 3\n",
-                "Log No. 4\n",
-                "Log No. 5\n",
-                "Log No. 6\n",
-                "Log No. 7\n",
-                "Log No. 8\n",
-                "Log No. 9\n",
+            assert.deepStrictEqual(
+                result.output.join(""),
+                "Log No. 1\n" +
+                "Log No. 2\n" +
+                "Log No. 3\n" +
+                "Log No. 4\n" +
+                "Log No. 5\n" +
+                "Log No. 6\n" +
+                "Log No. 7\n" +
+                "Log No. 8\n" +
+                "Log No. 9\n" +
                 "Log No. 10\n"
-            ]);
+            );
 
             assert.equal(result.isRunning, true, "Expected process to be running");
             assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");

@@ -60,7 +60,7 @@ NodeProcess.prototype.store = T.func([T.String], T.Nil, "nodeProcess.store").of(
 /**
  * Starts the Process of current instance
  *
- * @param {Index} timeout after that a timeout event gets emitted
+ * @param {Index?} timeout after that a timeout event gets emitted
  */
 NodeProcess.prototype.run = function(timeout = 0) {
     if(this.isRunning()) return;
