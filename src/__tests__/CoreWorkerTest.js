@@ -66,7 +66,8 @@ describe("CoreWorker", function() {
                     "Log No. 8\n" +
                     "Log No. 9\n" +
                     "Log No. 10\n" +
-                    "Log No. 11\n"
+                    "Log No. 11\n" +
+                    "Log No. 12\n"
                 );
                 done();
             }).catch(done);

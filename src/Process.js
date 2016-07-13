@@ -25,19 +25,20 @@ import defaults from "set-default-value";
 import T from "tcomb";
 import Condition from "./Condition.type";
 import assert from "assert";
+import ExitCodes from "./ExitCodes";
+import MaybeExitCodes from "./MaybeExitCodes.type";
 
 /**
  * Awaits the death of a (running) process
  *
- * @param  {Index?}   maybeTimeout   until process should have died
- * @param  {Index[]}  exitCodes      that are valid
+ * @param  {Index?}         maybeTimeout   until process should have died
+ * @param  {MaybeExitCodes} maybeExitCodes that are valid
  * @return {Promise}
  */
-Process.prototype.death = function(maybeTimeout, exitCodes) {
-    T.list(T.Number)(exitCodes);
-
-    const timeout  = T.Number(defaults(maybeTimeout).to(0));
-    const deferred = Q.defer();
+Process.prototype.death = function(maybeTimeout, maybeExitCodes) {
+    const timeout   = T.Number(defaults(maybeTimeout).to(0));
+    const exitCodes = ExitCodes.create(maybeExitCodes);
+    const deferred  = Q.defer();
 
     this.instance.onDeath(deferred, exitCodes);
     this.instance.onTimeout(deferred);
@@ -80,10 +81,11 @@ Process.prototype.stream = T.func([], TDuplexStream, "process.stream").of(functi
 /**
  * Kills a running Process
  *
- * @param {String} signal to kill the process
- * @param {Number[]}
+ * @param {MaybeExitCodes} maybeExitCodes that are valid
  */
-Process.prototype.kill = T.func([T.list(T.Number)], T.Object, "process.kill").of(function(exitCodes) {
+Process.prototype.kill = T.func([MaybeExitCodes], T.Object, "process.kill").of(function(maybeExitCodes) {
+    const exitCodes = ExitCodes.create(maybeExitCodes);
+
     return this.instance.kill(exitCodes);
 });
 
