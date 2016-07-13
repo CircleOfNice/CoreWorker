@@ -27,6 +27,7 @@ import Result from "./Result";
 import NotNil from "./NotNil.type";
 import TimeoutError from "./TimeoutError";
 import Q from "q";
+import ExitCodes from "./ExitCodes.type";
 
 /**
  * Collects data and emits it afterwards
@@ -71,7 +72,7 @@ NodeProcess.prototype.run = function(timeout = 0) {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", (code, signal) => this.instance.exitCodes.indexOf(code) > -1 || code === 0 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
+    process.on("close", (code, signal) => this.instance.exitCodes.indexOf(code) > -1 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -153,7 +154,7 @@ NodeProcess.prototype.finish = T.func([], T.Nil, "nodeProcess.finish").of(functi
  *
  * @param {Promise} deferred executed after Process was closed
  */
-NodeProcess.prototype.onDeath = T.func([T.Object, T.list(T.Number)], T.Nil, "nodeProcess.onDeath").of(function(deferred, exitCodes) {
+NodeProcess.prototype.onDeath = T.func([T.Object, ExitCodes], T.Nil, "nodeProcess.onDeath").of(function(deferred, exitCodes) {
     assign(this.instance, { exitCodes: exitCodes });
 
     this.emitter.on("death", deferred.resolve);

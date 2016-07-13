@@ -53,7 +53,7 @@ describe("CoreWorker", function() {
 
             assert.equal(result.isRunning, true, "Expected process to be running");
             assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
-            counter.kill([]).then(killedResult => {
+            counter.kill().then(killedResult => {
                 assert.equal(
                     killedResult.data,
                     "Log No. 1\n" +
@@ -93,7 +93,7 @@ describe("CoreWorker", function() {
             assert.equal(result.isRunning, true, "Expected process to be running");
             assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
 
-            counter.kill([]);
+            counter.kill();
             done();
         } catch(err) {
             done(err);
@@ -111,7 +111,7 @@ describe("CoreWorker", function() {
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            counter.kill([]);
+            counter.kill();
             done();
         }
     });
@@ -120,7 +120,7 @@ describe("CoreWorker", function() {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         try {
-            const result = await counter.death(1000, [100]);
+            const result = await counter.death();
 
             result.data
                 .slice(0, -1)
@@ -138,7 +138,7 @@ describe("CoreWorker", function() {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         try {
-            const result = await counter.death(500, []);
+            const result = await counter.death(500);
 
             result.data
                 .slice(0, -1)
@@ -156,12 +156,12 @@ describe("CoreWorker", function() {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
         try {
-            await counter.death(10, []);
+            await counter.death(10);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            counter.kill([]);
+            counter.kill();
             done();
         }
     });
@@ -173,7 +173,7 @@ describe("CoreWorker", function() {
 
         writable.write = function(chunk) {
             assert.equal(chunk, "Hello\n");
-            inputLogger.kill([]);
+            inputLogger.kill();
             done();
         };
 
@@ -185,7 +185,7 @@ describe("CoreWorker", function() {
         const failProcess = process(`node ${failScript}`);
 
         try {
-            await failProcess.death(1000, []);
+            await failProcess.death(1000);
             done(new Error("Shouldn't resolve here"));
         } catch(err) {
             assert.equal(err.message, "Process was closed unexpectedly. Code: 1", "Message should be closing code with 1");
@@ -196,7 +196,7 @@ describe("CoreWorker", function() {
     it("executes an application, awaits its death and terminates with valid exit code", async function(done) {
         try {
             const validExitCodeProcess = process(`node ${exitCodeScript}`);
-            const result               = await validExitCodeProcess.death(1000, [128]);
+            const result               = await validExitCodeProcess.death(1000, 128);
 
             assert.equal(result.data, "Process exited with code 100");
             done();

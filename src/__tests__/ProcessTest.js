@@ -192,7 +192,7 @@ describe("Process", function() {
 
         const instance = Process.create("node Test.js", "TestString");
 
-        instance.death(null, []).then(function(data) {
+        instance.death().then(function(data) {
             assert.deepStrictEqual(data, { data: "TestString" }, `TestString should be resolved: \n ${JSON.stringify(data)}`);
             done();
         }).catch(done);
@@ -205,7 +205,7 @@ describe("Process", function() {
 
         const instance = Process.create("node Test.js", "TestString");
 
-        instance.death(1, []).then(function() {
+        instance.death(1).then(function() {
             done(new Error("Promise shouldn't get resolved."));
         }).catch(function(err) {
             assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");
@@ -223,7 +223,7 @@ describe("Process", function() {
 
         const instance = Process.create("node Test.js", "TestString");
 
-        instance.death(1, []).then(function() {
+        instance.death(1).then(function() {
             done(new Error("Promise shouldn't get resolved."));
         }).catch(function(err) {
             assert(TimeoutError.is(err), "Error is not an instance of TimeoutError");

@@ -27,7 +27,7 @@ import MaybeExitCodes from "./MaybeExitCodes.type";
  * @return {ExitCodes}
  */
 ExitCodes.create = T.func([MaybeExitCodes], ExitCodes, "ExitCodes.create").of(function(maybeExitCodes) {
-    return maybeExitCodes === null ? [] : [].concat(maybeExitCodes);
+    return !maybeExitCodes ? [0] : [].concat(maybeExitCodes);
 });
 
 export default ExitCodes;

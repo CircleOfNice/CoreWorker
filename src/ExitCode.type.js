@@ -21,4 +21,4 @@ import T from "tcomb";
 /**
  * @typedef ExitCode
  */
-export default T.refinement(T.Number, x => x > 0 && x < 256, "ExitCode");
+export default T.refinement(T.Number, x => x >= 0 && x < 256, "ExitCode");
