@@ -25,7 +25,6 @@ import T from "tcomb";
 import NodeProcess from "../NodeProcess";
 import Result from "../Result";
 import ChildProcess from "child_process";
-// import ExitCodes from "../ExitCodes.type";
 
 const commandSpy   = sinon.spy();
 const callbacks    = {};
@@ -97,7 +96,6 @@ describe("NodeProcess", function() {
 
     it("starts a nodeProcess and waits until it is closed", function() { //eslint-disable-line
         callbacks.close   = null;
-        // const exitCodes   = ExitCodes([100]);
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
         const mockPromise = {
             resolve: sinon.spy(),
