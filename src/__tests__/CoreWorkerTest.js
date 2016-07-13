@@ -27,6 +27,7 @@ const counterScript  = path.join(__dirname, "/Scripts/CounterScript.js");
 const stdinLogger    = path.join(__dirname, "/Scripts/StdinLogger.js");
 const failScript     = path.join(__dirname, "/Scripts/FailScript.js");
 const exitCodeScript = path.join(__dirname, "/Scripts/ExitCodeScript.js");
+const killScript     = path.join(__dirname, "/Scripts/KillScript.js");
 
 describe("CoreWorker", function() {
     it("executes an application and waits until it is ready", async function(done) {
@@ -192,12 +193,26 @@ describe("CoreWorker", function() {
     });
 
     it("executes an application, awaits its death and terminates with valid exit code", async function(done) {
-        const validExitCodeProcess = process(`node ${exitCodeScript}`);
-
         try {
-            const result = await validExitCodeProcess.death(1000, [100, 101, 102]);
+            const validExitCodeProcess = process(`node ${exitCodeScript}`);
+            const result               = await validExitCodeProcess.death(1000, [128]);
 
             assert.equal(result.data, "Process exited with code 100");
+            done();
+        } catch(err) {
+            done(err);
+        }
+    });
+
+    it("executes an application, kills it and terminates with valid exit code", async function(done) {
+        try {
+            const liveProcess = process(`node ${killScript}`, /Kill me/);
+
+            await liveProcess.ready(1000);
+
+            const result = await liveProcess.kill([137]);
+
+            assert.equal(result.data, "Kill me");
             done();
         } catch(err) {
             done(err);
