@@ -29,14 +29,17 @@ import assert from "assert";
 /**
  * Awaits the death of a (running) process
  *
- * @param  {Index?}  maybeTimeout until process should have died
+ * @param  {Index?}   maybeTimeout   until process should have died
+ * @param  {Index[]}  exitCodes      that are valid
  * @return {Promise}
  */
-Process.prototype.death = function(maybeTimeout) {
+Process.prototype.death = function(maybeTimeout, exitCodes) {
+    T.list(T.Number)(exitCodes);
+
     const timeout  = T.Number(defaults(maybeTimeout).to(0));
     const deferred = Q.defer();
 
-    this.instance.onDeath(deferred);
+    this.instance.onDeath(deferred, exitCodes);
     this.instance.onTimeout(deferred);
     this.instance.run(timeout);
 
@@ -78,9 +81,10 @@ Process.prototype.stream = T.func([], TDuplexStream, "process.stream").of(functi
  * Kills a running Process
  *
  * @param {String} signal to kill the process
+ * @param {Number[]}
  */
-Process.prototype.kill = T.func([], T.Object, "process.kill").of(function() {
-    return this.instance.kill();
+Process.prototype.kill = T.func([T.list(T.Number)], T.Object, "process.kill").of(function(exitCodes) {
+    return this.instance.kill(exitCodes);
 });
 
 /**
