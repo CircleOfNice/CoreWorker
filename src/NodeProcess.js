@@ -233,7 +233,7 @@ NodeProcess.create = T.func([T.String, Condition], NodeProcess, "NodeProcess.cre
         commandArgs: splittedCommand.slice(1),
         filter:      filter,
         instance:    {
-            exitCodes:   [],
+            exitCodes:   ExitCodes.create(),
             isRunning:   false,
             isStreaming: false,
             output:      [],

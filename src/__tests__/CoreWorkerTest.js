@@ -53,9 +53,9 @@ describe("CoreWorker", function() {
 
             assert.equal(result.isRunning, true, "Expected process to be running");
             assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
-            counter.kill().then(killedResult => {
-                assert.equal(
-                    killedResult.data,
+
+            assert.equal(
+                (await counter.kill()).data.indexOf(
                     "Log No. 1\n" +
                     "Log No. 2\n" +
                     "Log No. 3\n" +
@@ -66,11 +66,11 @@ describe("CoreWorker", function() {
                     "Log No. 8\n" +
                     "Log No. 9\n" +
                     "Log No. 10\n" +
-                    "Log No. 11\n" +
-                    "Log No. 12\n"
-                );
-                done();
-            }).catch(done);
+                    "Log No. 11\n"
+                ),
+                0
+            );
+            done();
         } catch(err) {
             done(err);
         }
@@ -93,7 +93,7 @@ describe("CoreWorker", function() {
             assert.equal(result.isRunning, true, "Expected process to be running");
             assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
 
-            counter.kill();
+            await counter.kill();
             done();
         } catch(err) {
             done(err);
@@ -111,7 +111,7 @@ describe("CoreWorker", function() {
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            counter.kill();
+            await counter.kill();
             done();
         }
     });
@@ -161,7 +161,7 @@ describe("CoreWorker", function() {
         } catch(err) {
             assert.equal(err.message, "Timeout exceeded.", "Timeout Error should be thrown");
 
-            counter.kill();
+            await counter.kill();
             done();
         }
     });
@@ -173,8 +173,7 @@ describe("CoreWorker", function() {
 
         writable.write = function(chunk) {
             assert.equal(chunk, "Hello\n");
-            inputLogger.kill();
-            done();
+            inputLogger.kill().then(() => done()).catch(done);
         };
 
         stream.pipe(writable);
