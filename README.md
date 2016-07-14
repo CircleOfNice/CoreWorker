@@ -23,7 +23,7 @@ typedef Command:   String
 typedef Condition: Nil | String | String -> Boolean | RegExp
 ```
 Now you are able to interact with the returned instance in multiple ways: You can wait until the process is ready or dead or use it for example as a stream.  Additionally it is always possible to kill your instance with ```instance.kill()```.
-With valid ```ExitCodes```, which can be provided to ```kill``` and ```death```, you can be sure that your process will terminate properly if one of them occurs. Otherwise it will use it's default value ```0``` as the only valid ```ExitCode```.
+To use non-standard programs, which do not signal a successful termination via exit code `0`, a list of valid `ExitCodes` can be provided to `kill` and `death` to close them without errors. If you do not provide any, an exit code of `0` is used as the default value.
 ```c2hs
 typedef Process: {
     ready:  Timeout        -> Promise
