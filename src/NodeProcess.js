@@ -27,6 +27,7 @@ import Result from "./Result";
 import NotNil from "./NotNil.type";
 import TimeoutError from "./TimeoutError";
 import Q from "q";
+import ExitCodes from "./ExitCodes.type";
 
 /**
  * Collects data and emits it afterwards
@@ -71,7 +72,7 @@ NodeProcess.prototype.run = function(timeout = 0) {
     this.emitter.on("data", data => this.validate(data.toString()));
     process.stdout.on("data", data => this.emitter.emit("data", data.toString()));
     process.stderr.on("data", data => this.emitter.emit("data", `<error> ${data}`));
-    process.on("close", (code, signal) => code === 0 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
+    process.on("close", (code, signal) => this.instance.exitCodes.indexOf(code) > -1 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -113,7 +114,7 @@ NodeProcess.prototype.end = T.func([], T.Nil, "nodeProcess.end").of(function() {
  *
  * @return {Promise}
  */
-NodeProcess.prototype.kill = T.func([], T.Object, "nodeProcess.kill").of(function() {
+NodeProcess.prototype.kill = T.func([T.list(T.Number)], T.Object, "nodeProcess.kill").of(function(exitCodes) {
     const deferred     = Q.defer();
     const onNotRunning = () => {
         deferred.reject(new Error("Instance isn't running"));
@@ -123,7 +124,7 @@ NodeProcess.prototype.kill = T.func([], T.Object, "nodeProcess.kill").of(functio
 
     if(!this.isRunning) return onNotRunning();
 
-    this.onDeath(deferred);
+    this.onDeath(deferred, exitCodes);
     this.instance.isStreaming && this.instance.stdin.pause(); // eslint-disable-line
     this.instance.kill();
 
@@ -153,7 +154,9 @@ NodeProcess.prototype.finish = T.func([], T.Nil, "nodeProcess.finish").of(functi
  *
  * @param {Promise} deferred executed after Process was closed
  */
-NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, "nodeProcess.onDeath").of(function(deferred) {
+NodeProcess.prototype.onDeath = T.func([T.Object, ExitCodes], T.Nil, "nodeProcess.onDeath").of(function(deferred, exitCodes) {
+    assign(this.instance, { exitCodes: exitCodes });
+
     this.emitter.on("death", deferred.resolve);
     this.emitter.on("failure", deferred.reject);
 });
@@ -230,6 +233,7 @@ NodeProcess.create = T.func([T.String, Condition], NodeProcess, "NodeProcess.cre
         commandArgs: splittedCommand.slice(1),
         filter:      filter,
         instance:    {
+            exitCodes:   ExitCodes.create(),
             isRunning:   false,
             isStreaming: false,
             output:      [],

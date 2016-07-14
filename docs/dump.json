@@ -230,6 +230,83 @@
     "kind": "file",
     "static": true,
     "variation": null,
+    "name": "src/ExitCode.type.js",
+    "memberof": null,
+    "longname": "src/ExitCode.type.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\n\n/**\n * @typedef ExitCode\n */\nexport default T.refinement(T.Number, x => x >= 0 && x < 256, \"ExitCode\");\n"
+  },
+  {
+    "__docId__": 12,
+    "kind": "typedef",
+    "static": true,
+    "variation": null,
+    "name": "ExitCode",
+    "memberof": "src/ExitCode.type.js",
+    "longname": "src/ExitCode.type.js~ExitCode",
+    "access": null,
+    "description": "",
+    "lineNumber": 24,
+    "type": {
+      "types": [
+        "*"
+      ],
+      "optional": false,
+      "name": "ExitCode"
+    }
+  },
+  {
+    "__docId__": 13,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/ExitCodes.js",
+    "memberof": null,
+    "longname": "src/ExitCodes.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport ExitCodes from \"./ExitCodes.type\";\nimport MaybeExitCodes from \"./MaybeExitCodes.type\";\n\n/**\n * Creates Exit Codes\n *\n * @param  {MaybeExitCodes} maybeExitCodes that are valid\n * @return {ExitCodes}\n */\nExitCodes.create = T.func([MaybeExitCodes], ExitCodes, \"ExitCodes.create\").of(function(maybeExitCodes) {\n    return !maybeExitCodes ? [0] : [].concat(maybeExitCodes);\n});\n\nexport default ExitCodes;\n"
+  },
+  {
+    "__docId__": 14,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/ExitCodes.type.js",
+    "memberof": null,
+    "longname": "src/ExitCodes.type.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport ExitCode from \"./ExitCode.type\";\n\n/**\n * @typedef ExitCodes\n */\nexport default T.list(ExitCode, \"ExitCodes\");\n"
+  },
+  {
+    "__docId__": 15,
+    "kind": "typedef",
+    "static": true,
+    "variation": null,
+    "name": "ExitCodes",
+    "memberof": "src/ExitCodes.type.js",
+    "longname": "src/ExitCodes.type.js~ExitCodes",
+    "access": null,
+    "description": "",
+    "lineNumber": 25,
+    "type": {
+      "types": [
+        "*"
+      ],
+      "optional": false,
+      "name": "ExitCodes"
+    }
+  },
+  {
+    "__docId__": 16,
+    "kind": "file",
+    "static": true,
+    "variation": null,
     "name": "src/Instance.type.js",
     "memberof": null,
     "longname": "src/Instance.type.js",
@@ -239,7 +316,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport Result from \"./Result.type\";\n\n/**\n * @typedef Instance\n *\n * @param  {*}       x to be evaluated\n * @return {Boolean}\n */\nexport default T.refinement(T.Object, function(x) {\n    return (\n        T.Boolean.is(x.isRunning) &&\n        T.Boolean.is(x.fulfilled) &&\n        T.Boolean.is(x.isStreaming) &&\n        T.Array.is(x.output) &&\n        (Result.is(x.lastMatch) || T.Nil.is(x.lastMatch))\n    );\n}, \"Instance\");\n"
   },
   {
-    "__docId__": 12,
+    "__docId__": 17,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -278,7 +355,39 @@
     }
   },
   {
-    "__docId__": 13,
+    "__docId__": 18,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/MaybeExitCodes.type.js",
+    "memberof": null,
+    "longname": "src/MaybeExitCodes.type.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport ExitCode from \"./ExitCode.type\";\nimport ExitCodes from \"./ExitCodes.type\";\n\n/**\n * @typedef MaybeExitCodes\n */\nexport default T.maybe(T.union([ExitCode, ExitCodes]), \"MaybeExitCodes\");\n"
+  },
+  {
+    "__docId__": 19,
+    "kind": "typedef",
+    "static": true,
+    "variation": null,
+    "name": "MaybeExitCodes",
+    "memberof": "src/MaybeExitCodes.type.js",
+    "longname": "src/MaybeExitCodes.type.js~MaybeExitCodes",
+    "access": null,
+    "description": "",
+    "lineNumber": 26,
+    "type": {
+      "types": [
+        "*"
+      ],
+      "optional": false,
+      "name": "MaybeExitCodes"
+    }
+  },
+  {
+    "__docId__": 20,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -288,10 +397,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Validator from \"./Validator\";\nimport NodeProcess from \"./NodeProcess.type\";\nimport Condition from \"./Condition.type\";\nimport T from \"tcomb\";\nimport { spawn } from \"child_process\";\nimport { assign, first, last } from \"lodash\";\nimport { EventEmitter } from \"events\";\nimport Result from \"./Result\";\nimport NotNil from \"./NotNil.type\";\nimport TimeoutError from \"./TimeoutError\";\nimport Q from \"q\";\n\n/**\n * Collects data and emits it afterwards\n *\n * @param  {String}   data received from process.output\n */\nNodeProcess.prototype.validate = T.func([T.String], T.Nil, \"nodeProcess.validate\").of(function(data) {\n    if(Result.is(this.instance.result) || !this.filter.validate(data)) return;\n\n    const result = this.filter.getResult(data);\n\n    assign(this.instance, {\n        result:    result,\n        fulfilled: true\n    });\n\n    this.emitter.emit(\"ready\", result);\n});\n\n/**\n * Stores new output\n *\n * @param  {String} data to be stored\n */\nNodeProcess.prototype.store = T.func([T.String], T.Nil, \"nodeProcess.store\").of(function(data) {\n    assign(this.instance, {\n        output: this.instance.output.concat([data])\n    });\n});\n\n/**\n * Starts the Process of current instance\n *\n * @param {Index?} timeout after that a timeout event gets emitted\n */\nNodeProcess.prototype.run = function(timeout = 0) {\n    if(this.isRunning()) return;\n\n    const process = spawn(this.command, this.commandArgs);\n\n    this.emitter.on(\"data\", data => this.store(data.toString()));\n    this.emitter.on(\"data\", data => this.validate(data.toString()));\n    process.stdout.on(\"data\", data => this.emitter.emit(\"data\", data.toString()));\n    process.stderr.on(\"data\", data => this.emitter.emit(\"data\", `<error> ${data}`));\n    process.on(\"close\", (code, signal) => code === 0 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));\n\n    assign(this.instance, process, {\n        isRunning: true,\n        kill:      process.kill\n    });\n    setTimeout(() => timeout > 0 ? this.emitter.emit(\"timeout\") : null, timeout);\n};\n\n/**\n * Streams data in process.stdin\n *\n * @param  {Buffer} chunk piped in stdin\n */\nNodeProcess.prototype.write = T.func([T.Object], T.Nil, \"nodeProcess.write\").of(function(chunk) {\n    this.instance.stdin.write(chunk);\n});\n\n/**\n * Signals the instance, that it is streaming\n */\nNodeProcess.prototype.startStream = T.func([], T.Nil, \"nodeProcess.startStream\").of(function() {\n    assign(this.instance, {\n        isStreaming: true\n    });\n});\n\n/**\n * Flushs all data piped into stdin\n */\nNodeProcess.prototype.end = T.func([], T.Nil, \"nodeProcess.end\").of(function() {\n    assign(this.instance, {\n        isStreaming: false\n    });\n    this.instance.stdin.end();\n});\n\n/**\n * Kills a running instance\n *\n * @return {Promise}\n */\nNodeProcess.prototype.kill = T.func([], T.Object, \"nodeProcess.kill\").of(function() {\n    const deferred     = Q.defer();\n    const onNotRunning = () => {\n        deferred.reject(new Error(\"Instance isn't running\"));\n\n        return deferred.promise;\n    };\n\n    if(!this.isRunning) return onNotRunning();\n\n    this.onDeath(deferred);\n    this.instance.isStreaming && this.instance.stdin.pause(); // eslint-disable-line\n    this.instance.kill();\n\n    return deferred.promise;\n});\n\n/**\n * Emits an Error if process was closed unexpectedly\n *\n * @param {Index} code as exit status of the instance\n */\nNodeProcess.prototype.terminate = T.func([T.Number], T.Nil, \"nodeProcess.terminate\").of(function(code) {\n    assign(this.instance, { isRunning: false });\n    this.emitter.emit(\"failure\", new Error(`Process was closed unexpectedly. Code: ${code}`));\n});\n\n/**\n * Emits result after process was closed\n */\nNodeProcess.prototype.finish = T.func([], T.Nil, \"nodeProcess.finish\").of(function() {\n    assign(this.instance, { isRunning: false });\n    this.emitter.emit(\"death\", Result.create(this.instance.output.join(\"\")));\n});\n\n/**\n * Stores a callback, that gets called, when process ends\n *\n * @param {Promise} deferred executed after Process was closed\n */\nNodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, \"nodeProcess.onDeath\").of(function(deferred) {\n    this.emitter.on(\"death\", deferred.resolve);\n    this.emitter.on(\"failure\", deferred.reject);\n});\n\n/**\n * Stores a callback, that gets called, when process is ready\n *\n * @param  {Function} cb executed, when process is ready\n */\nNodeProcess.prototype.onReady = T.func([T.Function], T.Nil, \"nodeProcess.onReady\").of(function(cb) {\n    this.emitter.on(\"ready\", () => cb(this.instance));\n});\n\n/**\n * Stores a callback, that gets called, when process logs in stdout/stderr\n *\n * @param  {Function} cb executed on Output\n */\nNodeProcess.prototype.onData = T.func([T.Function], T.Nil, \"nodeProcess.onData\").of(function(cb) {\n    this.emitter.on(\"data\", cb);\n});\n\n/**\n * Stores a deferrable that will be rejected on an emitted timeout event\n *\n * @param {Promise} deferred to be rejected on timeout event\n */\nNodeProcess.prototype.onTimeout = T.func([T.Object], T.Nil, \"nodeProcess.onTimeout\").of(function(deferred) {\n    this.emitter.on(\"timeout\", () => deferred.reject(TimeoutError.create(last(this.instance.output))));\n});\n\n/**\n * Returns current state of Process\n *\n * @return {Boolean}\n */\nNodeProcess.prototype.isRunning = T.func([], T.Boolean, \"nodeProcess.isRunning\").of(function() {\n    return this.instance.isRunning;\n});\n\n/**\n * Returns if process is ready\n *\n * @return {Boolean}\n */\nNodeProcess.prototype.isReady = T.func([], T.Boolean, \"nodeProcess.isReady\").of(function() {\n    return this.instance.fulfilled;\n});\n\n/**\n * Returns last match\n *\n * @return {String?}\n */\nNodeProcess.prototype.lastMatch = T.func([], T.maybe(T.String), \"nodeProcess.lastMatch\").of(function() {\n    return this.instance.lastMatch;\n});\n\n/**\n * Creates a new Instance of NodeProcess\n *\n * @param  {String}      command   which will be executed\n * @param  {Condition}   condition to filter logs\n * @return {NodeProcess}\n */\nNodeProcess.create = T.func([T.String, Condition], NodeProcess, \"NodeProcess.create\").of(function(command, condition) {\n    const filter          = Validator.create(condition);\n    const emitter         = new EventEmitter();\n    const splittedCommand = command.split(\" \");\n\n    return {\n        emitter:     emitter,\n        command:     first(splittedCommand),\n        commandArgs: splittedCommand.slice(1),\n        filter:      filter,\n        instance:    {\n            isRunning:   false,\n            isStreaming: false,\n            output:      [],\n            lastMatch:   null,\n            fulfilled:   false\n        }\n    };\n});\n\nexport default NodeProcess;\n"
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Validator from \"./Validator\";\nimport NodeProcess from \"./NodeProcess.type\";\nimport Condition from \"./Condition.type\";\nimport T from \"tcomb\";\nimport { spawn } from \"child_process\";\nimport { assign, first, last } from \"lodash\";\nimport { EventEmitter } from \"events\";\nimport Result from \"./Result\";\nimport NotNil from \"./NotNil.type\";\nimport TimeoutError from \"./TimeoutError\";\nimport Q from \"q\";\nimport ExitCodes from \"./ExitCodes.type\";\n\n/**\n * Collects data and emits it afterwards\n *\n * @param  {String}   data received from process.output\n */\nNodeProcess.prototype.validate = T.func([T.String], T.Nil, \"nodeProcess.validate\").of(function(data) {\n    if(Result.is(this.instance.result) || !this.filter.validate(data)) return;\n\n    const result = this.filter.getResult(data);\n\n    assign(this.instance, {\n        result:    result,\n        fulfilled: true\n    });\n\n    this.emitter.emit(\"ready\", result);\n});\n\n/**\n * Stores new output\n *\n * @param  {String} data to be stored\n */\nNodeProcess.prototype.store = T.func([T.String], T.Nil, \"nodeProcess.store\").of(function(data) {\n    assign(this.instance, {\n        output: this.instance.output.concat([data])\n    });\n});\n\n/**\n * Starts the Process of current instance\n *\n * @param {Index?} timeout after that a timeout event gets emitted\n */\nNodeProcess.prototype.run = function(timeout = 0) {\n    if(this.isRunning()) return;\n\n    const process = spawn(this.command, this.commandArgs);\n\n    this.emitter.on(\"data\", data => this.store(data.toString()));\n    this.emitter.on(\"data\", data => this.validate(data.toString()));\n    process.stdout.on(\"data\", data => this.emitter.emit(\"data\", data.toString()));\n    process.stderr.on(\"data\", data => this.emitter.emit(\"data\", `<error> ${data}`));\n    process.on(\"close\", (code, signal) => this.instance.exitCodes.indexOf(code) > -1 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));\n\n    assign(this.instance, process, {\n        isRunning: true,\n        kill:      process.kill\n    });\n    setTimeout(() => timeout > 0 ? this.emitter.emit(\"timeout\") : null, timeout);\n};\n\n/**\n * Streams data in process.stdin\n *\n * @param  {Buffer} chunk piped in stdin\n */\nNodeProcess.prototype.write = T.func([T.Object], T.Nil, \"nodeProcess.write\").of(function(chunk) {\n    this.instance.stdin.write(chunk);\n});\n\n/**\n * Signals the instance, that it is streaming\n */\nNodeProcess.prototype.startStream = T.func([], T.Nil, \"nodeProcess.startStream\").of(function() {\n    assign(this.instance, {\n        isStreaming: true\n    });\n});\n\n/**\n * Flushs all data piped into stdin\n */\nNodeProcess.prototype.end = T.func([], T.Nil, \"nodeProcess.end\").of(function() {\n    assign(this.instance, {\n        isStreaming: false\n    });\n    this.instance.stdin.end();\n});\n\n/**\n * Kills a running instance\n *\n * @return {Promise}\n */\nNodeProcess.prototype.kill = T.func([T.list(T.Number)], T.Object, \"nodeProcess.kill\").of(function(exitCodes) {\n    const deferred     = Q.defer();\n    const onNotRunning = () => {\n        deferred.reject(new Error(\"Instance isn't running\"));\n\n        return deferred.promise;\n    };\n\n    if(!this.isRunning) return onNotRunning();\n\n    this.onDeath(deferred, exitCodes);\n    this.instance.isStreaming && this.instance.stdin.pause(); // eslint-disable-line\n    this.instance.kill();\n\n    return deferred.promise;\n});\n\n/**\n * Emits an Error if process was closed unexpectedly\n *\n * @param {Index} code as exit status of the instance\n */\nNodeProcess.prototype.terminate = T.func([T.Number], T.Nil, \"nodeProcess.terminate\").of(function(code) {\n    assign(this.instance, { isRunning: false });\n    this.emitter.emit(\"failure\", new Error(`Process was closed unexpectedly. Code: ${code}`));\n});\n\n/**\n * Emits result after process was closed\n */\nNodeProcess.prototype.finish = T.func([], T.Nil, \"nodeProcess.finish\").of(function() {\n    assign(this.instance, { isRunning: false });\n    this.emitter.emit(\"death\", Result.create(this.instance.output.join(\"\")));\n});\n\n/**\n * Stores a callback, that gets called, when process ends\n *\n * @param {Promise} deferred executed after Process was closed\n */\nNodeProcess.prototype.onDeath = T.func([T.Object, ExitCodes], T.Nil, \"nodeProcess.onDeath\").of(function(deferred, exitCodes) {\n    assign(this.instance, { exitCodes: exitCodes });\n\n    this.emitter.on(\"death\", deferred.resolve);\n    this.emitter.on(\"failure\", deferred.reject);\n});\n\n/**\n * Stores a callback, that gets called, when process is ready\n *\n * @param  {Function} cb executed, when process is ready\n */\nNodeProcess.prototype.onReady = T.func([T.Function], T.Nil, \"nodeProcess.onReady\").of(function(cb) {\n    this.emitter.on(\"ready\", () => cb(this.instance));\n});\n\n/**\n * Stores a callback, that gets called, when process logs in stdout/stderr\n *\n * @param  {Function} cb executed on Output\n */\nNodeProcess.prototype.onData = T.func([T.Function], T.Nil, \"nodeProcess.onData\").of(function(cb) {\n    this.emitter.on(\"data\", cb);\n});\n\n/**\n * Stores a deferrable that will be rejected on an emitted timeout event\n *\n * @param {Promise} deferred to be rejected on timeout event\n */\nNodeProcess.prototype.onTimeout = T.func([T.Object], T.Nil, \"nodeProcess.onTimeout\").of(function(deferred) {\n    this.emitter.on(\"timeout\", () => deferred.reject(TimeoutError.create(last(this.instance.output))));\n});\n\n/**\n * Returns current state of Process\n *\n * @return {Boolean}\n */\nNodeProcess.prototype.isRunning = T.func([], T.Boolean, \"nodeProcess.isRunning\").of(function() {\n    return this.instance.isRunning;\n});\n\n/**\n * Returns if process is ready\n *\n * @return {Boolean}\n */\nNodeProcess.prototype.isReady = T.func([], T.Boolean, \"nodeProcess.isReady\").of(function() {\n    return this.instance.fulfilled;\n});\n\n/**\n * Returns last match\n *\n * @return {String?}\n */\nNodeProcess.prototype.lastMatch = T.func([], T.maybe(T.String), \"nodeProcess.lastMatch\").of(function() {\n    return this.instance.lastMatch;\n});\n\n/**\n * Creates a new Instance of NodeProcess\n *\n * @param  {String}      command   which will be executed\n * @param  {Condition}   condition to filter logs\n * @return {NodeProcess}\n */\nNodeProcess.create = T.func([T.String, Condition], NodeProcess, \"NodeProcess.create\").of(function(command, condition) {\n    const filter          = Validator.create(condition);\n    const emitter         = new EventEmitter();\n    const splittedCommand = command.split(\" \");\n\n    return {\n        emitter:     emitter,\n        command:     first(splittedCommand),\n        commandArgs: splittedCommand.slice(1),\n        filter:      filter,\n        instance:    {\n            exitCodes:   ExitCodes.create(),\n            isRunning:   false,\n            isStreaming: false,\n            output:      [],\n            lastMatch:   null,\n            fulfilled:   false\n        }\n    };\n});\n\nexport default NodeProcess;\n"
   },
   {
-    "__docId__": 14,
+    "__docId__": 21,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -303,7 +412,7 @@
     "importPath": "core-worker/src/NodeProcess.js",
     "importStyle": null,
     "description": "Starts the Process of current instance",
-    "lineNumber": 65,
+    "lineNumber": 66,
     "params": [
       {
         "nullable": null,
@@ -319,7 +428,7 @@
     "generator": false
   },
   {
-    "__docId__": 15,
+    "__docId__": 22,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -332,7 +441,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport Validator from \"./Validator.type\";\nimport Instance from \"./Instance.type\";\n\n/**\n * @typedef NodeProcess\n */\nexport default T.struct({\n    emitter:     T.Object,\n    instance:    Instance,\n    filter:      Validator,\n    command:     T.String,\n    commandArgs: T.list(T.String)\n}, \"NodeProcess\");\n"
   },
   {
-    "__docId__": 16,
+    "__docId__": 23,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -351,7 +460,7 @@
     }
   },
   {
-    "__docId__": 17,
+    "__docId__": 24,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -364,7 +473,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\n\n/**\n * @typedef {NotNil}\n * @param   {*}     x value\n */\nexport default T.refinement(T.Any, x => !T.Nil.is(x), \"NotNil\");\n"
   },
   {
-    "__docId__": 18,
+    "__docId__": 25,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -393,7 +502,7 @@
     }
   },
   {
-    "__docId__": 19,
+    "__docId__": 26,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -403,10 +512,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Q from \"q\";\nimport Process from \"./Process.type\";\nimport NodeProcess from \"./NodeProcess\";\nimport DuplexStream from \"./DuplexStream\";\nimport TDuplexStream from \"./DuplexStream.type\";\nimport defaults from \"set-default-value\";\nimport T from \"tcomb\";\nimport Condition from \"./Condition.type\";\nimport assert from \"assert\";\n\n/**\n * Awaits the death of a (running) process\n *\n * @param  {Index?}  maybeTimeout until process should have died\n * @return {Promise}\n */\nProcess.prototype.death = function(maybeTimeout) {\n    if(T.Nil.is(maybeTimeout)) this.instance.kill();\n\n    const timeout  = T.Number(defaults(maybeTimeout).to(0));\n    const deferred = Q.defer();\n\n    this.instance.onDeath(deferred);\n    this.instance.onTimeout(deferred);\n    this.instance.run(timeout);\n\n    return deferred.promise;\n};\n\n/**\n * Awaits the initialized process\n *\n * @param  {Index}   timeout until instance should be ready\n * @return {Promise}\n */\nProcess.prototype.ready = T.func([T.Number], T.Object, \"process.ready\").of(function(timeout) {\n    if(this.instance.isRunning() && this.instance.isReady()) return this.instance.lastMatch();\n\n    const deferred = Q.defer();\n\n    this.instance.onReady(deferred.resolve);\n    this.instance.onTimeout(deferred);\n    this.instance.run(timeout);\n\n    return deferred.promise;\n});\n\n/**\n * Starts a new DuplexStream, listening on DataOutput of a new Process-Instance\n *\n * @return {DuplexStream}\n */\nProcess.prototype.stream = T.func([], TDuplexStream, \"process.stream\").of(function() {\n    assert(!this.instance.isRunning(), \"Can't use stream after process initialization\");\n\n    this.instance.run();\n\n    return new DuplexStream(this.instance);\n});\n\n/**\n * Kills a running Process\n *\n * @param {String} signal to kill the process\n */\nProcess.prototype.kill = T.func([], T.Object, \"process.kill\").of(function() {\n    return this.instance.kill();\n});\n\n/**\n * Creates a new Process\n *\n * @param  {String}    command   executed in Process\n * @param  {Condition} condition as filter\n * @return {Process}\n */\nProcess.create = function(command, condition = \"\") {\n    return Process({\n        instance: NodeProcess.create(T.String(command), Condition(condition))\n    });\n};\n\nexport default Process;\n"
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Q from \"q\";\nimport Process from \"./Process.type\";\nimport NodeProcess from \"./NodeProcess\";\nimport DuplexStream from \"./DuplexStream\";\nimport TDuplexStream from \"./DuplexStream.type\";\nimport defaults from \"set-default-value\";\nimport T from \"tcomb\";\nimport Condition from \"./Condition.type\";\nimport assert from \"assert\";\nimport ExitCodes from \"./ExitCodes\";\nimport MaybeExitCodes from \"./MaybeExitCodes.type\";\n\n/**\n * Awaits the death of a (running) process\n *\n * @param  {Index?}         maybeTimeout   until process should have died\n * @param  {MaybeExitCodes} maybeExitCodes that are valid\n * @return {Promise}\n */\nProcess.prototype.death = function(maybeTimeout, maybeExitCodes) {\n    const timeout   = T.Number(defaults(maybeTimeout).to(0));\n    const exitCodes = ExitCodes.create(maybeExitCodes);\n    const deferred  = Q.defer();\n\n    this.instance.onDeath(deferred, exitCodes);\n    this.instance.onTimeout(deferred);\n    this.instance.run(timeout);\n\n    return deferred.promise;\n};\n\n/**\n * Awaits the initialized process\n *\n * @param  {Index}   timeout until instance should be ready\n * @return {Promise}\n */\nProcess.prototype.ready = T.func([T.Number], T.Object, \"process.ready\").of(function(timeout) {\n    if(this.instance.isRunning() && this.instance.isReady()) return this.instance.lastMatch();\n\n    const deferred = Q.defer();\n\n    this.instance.onReady(deferred.resolve);\n    this.instance.onTimeout(deferred);\n    this.instance.run(timeout);\n\n    return deferred.promise;\n});\n\n/**\n * Starts a new DuplexStream, listening on DataOutput of a new Process-Instance\n *\n * @return {DuplexStream}\n */\nProcess.prototype.stream = T.func([], TDuplexStream, \"process.stream\").of(function() {\n    assert(!this.instance.isRunning(), \"Can't use stream after process initialization\");\n\n    this.instance.run();\n\n    return new DuplexStream(this.instance);\n});\n\n/**\n * Kills a running Process\n *\n * @param {MaybeExitCodes} maybeExitCodes that are valid\n */\nProcess.prototype.kill = T.func([MaybeExitCodes], T.Object, \"process.kill\").of(function(maybeExitCodes) {\n    const exitCodes = ExitCodes.create(maybeExitCodes);\n\n    return this.instance.kill(exitCodes);\n});\n\n/**\n * Creates a new Process\n *\n * @param  {String}    command   executed in Process\n * @param  {Condition} condition as filter\n * @return {Process}\n */\nProcess.create = function(command, condition = \"\") {\n    return Process({\n        instance: NodeProcess.create(T.String(command), Condition(condition))\n    });\n};\n\nexport default Process;\n"
   },
   {
-    "__docId__": 20,
+    "__docId__": 27,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -418,7 +527,7 @@
     "importPath": "core-worker/src/Process.js",
     "importStyle": null,
     "description": "Awaits the death of a (running) process",
-    "lineNumber": 35,
+    "lineNumber": 38,
     "params": [
       {
         "nullable": null,
@@ -429,6 +538,16 @@
         "optional": false,
         "name": "maybeTimeout",
         "description": "until process should have died"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "MaybeExitCodes"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "maybeExitCodes",
+        "description": "that are valid"
       }
     ],
     "return": {
@@ -442,7 +561,7 @@
     "generator": false
   },
   {
-    "__docId__": 21,
+    "__docId__": 28,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -454,7 +573,7 @@
     "importPath": "core-worker/src/Process.js",
     "importStyle": null,
     "description": "Creates a new Process",
-    "lineNumber": 95,
+    "lineNumber": 99,
     "params": [
       {
         "nullable": null,
@@ -488,7 +607,7 @@
     "generator": false
   },
   {
-    "__docId__": 22,
+    "__docId__": 29,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -501,7 +620,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport NodeProcess from \"./NodeProcess\";\n\n/**\n * @typedef Process\n */\nexport default T.struct({\n    instance: NodeProcess\n}, \"ProcessManager\");\n"
   },
   {
-    "__docId__": 23,
+    "__docId__": 30,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -520,7 +639,7 @@
     }
   },
   {
-    "__docId__": 24,
+    "__docId__": 31,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -533,7 +652,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\n\n/**\n * @typedef RegExp\n *\n * @param  {*}       x to be evaluated\n * @return {Boolean}\n */\nexport default T.refinement(T.Object, function(x) {\n    return x instanceof RegExp;\n}, \"RegExp\");\n"
   },
   {
-    "__docId__": 25,
+    "__docId__": 32,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -572,7 +691,7 @@
     }
   },
   {
-    "__docId__": 26,
+    "__docId__": 33,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -585,7 +704,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport Result from \"./Result.type\";\n\n/**\n * Creates a new Result\n *\n * @param  {String?} match stored in result\n * @return {Result}\n */\nResult.create = T.func([T.maybe(T.String)], Result, \"Result.create\").of(function(match) {\n    return {\n        data: match\n    };\n});\n\nexport default Result;\n"
   },
   {
-    "__docId__": 27,
+    "__docId__": 34,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -598,7 +717,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\n\n/**\n * @typedef Result\n */\nexport default T.struct({\n    data: T.maybe(T.String)\n}, \"Result\");\n"
   },
   {
-    "__docId__": 28,
+    "__docId__": 35,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -617,7 +736,7 @@
     }
   },
   {
-    "__docId__": 29,
+    "__docId__": 36,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -630,7 +749,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport TimeoutError from \"./TimeoutError.type\";\n\n/**\n * Creates a new TimeoutError\n *\n * @param  {String}         output   output line to be displayed in error message\n * @return {TimeoutError}\n */\nTimeoutError.create = T.func([T.maybe(T.String)], TimeoutError, \"TimeoutError.create\").of(function(output) {\n    return new Error(T.Nil.is(output) || !output ? \"Timeout exceeded.\" : `Timeout exceeded. Last process output is: ${output}`);\n});\n\nexport default TimeoutError;\n"
   },
   {
-    "__docId__": 30,
+    "__docId__": 37,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -643,7 +762,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\n\nexport default T.subtype(T.Error, () => true, \"TimeoutError\");\n"
   },
   {
-    "__docId__": 31,
+    "__docId__": 38,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -656,7 +775,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport Validator from \"./Validator.type\";\nimport RegExp from \"./RegExp.type\";\nimport Condition from \"./Condition.type\";\nimport { assign, first } from \"lodash\";\nimport Result from \"./Result\";\n\n/**\n * Returns matched String\n *\n * @param  {String} data containing matched String\n * @return {Result}\n */\nValidator.prototype.getResult = T.func([T.String], Result, \"validator.getResult\").of(function(match) {\n    return Result.create(RegExp.is(this.filter) ? first(this.filter.exec(match)) : null);\n});\n\n/**\n * Creates a new Validator with given condition\n *\n * @param  {*}         condition for validation\n * @return {Validator}\n */\nValidator.create = T.func([Condition], Validator, \"Validator.create\").of(function(condition) {\n    const validator = { filter: condition };\n\n    if(RegExp.is(condition))   return assign(validator, { validate: value => condition.test(value) });\n    if(T.String.is(condition)) return assign(validator, { validate: value => value.indexOf(condition) !== -1 });\n\n    return assign(validator, { validate: condition });\n});\n\nexport default Validator;\n"
   },
   {
-    "__docId__": 32,
+    "__docId__": 39,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -669,7 +788,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport T from \"tcomb\";\nimport Condition from \"./Condition.type\";\n\n/**\n * @typedef Validator\n */\nexport default T.struct({\n    filter:   Condition,\n    validate: T.Function\n}, \"Validator\");\n"
   },
   {
-    "__docId__": 33,
+    "__docId__": 40,
     "kind": "typedef",
     "static": true,
     "variation": null,
@@ -688,7 +807,7 @@
     }
   },
   {
-    "__docId__": 34,
+    "__docId__": 41,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -698,10 +817,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport { process } from \"../index\";\nimport assert from \"assert\";\nimport Result from \"../Result.type\";\nimport T from \"tcomb\";\nimport { Writable } from \"stream\";\nimport path from \"path\";\n\nconst counterScript = path.join(__dirname, \"/Scripts/CounterScript.js\");\nconst stdinLogger   = path.join(__dirname, \"/Scripts/StdinLogger.js\");\nconst failScript    = path.join(__dirname, \"/Scripts/FailScript.js\");\n\ndescribe(\"CoreWorker\", function() {\n    it(\"executes an application and waits until it is ready\", async function(done) {\n        this.timeout(5000);\n        const counter = process(`node ${counterScript}`, \"Log No. 10\");\n\n        try { // eslint-disable-line\n            const result = await counter.ready(2000);\n\n            assert.deepStrictEqual(result.output, [\n                \"Log No. 1\\n\",\n                \"Log No. 2\\n\",\n                \"Log No. 3\\n\",\n                \"Log No. 4\\n\",\n                \"Log No. 5\\n\",\n                \"Log No. 6\\n\",\n                \"Log No. 7\\n\",\n                \"Log No. 8\\n\",\n                \"Log No. 9\\n\",\n                \"Log No. 10\\n\"\n            ]);\n\n            assert.equal(result.isRunning, true, \"Expected process to be running\");\n            assert(T.Number.is(result.pid) && result.pid > 0, \"Should have a pid\");\n            counter.kill().then(killedResult => {\n                assert.equal(\n                    killedResult.data,\n                    \"Log No. 1\\n\" +\n                    \"Log No. 2\\n\" +\n                    \"Log No. 3\\n\" +\n                    \"Log No. 4\\n\" +\n                    \"Log No. 5\\n\" +\n                    \"Log No. 6\\n\" +\n                    \"Log No. 7\\n\" +\n                    \"Log No. 8\\n\" +\n                    \"Log No. 9\\n\" +\n                    \"Log No. 10\\n\" +\n                    \"Log No. 11\\n\"\n                );\n                done();\n            }).catch(done);\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application and waits until it is ready\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 5/);\n\n        try { // eslint-disable-line\n            const result = await counter.ready(2000); // eslint-disable-line\n\n            assert.deepStrictEqual(result.output, [\n                \"Log No. 1\\n\",\n                \"Log No. 2\\n\",\n                \"Log No. 3\\n\",\n                \"Log No. 4\\n\",\n                \"Log No. 5\\n\"\n            ]);\n\n            assert.equal(result.isRunning, true, \"Expected process to be running\");\n            assert(T.Number.is(result.pid) && result.pid > 0, \"Should have a pid\");\n\n            counter.kill();\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application, waits until it is ready, but exceeds given timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, \"Log No. 10\");\n\n        try { // eslint-disable-line\n            const result = await counter.ready(10);\n\n            assert.deepStrictEqual(result, Result({ data: null }), \"Result should contain null\");\n            done(new Error(\"This shouldn't finish.\"));\n        } catch(err) {\n            assert.equal(err.message, \"Timeout exceeded.\", \"Timeout Error should be thrown\");\n\n            counter.kill();\n            done();\n        }\n    });\n\n    it(\"executes an application and waits its death\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try { // eslint-disable-line\n            const result = await counter.death(1000);\n\n            result.data\n                .slice(0, -1)\n                .split(\"\\n\")\n                .forEach(function(row, iterator) {\n                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\\n Log No. ${iterator + 1}`);\n                });\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application and waits its death with a spedified timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try { // eslint-disable-line\n            const result = await counter.death(500);\n\n            result.data\n                .slice(0, -1)\n                .split(\"\\n\")\n                .forEach(function(row, iterator) {\n                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\\n Log No. ${iterator + 1}`);\n                });\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application, waits its death, but exceeds given timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try { // eslint-disable-line\n            await counter.death(10);\n            done(new Error(\"Shouldn't resolve here\"));\n        } catch(err) {\n            assert.equal(err.message, \"Timeout exceeded.\", \"Timeout Error should be thrown\");\n\n            counter.kill();\n            done();\n        }\n    });\n\n    it(\"executes an application and handles it as a stream\", function(done) {\n        const inputLogger = process(`node ${stdinLogger}`, \"\");\n        const writable    = Writable();\n        const stream      = inputLogger.stream();\n\n        writable.write = function(chunk) {\n            assert.equal(chunk, \"Hello\\n\");\n            inputLogger.kill();\n            done();\n        };\n\n        stream.pipe(writable);\n        stream.write(\"Hello\");\n    });\n\n    it(\"executes an application, but terminates unexpectedly\", async function(done) {\n        const failProcess = process(`node ${failScript}`);\n\n        try { // eslint-disable-line\n            await failProcess.death(1000);\n            done(new Error(\"Shouldn't resolve here\"));\n        } catch(err) {\n            assert.equal(err.message, \"Process was closed unexpectedly. Code: 1\", \"Message should be closing code with 1\");\n            done();\n        }\n    });\n});\n"
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport { process } from \"../index\";\nimport assert from \"assert\";\nimport Result from \"../Result.type\";\nimport T from \"tcomb\";\nimport { Writable } from \"stream\";\nimport path from \"path\";\n\nconst counterScript  = path.join(__dirname, \"/Scripts/CounterScript.js\");\nconst stdinLogger    = path.join(__dirname, \"/Scripts/StdinLogger.js\");\nconst failScript     = path.join(__dirname, \"/Scripts/FailScript.js\");\nconst exitCodeScript = path.join(__dirname, \"/Scripts/ExitCodeScript.js\");\nconst killScript     = path.join(__dirname, \"/Scripts/KillScript.js\");\n\ndescribe(\"CoreWorker\", function() { //eslint-disable-line\n    it(\"executes an application and waits until it is ready\", async function(done) {\n        this.timeout(5000);\n        const counter = process(`node ${counterScript}`, \"Log No. 10\");\n\n        try {\n            const result = await counter.ready(2000);\n\n            assert.deepStrictEqual(\n                result.output.join(\"\"),\n                \"Log No. 1\\n\" +\n                \"Log No. 2\\n\" +\n                \"Log No. 3\\n\" +\n                \"Log No. 4\\n\" +\n                \"Log No. 5\\n\" +\n                \"Log No. 6\\n\" +\n                \"Log No. 7\\n\" +\n                \"Log No. 8\\n\" +\n                \"Log No. 9\\n\" +\n                \"Log No. 10\\n\"\n            );\n\n            assert.equal(result.isRunning, true, \"Expected process to be running\");\n            assert(T.Number.is(result.pid) && result.pid > 0, \"Should have a pid\");\n\n            assert.equal(\n                (await counter.kill()).data.indexOf(\n                    \"Log No. 1\\n\" +\n                    \"Log No. 2\\n\" +\n                    \"Log No. 3\\n\" +\n                    \"Log No. 4\\n\" +\n                    \"Log No. 5\\n\" +\n                    \"Log No. 6\\n\" +\n                    \"Log No. 7\\n\" +\n                    \"Log No. 8\\n\" +\n                    \"Log No. 9\\n\" +\n                    \"Log No. 10\\n\" +\n                    \"Log No. 11\\n\"\n                ),\n                0\n            );\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application and waits until it is ready\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 5/);\n\n        try {\n            const result = await counter.ready(2000); // eslint-disable-line\n\n            assert.deepStrictEqual(result.output, [\n                \"Log No. 1\\n\",\n                \"Log No. 2\\n\",\n                \"Log No. 3\\n\",\n                \"Log No. 4\\n\",\n                \"Log No. 5\\n\"\n            ]);\n\n            assert.equal(result.isRunning, true, \"Expected process to be running\");\n            assert(T.Number.is(result.pid) && result.pid > 0, \"Should have a pid\");\n\n            await counter.kill();\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application, waits until it is ready, but exceeds given timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, \"Log No. 10\");\n\n        try {\n            const result = await counter.ready(10);\n\n            assert.deepStrictEqual(result, Result({ data: null }), \"Result should contain null\");\n            done(new Error(\"This shouldn't finish.\"));\n        } catch(err) {\n            assert.equal(err.message, \"Timeout exceeded.\", \"Timeout Error should be thrown\");\n\n            await counter.kill();\n            done();\n        }\n    });\n\n    it(\"executes an application and waits its death\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try {\n            const result = await counter.death();\n\n            result.data\n                .slice(0, -1)\n                .split(\"\\n\")\n                .forEach(function(row, iterator) {\n                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\\n Log No. ${iterator + 1}`);\n                });\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application and waits its death with a spedified timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try {\n            const result = await counter.death(500);\n\n            result.data\n                .slice(0, -1)\n                .split(\"\\n\")\n                .forEach(function(row, iterator) {\n                    assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\\n Log No. ${iterator + 1}`);\n                });\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application, waits its death, but exceeds given timeout\", async function(done) {\n        const counter = process(`node ${counterScript}`, /Log\\ No\\.\\ 10/);\n\n        try {\n            await counter.death(10);\n            done(new Error(\"Shouldn't resolve here\"));\n        } catch(err) {\n            assert.equal(err.message, \"Timeout exceeded.\", \"Timeout Error should be thrown\");\n\n            await counter.kill();\n            done();\n        }\n    });\n\n    it(\"executes an application and handles it as a stream\", function(done) {\n        const inputLogger = process(`node ${stdinLogger}`, \"\");\n        const writable    = Writable();\n        const stream      = inputLogger.stream();\n\n        writable.write = function(chunk) {\n            assert.equal(chunk, \"Hello\\n\");\n            inputLogger.kill().then(() => done()).catch(done);\n        };\n\n        stream.pipe(writable);\n        stream.write(\"Hello\");\n    });\n\n    it(\"executes an application, but terminates unexpectedly\", async function(done) {\n        const failProcess = process(`node ${failScript}`);\n\n        try {\n            await failProcess.death(1000);\n            done(new Error(\"Shouldn't resolve here\"));\n        } catch(err) {\n            assert.equal(err.message, \"Process was closed unexpectedly. Code: 1\", \"Message should be closing code with 1\");\n            done();\n        }\n    });\n\n    it(\"executes an application, awaits its death and terminates with valid exit code\", async function(done) {\n        try {\n            const validExitCodeProcess = process(`node ${exitCodeScript}`);\n            const result               = await validExitCodeProcess.death(1000, 128);\n\n            assert.equal(result.data, \"Process exited with code 100\");\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n\n    it(\"executes an application and kills it\", async function(done) {\n        try {\n            const liveProcess = process(`node ${killScript}`, /Kill me/);\n\n            await liveProcess.ready(1000);\n            await liveProcess.kill();\n            done();\n        } catch(err) {\n            assert.equal(err.message, \"Process was closed unexpectedly. Code: 137\");\n            done();\n        }\n    });\n\n    it(\"executes an application, kills it and terminates with valid exit code\", async function(done) {\n        try {\n            const liveProcess = process(`node ${killScript}`, /Kill me/);\n\n            await liveProcess.ready(1000);\n\n            const result = await liveProcess.kill([137]);\n\n            assert.equal(result.data, \"Kill me\");\n            done();\n        } catch(err) {\n            done(err);\n        }\n    });\n});\n"
   },
   {
-    "__docId__": 35,
+    "__docId__": 42,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -722,7 +841,7 @@
     }
   },
   {
-    "__docId__": 36,
+    "__docId__": 43,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -743,7 +862,7 @@
     }
   },
   {
-    "__docId__": 37,
+    "__docId__": 44,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -764,7 +883,49 @@
     }
   },
   {
-    "__docId__": 38,
+    "__docId__": 45,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "exitCodeScript",
+    "memberof": "src/__tests__/CoreWorkerTest.js",
+    "longname": "src/__tests__/CoreWorkerTest.js~exitCodeScript",
+    "access": null,
+    "export": false,
+    "importPath": "core-worker/src/__tests__/CoreWorkerTest.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 46,
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "killScript",
+    "memberof": "src/__tests__/CoreWorkerTest.js",
+    "longname": "src/__tests__/CoreWorkerTest.js~killScript",
+    "access": null,
+    "export": false,
+    "importPath": "core-worker/src/__tests__/CoreWorkerTest.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 47,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -777,7 +938,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport DuplexStream from \"../DuplexStream\";\nimport { Writable } from \"stream\";\nimport sinon from \"sinon\";\nimport assert from \"assert\";\nimport { set } from \"lodash\";\n\nconst getInstance = function(callbacks, spy) {\n    return {\n        emitter: {\n            on: (name, cb) => set(callbacks, name, cb)\n        },\n        startStream: () => {},\n        write:       chunk => spy(chunk),\n        end:         () => {}\n    };\n};\n\nconst prepareTest = function() {\n    const callbacks = {};\n    const stdinSpy  = sinon.spy();\n    const writeSpy  = sinon.spy();\n    const instance  = new DuplexStream(getInstance(callbacks, stdinSpy));\n    const writeable = new Writable();\n\n    writeable.write = data => writeSpy(data);\n    instance.pipe(writeable);\n\n    return {\n        spies: {\n            stdin: stdinSpy,\n            write: writeSpy\n        },\n        callbacks: callbacks,\n        instance:  instance\n    };\n};\n\ndescribe(\"DuplexStream\", function() {\n    it(\"Writestream Test\", function() {\n        const metrics = prepareTest();\n\n        metrics.instance.write(\"Hello\");\n        assert(metrics.spies.stdin.calledWith(new Buffer(\"Hello\")), \"Should be called with Hello\");\n        metrics.instance.write(\"Goodbye\");\n        assert(metrics.spies.stdin.calledWith(new Buffer(\"Goodbye\")), \"Should be called with Goodbye\");\n\n        metrics.instance.end();\n    });\n\n    it(\"ReadStream Test\", function() {\n        const metrics = prepareTest();\n\n        metrics.callbacks.data(\"First call\");\n        assert(metrics.spies.write.calledWith(new Buffer(\"First call\")), \"Should be called with 'First Call'\");\n\n        metrics.callbacks.data(\"Second call\");\n        assert(metrics.spies.write.calledWith(new Buffer(\"Second call\")), \"Should be called with 'Second Call'\");\n\n        metrics.instance.end();\n    });\n});\n"
   },
   {
-    "__docId__": 39,
+    "__docId__": 48,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -813,7 +974,7 @@
     "generator": false
   },
   {
-    "__docId__": 40,
+    "__docId__": 49,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -836,7 +997,20 @@
     "generator": false
   },
   {
-    "__docId__": 41,
+    "__docId__": 50,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/__tests__/ExitCodesTest.js",
+    "memberof": null,
+    "longname": "src/__tests__/ExitCodesTest.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport ExitCodes from \"../ExitCodes\";\nimport assert from \"assert\";\n\ndescribe(\"ExitCodes\", function() {\n    it(\"gets undefined and creates Exit Codes\", function() {\n        const exitCodes = ExitCodes.create(undefined); //eslint-disable-line\n\n        assert.deepEqual(exitCodes, [0]);\n    });\n\n    it(\"gets null and creates Exit Codes\", function() {\n        const exitCodes = ExitCodes.create(null); //eslint-disable-line\n\n        assert.deepEqual(exitCodes, [0]);\n    });\n\n    it(\"gets single value and creates Exit Codes\", function() {\n        const exitCodes = ExitCodes.create(100);\n\n        assert.deepEqual(exitCodes, [100]);\n    });\n\n    it(\"gets list and creates Exit Codes\", function() {\n        const exitCodes = ExitCodes.create([100, 101]);\n\n        assert.deepEqual(exitCodes, [100, 101]);\n    });\n});\n"
+  },
+  {
+    "__docId__": 51,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -846,10 +1020,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n/* eslint max-statements: [2, 12] */\nimport sinon from \"sinon\";\nimport assert from \"assert\";\nimport { keys, set } from \"lodash\";\nimport { EventEmitter } from \"events\";\nimport T from \"tcomb\";\nimport NodeProcess from \"../NodeProcess\";\nimport Result from \"../Result\";\nimport ChildProcess from \"child_process\";\n\nconst commandSpy   = sinon.spy();\nconst callbacks    = {};\nconst setCallbacks = (name, cb) => set(callbacks, name, cb);\n\nconst spawn = function(command, commandArgs) {\n    commandSpy(command, commandArgs);\n\n    return {\n        stdout: {\n            on: (name, cb) => setCallbacks(\"stdout\", cb)\n        },\n        stderr: {\n            on: (name, cb) => setCallbacks(\"stderr\", cb)\n        },\n        on:   setCallbacks,\n        kill: () => callbacks.close(0)\n    };\n};\n\ndescribe(\"NodeProcess\", function() {\n    before(function() {\n        sinon.stub(ChildProcess, \"spawn\", spawn);\n    });\n\n    after(function() {\n        ChildProcess.spawn.restore();\n    });\n\n    it(\"creates a new nodeProcess\", function() {\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Started Successfully.\");\n\n        assert.deepStrictEqual(keys(nodeProcess.instance), [\"isRunning\", \"isStreaming\", \"output\", \"lastMatch\", \"fulfilled\"], \"No Instance of child_process should be set\");\n        assert(!nodeProcess.instance.isRunning, \"Process shouldn't run after create\");\n        assert.equal(nodeProcess.command, \"node\", \"Command should be stored in Process\");\n        assert.equal(nodeProcess.commandArgs, \"Test.js\", \"CommandArgs should be stored in Process\");\n        assert(nodeProcess.filter.validate(\"Started Successfully.\"), \"Filter should be set on given String\");\n        assert(nodeProcess.emitter instanceof EventEmitter, \"emitter should be an instance of EventEmitter\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is ready(stdout)\", function() {\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Started Successfully.\");\n        const matchSpy    = sinon.spy();\n\n        nodeProcess.onReady(match => matchSpy(match));\n        nodeProcess.run();\n\n        assert(commandSpy.calledWith(\"node\", [\"Test.js\"]), `commandSpy was called with wrong args: \\n ${commandSpy.lastCall.args}`);\n        assert.deepStrictEqual(keys(callbacks), [\"stdout\", \"stderr\", \"close\"], \"Callbacks should be set after process.run\");\n\n        callbacks.stdout(\"Started Successfully.\");\n        assert(matchSpy.calledOnce, \"matchSpy wasn't called once\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is ready(stderr)\", function() {\n        callbacks.stderr  = null;\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Huge Mistake\");\n        const matchSpy    = sinon.spy();\n\n        nodeProcess.onReady(match => matchSpy(match));\n        nodeProcess.run();\n\n        assert(T.Function.is(callbacks.stderr), \"Stderr should be set again\");\n\n        callbacks.stderr(\"Huge Mistake\");\n\n        assert(matchSpy.calledOnce, \"matchSpy wasn't called once\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is closed\", function() {\n        callbacks.close   = null;\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Not necessary\");\n        const mockPromise = {\n            resolve: sinon.spy(),\n            reject:  sinon.spy()\n        };\n\n        nodeProcess.onDeath(mockPromise);\n        nodeProcess.run();\n\n        assert(T.Function.is(callbacks.close), \"Close shoud be set again\");\n        callbacks.stdout(\"Yes\");\n\n        callbacks.close(0);\n        assert(mockPromise.resolve.calledWith(Result({ data: \"Yes\" })), `closeSpy was called with wrong args: \\n ${mockPromise.resolve.args}`);\n\n        callbacks.close(1);\n        assert(mockPromise.reject.calledWith(new Error(\"Bla\")), `closeSpy was called with wrong args: \\n ${mockPromise.reject.args}`);\n    });\n});\n"
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n/* eslint max-statements: [2, 12] */\nimport sinon from \"sinon\";\nimport assert from \"assert\";\nimport { keys, set } from \"lodash\";\nimport { EventEmitter } from \"events\";\nimport T from \"tcomb\";\nimport NodeProcess from \"../NodeProcess\";\nimport Result from \"../Result\";\nimport ChildProcess from \"child_process\";\n\nconst commandSpy   = sinon.spy();\nconst callbacks    = {};\nconst setCallbacks = (name, cb) => set(callbacks, name, cb);\n\nconst spawn = function(command, commandArgs) {\n    commandSpy(command, commandArgs);\n\n    return {\n        stdout: {\n            on: (name, cb) => setCallbacks(\"stdout\", cb)\n        },\n        stderr: {\n            on: (name, cb) => setCallbacks(\"stderr\", cb)\n        },\n        on:   setCallbacks,\n        kill: () => callbacks.close(0)\n    };\n};\n\ndescribe(\"NodeProcess\", function() {\n    before(function() {\n        sinon.stub(ChildProcess, \"spawn\", spawn);\n    });\n\n    after(function() {\n        ChildProcess.spawn.restore();\n    });\n\n    it(\"creates a new nodeProcess\", function() {\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Started Successfully.\");\n\n        assert.deepStrictEqual(keys(nodeProcess.instance), [\"exitCodes\", \"isRunning\", \"isStreaming\", \"output\", \"lastMatch\", \"fulfilled\"], \"No Instance of child_process should be set\");\n        assert(!nodeProcess.instance.isRunning, \"Process shouldn't run after create\");\n        assert.equal(nodeProcess.command, \"node\", \"Command should be stored in Process\");\n        assert.equal(nodeProcess.commandArgs, \"Test.js\", \"CommandArgs should be stored in Process\");\n        assert(nodeProcess.filter.validate(\"Started Successfully.\"), \"Filter should be set on given String\");\n        assert(nodeProcess.emitter instanceof EventEmitter, \"emitter should be an instance of EventEmitter\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is ready(stdout)\", function() {\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Started Successfully.\");\n        const matchSpy    = sinon.spy();\n\n        nodeProcess.onReady(match => matchSpy(match));\n        nodeProcess.run();\n\n        assert(commandSpy.calledWith(\"node\", [\"Test.js\"]), `commandSpy was called with wrong args: \\n ${commandSpy.lastCall.args}`);\n        assert.deepStrictEqual(keys(callbacks), [\"stdout\", \"stderr\", \"close\"], \"Callbacks should be set after process.run\");\n\n        callbacks.stdout(\"Started Successfully.\");\n        assert(matchSpy.calledOnce, \"matchSpy wasn't called once\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is ready(stderr)\", function() {\n        callbacks.stderr  = null;\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Huge Mistake\");\n        const matchSpy    = sinon.spy();\n\n        nodeProcess.onReady(match => matchSpy(match));\n        nodeProcess.run();\n\n        assert(T.Function.is(callbacks.stderr), \"Stderr should be set again\");\n\n        callbacks.stderr(\"Huge Mistake\");\n\n        assert(matchSpy.calledOnce, \"matchSpy wasn't called once\");\n    });\n\n    it(\"starts a nodeProcess and waits until it is closed\", function() { //eslint-disable-line\n        callbacks.close   = null;\n        const nodeProcess = NodeProcess.create(\"node Test.js\", \"Not necessary\");\n        const mockPromise = {\n            resolve: sinon.spy(),\n            reject:  sinon.spy()\n        };\n\n        nodeProcess.onDeath(mockPromise, [0]);\n        nodeProcess.run();\n\n        assert(T.Function.is(callbacks.close), \"Close shoud be set again\");\n        callbacks.stdout(\"Yes\");\n\n        callbacks.close(0);\n        assert(mockPromise.resolve.calledWith(Result({ data: \"Yes\" })), `closeSpy was called with wrong args: \\n ${mockPromise.resolve.args}`);\n\n        callbacks.close(1);\n        assert(mockPromise.reject.calledWith(new Error(\"Bla\")), `closeSpy was called with wrong args: \\n ${mockPromise.reject.args}`);\n    });\n});\n"
   },
   {
-    "__docId__": 42,
+    "__docId__": 52,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -870,7 +1044,7 @@
     }
   },
   {
-    "__docId__": 43,
+    "__docId__": 53,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -891,7 +1065,7 @@
     }
   },
   {
-    "__docId__": 44,
+    "__docId__": 54,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -912,7 +1086,7 @@
     }
   },
   {
-    "__docId__": 45,
+    "__docId__": 55,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -948,7 +1122,7 @@
     "generator": false
   },
   {
-    "__docId__": 46,
+    "__docId__": 56,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -961,7 +1135,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport sinon from \"sinon\";\nimport assert from \"assert\";\nimport Process from \"../Process\";\nimport NodeProcess from \"../NodeProcess\";\nimport { assign } from \"lodash\";\nimport TimeoutError from \"../TimeoutError\";\nimport { Writable } from \"stream\";\n\nconst test = (function() {\n    const parameters = {\n        promises: [],\n        resolve:  null,\n        spies:    {\n            kill:   sinon.spy(),\n            stdin:  sinon.spy(),\n            stdout: sinon.spy()\n        }\n    };\n\n    return {\n        all:   () => parameters,\n        spies: () => parameters.spies,\n        set:   params => assign(parameters, params)\n    };\n}());\n\nconst write = chunk => test.spies().stdin(chunk);\n\nconst run = function() {\n    assign(this.instance, {\n        isRunning: true\n    });\n    const promises = test.all().promises;\n\n    setTimeout(function() {\n        const resolvedValue = test.all().resolve;\n\n        promises.forEach(resolve => resolve(resolvedValue));\n        assign(this.instance, {\n            isRunning: false,\n            fulfilled: true,\n            lastMatch: resolvedValue\n        });\n\n        test.set({ promises: [] });\n    }.bind(this), 3);\n};\n\nconst runTimingout = function() {\n    assign(this.instance, {\n        isRunning: true\n    });\n    setTimeout(function() {\n        this.emitter.emit(\"timeout\");\n    }.bind(this), 2);\n};\n\nconst runWithConsoleOutput = function() {\n    assign(this.instance, {\n        isRunning: true\n    });\n    this.emitter.on(\"data\", data => this.store(data.toString()));\n    this.emitter.on(\"data\", data => this.validate(data.toString()));\n    this.emitter.emit(\"data\", \"Foo\");\n    this.emitter.emit(\"data\", \"Bar\");\n    setTimeout(function() {\n        this.emitter.emit(\"timeout\");\n    }.bind(this), 2);\n};\n\nconst onReady = function(resolve) {\n    test.set({\n        promises: test.all().promises.concat(resolve)\n    });\n};\n\nconst onDeath = function(deferred) {\n    test.set({\n        promises: test.all().promises.concat(deferred.resolve)\n    });\n};\n\nconst kill = function(reason) {\n    test.spies().kill(reason);\n};\n\nconst restoreAndSet = function(toRestore, toSet, functionName, stubFunction) {\n    toRestore.restore();\n    sinon.stub(toSet, functionName, stubFunction);\n};\n\ndescribe(\"Process\", function() {\n    before(function() {\n        sinon.stub(NodeProcess.prototype, \"run\", run);\n        sinon.stub(NodeProcess.prototype, \"write\", write);\n        sinon.stub(NodeProcess.prototype, \"onReady\", onReady);\n        sinon.stub(NodeProcess.prototype, \"onDeath\", onDeath);\n        sinon.stub(NodeProcess.prototype, \"kill\", kill);\n        this.clock = sinon.useFakeTimers();\n    });\n\n    after(function() {\n        NodeProcess.prototype.run.restore();\n        NodeProcess.prototype.onReady.restore();\n        NodeProcess.prototype.onDeath.restore();\n        NodeProcess.prototype.kill.restore();\n        NodeProcess.prototype.write.restore();\n        this.clock.restore();\n    });\n\n    it(\"creates a new Instance\", function() {\n        const process = Process.create(\"node Test.js\", \"TestString\");\n\n        assert(process.instance instanceof NodeProcess, \"Instance should be instanceof NodeProcess\");\n        assert(!process.instance.isRunning(), \"Instance shouldn't run after create\");\n        assert(!process.instance.isReady(), \"Instanc shouldn't be ready after create\");\n    });\n\n    it(\"runs a new Instance and waits until it is ready\", function(done) {\n        test.set({ resolve: \"TestString\" });\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.ready(10).then(function(match) {\n            assert.equal(match, \"TestString\", \"TestString should be resolved\");\n            done();\n        }).catch(done);\n\n        this.clock.tick(3);\n    });\n\n    it(\"runs a new Instance and waits until it is ready exceeding given timeout\", function(done) {\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", runTimingout);\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.ready(3).then(function() {\n            done(new Error(\"Promise shouldn't get resolved\"));\n        }).catch(function(err) {\n            assert(TimeoutError.is(err), \"Error is not an instance of TimeoutError\");\n            assert.equal(err.message, \"Timeout exceeded.\");\n            done();\n        });\n\n        this.clock.tick(2);\n\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", run);\n    });\n\n    it(\"runs a new Instance, waits until it is ready exceeding given timeout and checks last process output in error\", function(done) {\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", runWithConsoleOutput);\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.ready(3).then(function() {\n            done(new Error(\"Promise shouldn't get resolved\"));\n        }).catch(function(err) {\n            assert(TimeoutError.is(err), \"Error is not an instance of TimeoutError\");\n            assert.equal(err.message, \"Timeout exceeded. Last process output is: Bar\");\n            done();\n        });\n\n        this.clock.tick(2);\n\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", run);\n    });\n\n    it(\"runs a new Instance and waits until death\", function(done) {\n        test.set({\n            resolve: {\n                data: \"TestString\"\n            }\n        });\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.death().then(function(data) {\n            assert.deepStrictEqual(data, { data: \"TestString\" }, `TestString should be resolved: \\n ${JSON.stringify(data)}`);\n            done();\n        }).catch(done);\n\n        this.clock.tick(3);\n    });\n\n    it(\"runs a new Instance and waits until death exceeding given timeout\", function(done) {\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", runTimingout);\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.death(1).then(function() {\n            done(new Error(\"Promise shouldn't get resolved.\"));\n        }).catch(function(err) {\n            assert(TimeoutError.is(err), \"Error is not an instance of TimeoutError\");\n            assert.equal(err.message, \"Timeout exceeded.\");\n            done();\n        });\n\n        this.clock.tick(2);\n\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", run);\n    });\n\n    it(\"runs a new Instance, waits until death exceeding given timeout and checks last process output in error\", function(done) {\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", runWithConsoleOutput);\n\n        const instance = Process.create(\"node Test.js\", \"TestString\");\n\n        instance.death(1).then(function() {\n            done(new Error(\"Promise shouldn't get resolved.\"));\n        }).catch(function(err) {\n            assert(TimeoutError.is(err), \"Error is not an instance of TimeoutError\");\n            assert.equal(err.message, \"Timeout exceeded. Last process output is: Bar\");\n            done();\n        });\n\n        this.clock.tick(2);\n\n        restoreAndSet(NodeProcess.prototype.run, NodeProcess.prototype, \"run\", run);\n    });\n\n    it(\"runs a new Instance and returns a stream\", function() { // eslint-disable-line\n        test.set({ resolve: \"TestString\" });\n\n        const process   = Process.create(\"node Test.js\", \"TestString\");\n        const stream    = process.stream();\n        const pipeSpy   = sinon.spy();\n        const streamSpy = new Writable({ // eslint-disable-line\n            \"write\": (data, enc, next) => {\n                pipeSpy(data);\n                next();\n            }\n        });\n\n        stream.pipe(streamSpy);\n        stream.write(\"Test\");\n\n        assert(test.spies().stdin.calledWith(new Buffer(\"Test\")), `stdinSpy was called with wrong args: \\n ${test.spies().stdin.lastCall.args}`);\n\n        process.instance.emitter.emit(\"data\", \"Test2\");\n        assert(pipeSpy.calledWith(new Buffer(\"Test2\")), `pipeSpy was called with wrong args: \\n ${pipeSpy.lastCall.args}`);\n\n        assert.throws(process.stream, \"It should only run one instance\");\n    });\n});\n"
   },
   {
-    "__docId__": 47,
+    "__docId__": 57,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -982,7 +1156,7 @@
     }
   },
   {
-    "__docId__": 48,
+    "__docId__": 58,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1003,7 +1177,7 @@
     }
   },
   {
-    "__docId__": 49,
+    "__docId__": 59,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1021,7 +1195,7 @@
     "generator": false
   },
   {
-    "__docId__": 50,
+    "__docId__": 60,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1039,7 +1213,7 @@
     "generator": false
   },
   {
-    "__docId__": 51,
+    "__docId__": 61,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1057,7 +1231,7 @@
     "generator": false
   },
   {
-    "__docId__": 52,
+    "__docId__": 62,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1082,7 +1256,7 @@
     "generator": false
   },
   {
-    "__docId__": 53,
+    "__docId__": 63,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1107,7 +1281,7 @@
     "generator": false
   },
   {
-    "__docId__": 54,
+    "__docId__": 64,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1132,7 +1306,7 @@
     "generator": false
   },
   {
-    "__docId__": 55,
+    "__docId__": 65,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1175,7 +1349,7 @@
     "generator": false
   },
   {
-    "__docId__": 56,
+    "__docId__": 66,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1188,7 +1362,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Result from \"../Result\";\nimport assert from \"assert\";\n\ndescribe(\"Result\", function() {\n    it(\"creates a new Result\", function() {\n        const result1 = Result.create(null);\n        const result2 = Result.create(\"test\");\n\n        assert.deepStrictEqual(result1, Result({ data: null }), \"Result should handle null-input\");\n        assert.deepStrictEqual(result2, Result({ data: \"test\" }), \"Result should handle string-input\");\n        assert.throws(Result.create.bind(null, [\"test\"]), TypeError, \"Result should only handle string || null\");\n    });\n});\n"
   },
   {
-    "__docId__": 57,
+    "__docId__": 67,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1201,7 +1375,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nclass Increment {\n    static create() {\n        return new Increment();\n    }\n\n    constructor() {\n        this.counter  = 0;\n        this.interval = setInterval(::this.increase, 1);\n    }\n\n    /**\n     * Increases the counter by 1\n     *\n     * @return {Nil}\n     */\n    increase() {\n        this.counter = this.counter + 1;\n\n        console.log(`Log No. ${this.counter}`);\n        return this.counter > 39 ? clearInterval(this.interval) : null;\n    }\n}\n\nIncrement.create();\n"
   },
   {
-    "__docId__": 58,
+    "__docId__": 68,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1218,7 +1392,7 @@
     "interface": false
   },
   {
-    "__docId__": 59,
+    "__docId__": 69,
     "kind": "method",
     "static": true,
     "variation": null,
@@ -1238,7 +1412,7 @@
     "generator": false
   },
   {
-    "__docId__": 60,
+    "__docId__": 70,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1253,7 +1427,7 @@
     "generator": false
   },
   {
-    "__docId__": 61,
+    "__docId__": 71,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1271,7 +1445,7 @@
     }
   },
   {
-    "__docId__": 62,
+    "__docId__": 72,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1289,7 +1463,7 @@
     }
   },
   {
-    "__docId__": 63,
+    "__docId__": 73,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1311,7 +1485,7 @@
     "generator": false
   },
   {
-    "__docId__": 64,
+    "__docId__": 74,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1329,7 +1503,38 @@
     }
   },
   {
-    "__docId__": 65,
+    "__docId__": 75,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/__tests__/Scripts/ExitCodeScript.js",
+    "memberof": null,
+    "longname": "src/__tests__/Scripts/ExitCodeScript.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n const exit = function() {\n     process.stdout.write(\"Process exited with code 100\");\n     process.exit(128);\n };\n\n setTimeout(exit, 5);\n"
+  },
+  {
+    "__docId__": 76,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "exit",
+    "memberof": "src/__tests__/Scripts/ExitCodeScript.js",
+    "longname": "src/__tests__/Scripts/ExitCodeScript.js~exit",
+    "access": null,
+    "export": false,
+    "importPath": "core-worker/src/__tests__/Scripts/ExitCodeScript.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 77,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1342,7 +1547,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nconst fails = function() {\n    throw new Error(\"Process failed\");\n};\n\nsetTimeout(fails, 5);\n"
   },
   {
-    "__docId__": 66,
+    "__docId__": 78,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1360,7 +1565,38 @@
     "generator": false
   },
   {
-    "__docId__": 67,
+    "__docId__": 79,
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "src/__tests__/Scripts/KillScript.js",
+    "memberof": null,
+    "longname": "src/__tests__/Scripts/KillScript.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nconst live = function live() {\n    process.stdout.write(\"Kill me\");\n    process.on(\"exit\", () => process.exit(137));\n};\n\nsetTimeout(live, 50);\n"
+  },
+  {
+    "__docId__": 80,
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "live",
+    "memberof": "src/__tests__/Scripts/KillScript.js",
+    "longname": "src/__tests__/Scripts/KillScript.js~live",
+    "access": null,
+    "export": false,
+    "importPath": "core-worker/src/__tests__/Scripts/KillScript.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 19,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "__docId__": 81,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1373,7 +1609,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nprocess.stdin.resume();\nprocess.stdin.on(\"data\", function(data) {\n    console.log(Buffer.isBuffer(data) ? data.toString() : data);\n});\n"
   },
   {
-    "__docId__": 68,
+    "__docId__": 82,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1386,7 +1622,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport TimeoutError from \"../TimeoutError\";\nimport assert from \"assert\";\n\ndescribe(\"TimeoutError\", function() {\n    it(\"creates a new TimeoutError without a null argument\", function(done) {\n        /* eslint-disable */\n        try {\n        /* eslint-ensable */\n            throw TimeoutError.create(null);\n            done(new Error(\"TimeoutError should have been caught\"));\n        } catch(err) {\n            assert.equal(\"Timeout exceeded.\", err.message);\n            done();\n        }\n    });\n\n    it(\"creates a new TimeoutError with a non null argument\", function(done) {\n        /* eslint-disable */\n        try {\n        /* eslint-enable */\n            throw TimeoutError.create(\"Foobar\");\n            done(new Error(\"Error should have been caught\"));\n        } catch(err) {\n            assert.equal(\"Timeout exceeded. Last process output is: Foobar\", err.message);\n            done();\n        }\n    });\n\n    it(\"creates a new TimeoutError with a non null but empty argument\", function(done) {\n        /* eslint-disable */\n        try {\n        /* eslint-enable */\n            throw TimeoutError.create(\"\");\n            done(new Error(\"Error should have been caught\"));\n        } catch(err) {\n            assert.equal(\"Timeout exceeded.\", err.message);\n            done();\n        }\n    });\n});\n"
   },
   {
-    "__docId__": 69,
+    "__docId__": 83,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1399,7 +1635,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport Validator from \"../Validator\";\nimport assert from \"assert\";\nimport Result from \"../Result.type\";\n\ndescribe(\"Validator\", function() {\n    it(\"creates a new Validator out of a String\", function() {\n        const filter = Validator.create(\"match me\");\n        const data   = \"Check If This match me\";\n\n        assert(filter.validate(\"Check If This match me\"), \"Should match String\");\n        assert.deepStrictEqual(filter.getResult(data), Result({ data: null }), \"Should be equal to input\");\n        assert(!filter.validate(\"This shouldnt match.\"), \"Shouldn't match String\");\n    });\n\n    it(\"creates a new Validator out of a RegExp\", function() {\n        const filter   = Validator.create(/(https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?/);\n\n        assert(filter.validate(\"New URL: http://www.google.de\"), \"Should return true\");\n        assert.deepStrictEqual(filter.getResult(\"New URL: http://www.google.de\"), Result({ data: \"http://www.google.de\" }), \"Should match Url\");\n        assert(!filter.validate(\"Numbers like 1,2,3 are not allowed.\"), \"Shouldn't match String\");\n    });\n\n    it(\"creates a new Validator out of a Function\", function() {\n        const search = value => value === \"search\";\n        const filter = Validator.create(search);\n\n        assert(filter.validate(\"search\"), \"Should match given String\");\n        assert.deepStrictEqual(filter.getResult(\"search me or not\"), Result({ data: null }), \"Should return input\");\n        assert(!filter.validate(\"Numbers like 1,2,3 are not allowed.\"), \"Shouldn't match String\");\n    });\n\n    it(\"throws an Error, if wrong condition is given\", function() {\n        assert.throws(Validator.create.bind(null, {}), TypeError);\n        assert.throws(Validator.create.bind(null, []), TypeError);\n    });\n});\n"
   },
   {
-    "__docId__": 70,
+    "__docId__": 84,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1412,7 +1648,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\nimport http from \"http\";\n\n/**\n * First a http-Server is needed\n */\nconst server = http.createServer(function(req, res) {\n    console.log(\"Got request\");\n    res.writeHead(200, { \"Content-Type\": \"text/plain\" });\n    res.end(\"Okay\");\n});\n\n/**\n * Upgrades to Websocket\n */\nserver.on(\"upgrade\", function(req, socket) {\n    const handshake = \"HTTP/1.1 101 Web Socket Protocol Handshake\\r\\n\" +\n        \"Upgrade: WebSocket\\r\\n\" +\n        \"Connection: Upgrade\\r\\n\" +\n        \"\\r\\n\";\n\n    socket.write(handshake);\n    socket.on(\"end\", function() {\n        console.log(\"Closing Server\");\n        server.close();\n    });\n});\n\n/*\n * Starts the Http Server listening on localhost:1337\n */\nserver.listen(1337, \"127.0.0.1\", function() {\n    console.log(\"Listening on 127.0.0.1:1337\");\n    const options = {\n        port:     1337,\n        hostname: \"127.0.0.1\",\n        headers:  {\n            Connection: \"Upgrade\",\n            Upgrade:    \"websocket\"\n        }\n    };\n    const req     = http.request(options);\n\n    req.end();\n\n    /**\n     * Upgrades Request to Websocket\n     */\n    req.on(\"upgrade\", function(res, socket) {\n        console.log(\"Request was upgraded successfully to new Websocket\");\n        socket.end();\n    });\n});\n"
   },
   {
-    "__docId__": 71,
+    "__docId__": 85,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1432,7 +1668,7 @@
     }
   },
   {
-    "__docId__": 72,
+    "__docId__": 86,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1445,7 +1681,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n// It does nothing, but getting copied by ../death.js\n\nconst firstArgument = \"My First String\";\n\nconsole.log(firstArgument);\n"
   },
   {
-    "__docId__": 73,
+    "__docId__": 87,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1466,7 +1702,7 @@
     }
   },
   {
-    "__docId__": 74,
+    "__docId__": 88,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1479,7 +1715,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n/*\n * Runs a Script that increases a counter each millisecond and logs it\n * This example waits until Process is finished\n */\nimport path from \"path\";\nimport { process } from \"../index\";\n\nconst copyProcess   = process(`cp ${path.join(__dirname, \"Resources/dummyfile\")} ${path.join(__dirname, \"Resources/copiedDummyfile\")}`);\nconst removeProcess = process(`rm ${path.join(__dirname, \"Resources/copiedDummyfile\")}`);\nconst copyAndRemove = async function() {\n    /*eslint-disable*/\n    try {\n    /*eslint-enable*/\n        console.log(\"> Copy file: dummyfile\");\n        await copyProcess.death(500);\n        console.log(\"> Finished copy process: dummyfile -> copiedDummyfile\");\n\n        console.log(\"> Remove file: copiedDummyfile\");\n        await removeProcess.death(500);\n        console.log(\"> Finished remove process: copiedDummyfile -> -\");\n    } catch(err) {\n        console.log(\"Failed to copy or remove a single file: \\n\", err.message);\n    }\n};\n\ncopyAndRemove();\n"
   },
   {
-    "__docId__": 75,
+    "__docId__": 89,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1500,7 +1736,7 @@
     }
   },
   {
-    "__docId__": 76,
+    "__docId__": 90,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1521,7 +1757,7 @@
     }
   },
   {
-    "__docId__": 77,
+    "__docId__": 91,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1539,7 +1775,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 92,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1552,7 +1788,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n/*\n * Runs a Script that increases a counter each millisecond and logs it\n * This example waits until Process is ready\n */\nimport path from \"path\";\nimport { process } from \"../index\";\n\nconst websocketPath   = path.join(__dirname, \"Resources/Websocket\");\nconst websocket       = process(`node ${websocketPath}`, \"Request was upgraded successfully to new Websocket\");\nconst createWebsocket = async function() {\n    /* eslint-disable */\n    try {\n    /* eslint-enable */\n        console.log(\"> Creating a websocket\");\n        const result = await websocket.ready(1000);\n\n        /*\n         * If Promise gets resolved, a Result is returned containing ...\n         *\n         * condition === Regex                            --> { data: MatchedString }\n         * condition === String || condition === Function --> { data: null }\n         */\n        console.log(\"> Websocket is ready to use, returning the following result: \\n\", result);\n        console.log(\"> Shutdown process...\");\n\n        websocket.kill();\n    } catch(err) {\n        console.log(\"Failed to create Websocket\", err.message);\n        websocket.kill();\n    }\n};\n\ncreateWebsocket();\n"
   },
   {
-    "__docId__": 79,
+    "__docId__": 93,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1573,7 +1809,7 @@
     }
   },
   {
-    "__docId__": 80,
+    "__docId__": 94,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1594,7 +1830,7 @@
     }
   },
   {
-    "__docId__": 81,
+    "__docId__": 95,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1612,7 +1848,7 @@
     "generator": false
   },
   {
-    "__docId__": 82,
+    "__docId__": 96,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1625,7 +1861,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n/*\n * Runs a Script that listens on stdin and logs it\n * This example will return a stream\n */\nimport path from \"path\";\nimport fs from \"fs\";\nimport { Writable } from \"stream\";\nimport { process } from \"../index\";\n\nconst dummyfile   = path.join(__dirname, \"Resources/dummyfile\");\nconst writeStream = new Writable();\nconst grep        = process(\"grep first\", \"\");\nconst stream      = grep.stream();\n\nwriteStream.write = function(output) {\n    console.log(\"> Found the following matches in file:\\n\", output.slice(0, -1));\n\n    console.log(\"> Closing..\");\n    grep.kill();\n};\n\nfs.createReadStream(dummyfile).pipe(stream).pipe(writeStream);\n"
   },
   {
-    "__docId__": 83,
+    "__docId__": 97,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1646,7 +1882,7 @@
     }
   },
   {
-    "__docId__": 84,
+    "__docId__": 98,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1667,7 +1903,7 @@
     }
   },
   {
-    "__docId__": 85,
+    "__docId__": 99,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1688,7 +1924,7 @@
     }
   },
   {
-    "__docId__": 86,
+    "__docId__": 100,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1709,7 +1945,7 @@
     }
   },
   {
-    "__docId__": 87,
+    "__docId__": 101,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -1734,7 +1970,7 @@
     "generator": false
   },
   {
-    "__docId__": 88,
+    "__docId__": 102,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1747,7 +1983,7 @@
     "content": "/*\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n */\n\n import TProcess from \"./Process\";\n\n export const process = ::TProcess.create;\n export const Process = TProcess;\n"
   },
   {
-    "__docId__": 89,
+    "__docId__": 103,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1768,7 +2004,7 @@
     }
   },
   {
-    "__docId__": 90,
+    "__docId__": 104,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1789,7 +2025,7 @@
     }
   },
   {
-    "__docId__": 92,
+    "__docId__": 106,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1802,7 +2038,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 93,
+    "__docId__": 107,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1815,7 +2051,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 94,
+    "__docId__": 108,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1828,7 +2064,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 95,
+    "__docId__": 109,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1841,7 +2077,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 96,
+    "__docId__": 110,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1854,7 +2090,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 97,
+    "__docId__": 111,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1867,7 +2103,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 98,
+    "__docId__": 112,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1880,7 +2116,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 99,
+    "__docId__": 113,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1893,7 +2129,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 100,
+    "__docId__": 114,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1906,7 +2142,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 101,
+    "__docId__": 115,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1919,7 +2155,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 102,
+    "__docId__": 116,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1932,7 +2168,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 103,
+    "__docId__": 117,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1945,7 +2181,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 104,
+    "__docId__": 118,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1958,7 +2194,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 105,
+    "__docId__": 119,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1971,7 +2207,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 106,
+    "__docId__": 120,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1984,7 +2220,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 107,
+    "__docId__": 121,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -1997,7 +2233,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 108,
+    "__docId__": 122,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2010,7 +2246,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 109,
+    "__docId__": 123,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2023,7 +2259,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 110,
+    "__docId__": 124,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2036,7 +2272,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 111,
+    "__docId__": 125,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2049,7 +2285,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 112,
+    "__docId__": 126,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2062,7 +2298,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 113,
+    "__docId__": 127,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2075,7 +2311,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 114,
+    "__docId__": 128,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2088,7 +2324,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 115,
+    "__docId__": 129,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2101,7 +2337,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 116,
+    "__docId__": 130,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2114,7 +2350,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 117,
+    "__docId__": 131,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2127,7 +2363,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 118,
+    "__docId__": 132,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2140,7 +2376,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 119,
+    "__docId__": 133,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2153,7 +2389,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 120,
+    "__docId__": 134,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2166,7 +2402,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 121,
+    "__docId__": 135,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2179,7 +2415,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 122,
+    "__docId__": 136,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2192,7 +2428,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 123,
+    "__docId__": 137,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2205,7 +2441,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 138,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2218,7 +2454,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 139,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2231,7 +2467,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 140,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2244,7 +2480,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 141,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2257,7 +2493,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 142,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2270,7 +2506,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 143,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2283,7 +2519,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 144,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2296,7 +2532,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 145,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2309,7 +2545,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 146,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2322,7 +2558,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 147,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2335,7 +2571,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 148,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2348,7 +2584,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 149,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2361,7 +2597,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 150,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2374,7 +2610,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 151,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2387,7 +2623,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 152,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2400,7 +2636,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 154,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2413,7 +2649,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 155,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2426,7 +2662,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 156,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2439,7 +2675,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 157,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2452,7 +2688,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 158,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2465,7 +2701,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 159,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2478,7 +2714,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 160,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -2491,7 +2727,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 161,
     "kind": "external",
     "static": true,
     "variation": null,

@@ -37,7 +37,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-process">process</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Condition">Condition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DuplexStream">DuplexStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCode">ExitCode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCodes">ExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Instance">Instance</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MaybeExitCodes">MaybeExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeProcess">NodeProcess</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-null">null</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Process">Process</a></span></span></li>
@@ -78,6 +81,7 @@ import Result from &quot;./Result&quot;;
 import NotNil from &quot;./NotNil.type&quot;;
 import TimeoutError from &quot;./TimeoutError&quot;;
 import Q from &quot;q&quot;;
+import ExitCodes from &quot;./ExitCodes.type&quot;;
 
 /**
  * Collects data and emits it afterwards
@@ -122,7 +126,7 @@ NodeProcess.prototype.run = function(timeout = 0) {
     this.emitter.on(&quot;data&quot;, data =&gt; this.validate(data.toString()));
     process.stdout.on(&quot;data&quot;, data =&gt; this.emitter.emit(&quot;data&quot;, data.toString()));
     process.stderr.on(&quot;data&quot;, data =&gt; this.emitter.emit(&quot;data&quot;, `&lt;error&gt; ${data}`));
-    process.on(&quot;close&quot;, (code, signal) =&gt; code === 0 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
+    process.on(&quot;close&quot;, (code, signal) =&gt; this.instance.exitCodes.indexOf(code) &gt; -1 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -164,7 +168,7 @@ NodeProcess.prototype.end = T.func([], T.Nil, &quot;nodeProcess.end&quot;).of(fu
  *
  * @return {Promise}
  */
-NodeProcess.prototype.kill = T.func([], T.Object, &quot;nodeProcess.kill&quot;).of(function() {
+NodeProcess.prototype.kill = T.func([T.list(T.Number)], T.Object, &quot;nodeProcess.kill&quot;).of(function(exitCodes) {
     const deferred     = Q.defer();
     const onNotRunning = () =&gt; {
         deferred.reject(new Error(&quot;Instance isn&apos;t running&quot;));
@@ -174,7 +178,7 @@ NodeProcess.prototype.kill = T.func([], T.Object, &quot;nodeProcess.kill&quot;).
 
     if(!this.isRunning) return onNotRunning();
 
-    this.onDeath(deferred);
+    this.onDeath(deferred, exitCodes);
     this.instance.isStreaming &amp;&amp; this.instance.stdin.pause(); // eslint-disable-line
     this.instance.kill();
 
@@ -204,7 +208,9 @@ NodeProcess.prototype.finish = T.func([], T.Nil, &quot;nodeProcess.finish&quot;)
  *
  * @param {Promise} deferred executed after Process was closed
  */
-NodeProcess.prototype.onDeath = T.func([T.Object], T.Nil, &quot;nodeProcess.onDeath&quot;).of(function(deferred) {
+NodeProcess.prototype.onDeath = T.func([T.Object, ExitCodes], T.Nil, &quot;nodeProcess.onDeath&quot;).of(function(deferred, exitCodes) {
+    assign(this.instance, { exitCodes: exitCodes });
+
     this.emitter.on(&quot;death&quot;, deferred.resolve);
     this.emitter.on(&quot;failure&quot;, deferred.reject);
 });
@@ -281,6 +287,7 @@ NodeProcess.create = T.func([T.String, Condition], NodeProcess, &quot;NodeProces
         commandArgs: splittedCommand.slice(1),
         filter:      filter,
         instance:    {
+            exitCodes:   ExitCodes.create(),
             isRunning:   false,
             isStreaming: false,
             output:      [],

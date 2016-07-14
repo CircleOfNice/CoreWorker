@@ -1,0 +1,524 @@
+{
+  "type": "Program",
+  "start": 0,
+  "end": 956,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 27,
+      "column": 0
+    }
+  },
+  "sourceType": "module",
+  "body": [
+    {
+      "type": "ImportDeclaration",
+      "start": 741,
+      "end": 763,
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 22
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 748,
+          "end": 749,
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 7
+            },
+            "end": {
+              "line": 19,
+              "column": 8
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 748,
+            "end": 749,
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 7
+              },
+              "end": {
+                "line": 19,
+                "column": 8
+              }
+            },
+            "name": "T",
+            "leadingComments": null
+          },
+          "leadingComments": null
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 755,
+        "end": 762,
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 14
+          },
+          "end": {
+            "line": 19,
+            "column": 21
+          }
+        },
+        "value": "tcomb",
+        "rawValue": "tcomb",
+        "raw": "\"tcomb\""
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "\n * This file is part of CoreWorker.\n *\n * CoreWorker is free software: you can redistribute it and/or modify\n * it under the terms of the GNU General Public License as published by\n * the Free Software Foundation, either version 3 of the License, or\n * (at your option) any later version.\n *\n * CoreWorker is distributed in the hope that it will be useful,\n * but WITHOUT ANY WARRANTY; without even the implied warranty of\n * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\n * GNU General Public License for more details.\n * You should have received a copy of the GNU General Public License\n * along with CoreWorker.  If not, see <http://www.gnu.org/licenses/>.\n *\n * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)\n ",
+          "start": 0,
+          "end": 739,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 0
+            },
+            "end": {
+              "line": 17,
+              "column": 3
+            }
+          },
+          "range": [
+            0,
+            739
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ImportDeclaration",
+      "start": 764,
+      "end": 803,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 39
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 771,
+          "end": 779,
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 7
+            },
+            "end": {
+              "line": 20,
+              "column": 15
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 771,
+            "end": 779,
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 7
+              },
+              "end": {
+                "line": 20,
+                "column": 15
+              }
+            },
+            "name": "ExitCode"
+          }
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 785,
+        "end": 802,
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 21
+          },
+          "end": {
+            "line": 20,
+            "column": 38
+          }
+        },
+        "value": "./ExitCode.type",
+        "rawValue": "./ExitCode.type",
+        "raw": "\"./ExitCode.type\""
+      }
+    },
+    {
+      "type": "ImportDeclaration",
+      "start": 804,
+      "end": 845,
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 41
+        }
+      },
+      "specifiers": [
+        {
+          "type": "ImportDefaultSpecifier",
+          "start": 811,
+          "end": 820,
+          "loc": {
+            "start": {
+              "line": 21,
+              "column": 7
+            },
+            "end": {
+              "line": 21,
+              "column": 16
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "start": 811,
+            "end": 820,
+            "loc": {
+              "start": {
+                "line": 21,
+                "column": 7
+              },
+              "end": {
+                "line": 21,
+                "column": 16
+              }
+            },
+            "name": "ExitCodes"
+          }
+        }
+      ],
+      "importKind": "value",
+      "source": {
+        "type": "Literal",
+        "start": 826,
+        "end": 844,
+        "loc": {
+          "start": {
+            "line": 21,
+            "column": 22
+          },
+          "end": {
+            "line": 21,
+            "column": 40
+          }
+        },
+        "value": "./ExitCodes.type",
+        "rawValue": "./ExitCodes.type",
+        "raw": "\"./ExitCodes.type\""
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @typedef MaybeExitCodes\n ",
+          "start": 847,
+          "end": 881,
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 0
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          },
+          "range": [
+            847,
+            881
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ExportDefaultDeclaration",
+      "start": 882,
+      "end": 955,
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 73
+        }
+      },
+      "declaration": {
+        "type": "CallExpression",
+        "start": 897,
+        "end": 954,
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 15
+          },
+          "end": {
+            "line": 26,
+            "column": 72
+          }
+        },
+        "callee": {
+          "type": "MemberExpression",
+          "start": 897,
+          "end": 904,
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 15
+            },
+            "end": {
+              "line": 26,
+              "column": 22
+            }
+          },
+          "object": {
+            "type": "Identifier",
+            "start": 897,
+            "end": 898,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 15
+              },
+              "end": {
+                "line": 26,
+                "column": 16
+              }
+            },
+            "name": "T",
+            "leadingComments": null
+          },
+          "property": {
+            "type": "Identifier",
+            "start": 899,
+            "end": 904,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 17
+              },
+              "end": {
+                "line": 26,
+                "column": 22
+              }
+            },
+            "name": "maybe"
+          },
+          "computed": false,
+          "leadingComments": null
+        },
+        "arguments": [
+          {
+            "type": "CallExpression",
+            "start": 905,
+            "end": 935,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 23
+              },
+              "end": {
+                "line": 26,
+                "column": 53
+              }
+            },
+            "callee": {
+              "type": "MemberExpression",
+              "start": 905,
+              "end": 912,
+              "loc": {
+                "start": {
+                  "line": 26,
+                  "column": 23
+                },
+                "end": {
+                  "line": 26,
+                  "column": 30
+                }
+              },
+              "object": {
+                "type": "Identifier",
+                "start": 905,
+                "end": 906,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 23
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 24
+                  }
+                },
+                "name": "T"
+              },
+              "property": {
+                "type": "Identifier",
+                "start": 907,
+                "end": 912,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 25
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 30
+                  }
+                },
+                "name": "union"
+              },
+              "computed": false
+            },
+            "arguments": [
+              {
+                "type": "ArrayExpression",
+                "start": 913,
+                "end": 934,
+                "loc": {
+                  "start": {
+                    "line": 26,
+                    "column": 31
+                  },
+                  "end": {
+                    "line": 26,
+                    "column": 52
+                  }
+                },
+                "elements": [
+                  {
+                    "type": "Identifier",
+                    "start": 914,
+                    "end": 922,
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 32
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 40
+                      }
+                    },
+                    "name": "ExitCode"
+                  },
+                  {
+                    "type": "Identifier",
+                    "start": 924,
+                    "end": 933,
+                    "loc": {
+                      "start": {
+                        "line": 26,
+                        "column": 42
+                      },
+                      "end": {
+                        "line": 26,
+                        "column": 51
+                      }
+                    },
+                    "name": "ExitCodes"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "Literal",
+            "start": 937,
+            "end": 953,
+            "loc": {
+              "start": {
+                "line": 26,
+                "column": 55
+              },
+              "end": {
+                "line": 26,
+                "column": 71
+              }
+            },
+            "value": "MaybeExitCodes",
+            "rawValue": "MaybeExitCodes",
+            "raw": "\"MaybeExitCodes\""
+          }
+        ],
+        "leadingComments": [
+          {
+            "type": "Block",
+            "value": "*\n * @typedef MaybeExitCodes\n ",
+            "start": 847,
+            "end": 881,
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 0
+              },
+              "end": {
+                "line": 25,
+                "column": 3
+              }
+            },
+            "range": [
+              847,
+              881
+            ]
+          }
+        ],
+        "trailingComments": []
+      },
+      "leadingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * @typedef MaybeExitCodes\n ",
+          "start": 847,
+          "end": 881,
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 0
+            },
+            "end": {
+              "line": 25,
+              "column": 3
+            }
+          },
+          "range": [
+            847,
+            881
+          ]
+        }
+      ]
+    }
+  ]
+}

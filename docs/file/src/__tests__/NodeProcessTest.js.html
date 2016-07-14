@@ -37,7 +37,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-process">process</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Condition">Condition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DuplexStream">DuplexStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCode">ExitCode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCodes">ExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Instance">Instance</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MaybeExitCodes">MaybeExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeProcess">NodeProcess</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-null">null</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Process">Process</a></span></span></li>
@@ -108,7 +111,7 @@ describe(&quot;NodeProcess&quot;, function() {
     it(&quot;creates a new nodeProcess&quot;, function() {
         const nodeProcess = NodeProcess.create(&quot;node Test.js&quot;, &quot;Started Successfully.&quot;);
 
-        assert.deepStrictEqual(keys(nodeProcess.instance), [&quot;isRunning&quot;, &quot;isStreaming&quot;, &quot;output&quot;, &quot;lastMatch&quot;, &quot;fulfilled&quot;], &quot;No Instance of child_process should be set&quot;);
+        assert.deepStrictEqual(keys(nodeProcess.instance), [&quot;exitCodes&quot;, &quot;isRunning&quot;, &quot;isStreaming&quot;, &quot;output&quot;, &quot;lastMatch&quot;, &quot;fulfilled&quot;], &quot;No Instance of child_process should be set&quot;);
         assert(!nodeProcess.instance.isRunning, &quot;Process shouldn&apos;t run after create&quot;);
         assert.equal(nodeProcess.command, &quot;node&quot;, &quot;Command should be stored in Process&quot;);
         assert.equal(nodeProcess.commandArgs, &quot;Test.js&quot;, &quot;CommandArgs should be stored in Process&quot;);
@@ -145,7 +148,7 @@ describe(&quot;NodeProcess&quot;, function() {
         assert(matchSpy.calledOnce, &quot;matchSpy wasn&apos;t called once&quot;);
     });
 
-    it(&quot;starts a nodeProcess and waits until it is closed&quot;, function() {
+    it(&quot;starts a nodeProcess and waits until it is closed&quot;, function() { //eslint-disable-line
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create(&quot;node Test.js&quot;, &quot;Not necessary&quot;);
         const mockPromise = {
@@ -153,7 +156,7 @@ describe(&quot;NodeProcess&quot;, function() {
             reject:  sinon.spy()
         };
 
-        nodeProcess.onDeath(mockPromise);
+        nodeProcess.onDeath(mockPromise, [0]);
         nodeProcess.run();
 
         assert(T.Function.is(callbacks.close), &quot;Close shoud be set again&quot;);

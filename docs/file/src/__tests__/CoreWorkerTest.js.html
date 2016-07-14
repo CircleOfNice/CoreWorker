@@ -37,7 +37,10 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-process">process</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Condition">Condition</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-DuplexStream">DuplexStream</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCode">ExitCode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-ExitCodes">ExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Instance">Instance</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MaybeExitCodes">MaybeExitCodes</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-NodeProcess">NodeProcess</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-null">null</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-Process">Process</a></span></span></li>
@@ -74,36 +77,39 @@ import T from &quot;tcomb&quot;;
 import { Writable } from &quot;stream&quot;;
 import path from &quot;path&quot;;
 
-const counterScript = path.join(__dirname, &quot;/Scripts/CounterScript.js&quot;);
-const stdinLogger   = path.join(__dirname, &quot;/Scripts/StdinLogger.js&quot;);
-const failScript    = path.join(__dirname, &quot;/Scripts/FailScript.js&quot;);
+const counterScript  = path.join(__dirname, &quot;/Scripts/CounterScript.js&quot;);
+const stdinLogger    = path.join(__dirname, &quot;/Scripts/StdinLogger.js&quot;);
+const failScript     = path.join(__dirname, &quot;/Scripts/FailScript.js&quot;);
+const exitCodeScript = path.join(__dirname, &quot;/Scripts/ExitCodeScript.js&quot;);
+const killScript     = path.join(__dirname, &quot;/Scripts/KillScript.js&quot;);
 
-describe(&quot;CoreWorker&quot;, function() {
+describe(&quot;CoreWorker&quot;, function() { //eslint-disable-line
     it(&quot;executes an application and waits until it is ready&quot;, async function(done) {
         this.timeout(5000);
         const counter = process(`node ${counterScript}`, &quot;Log No. 10&quot;);
 
-        try { // eslint-disable-line
+        try {
             const result = await counter.ready(2000);
 
-            assert.deepStrictEqual(result.output, [
-                &quot;Log No. 1\n&quot;,
-                &quot;Log No. 2\n&quot;,
-                &quot;Log No. 3\n&quot;,
-                &quot;Log No. 4\n&quot;,
-                &quot;Log No. 5\n&quot;,
-                &quot;Log No. 6\n&quot;,
-                &quot;Log No. 7\n&quot;,
-                &quot;Log No. 8\n&quot;,
-                &quot;Log No. 9\n&quot;,
+            assert.deepStrictEqual(
+                result.output.join(&quot;&quot;),
+                &quot;Log No. 1\n&quot; +
+                &quot;Log No. 2\n&quot; +
+                &quot;Log No. 3\n&quot; +
+                &quot;Log No. 4\n&quot; +
+                &quot;Log No. 5\n&quot; +
+                &quot;Log No. 6\n&quot; +
+                &quot;Log No. 7\n&quot; +
+                &quot;Log No. 8\n&quot; +
+                &quot;Log No. 9\n&quot; +
                 &quot;Log No. 10\n&quot;
-            ]);
+            );
 
             assert.equal(result.isRunning, true, &quot;Expected process to be running&quot;);
             assert(T.Number.is(result.pid) &amp;&amp; result.pid &gt; 0, &quot;Should have a pid&quot;);
-            counter.kill().then(killedResult =&gt; {
-                assert.equal(
-                    killedResult.data,
+
+            assert.equal(
+                (await counter.kill()).data.indexOf(
                     &quot;Log No. 1\n&quot; +
                     &quot;Log No. 2\n&quot; +
                     &quot;Log No. 3\n&quot; +
@@ -115,9 +121,10 @@ describe(&quot;CoreWorker&quot;, function() {
                     &quot;Log No. 9\n&quot; +
                     &quot;Log No. 10\n&quot; +
                     &quot;Log No. 11\n&quot;
-                );
-                done();
-            }).catch(done);
+                ),
+                0
+            );
+            done();
         } catch(err) {
             done(err);
         }
@@ -126,7 +133,7 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application and waits until it is ready&quot;, async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 5/);
 
-        try { // eslint-disable-line
+        try {
             const result = await counter.ready(2000); // eslint-disable-line
 
             assert.deepStrictEqual(result.output, [
@@ -140,7 +147,7 @@ describe(&quot;CoreWorker&quot;, function() {
             assert.equal(result.isRunning, true, &quot;Expected process to be running&quot;);
             assert(T.Number.is(result.pid) &amp;&amp; result.pid &gt; 0, &quot;Should have a pid&quot;);
 
-            counter.kill();
+            await counter.kill();
             done();
         } catch(err) {
             done(err);
@@ -150,7 +157,7 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application, waits until it is ready, but exceeds given timeout&quot;, async function(done) {
         const counter = process(`node ${counterScript}`, &quot;Log No. 10&quot;);
 
-        try { // eslint-disable-line
+        try {
             const result = await counter.ready(10);
 
             assert.deepStrictEqual(result, Result({ data: null }), &quot;Result should contain null&quot;);
@@ -158,7 +165,7 @@ describe(&quot;CoreWorker&quot;, function() {
         } catch(err) {
             assert.equal(err.message, &quot;Timeout exceeded.&quot;, &quot;Timeout Error should be thrown&quot;);
 
-            counter.kill();
+            await counter.kill();
             done();
         }
     });
@@ -166,8 +173,8 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application and waits its death&quot;, async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        try { // eslint-disable-line
-            const result = await counter.death(1000);
+        try {
+            const result = await counter.death();
 
             result.data
                 .slice(0, -1)
@@ -184,7 +191,7 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application and waits its death with a spedified timeout&quot;, async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        try { // eslint-disable-line
+        try {
             const result = await counter.death(500);
 
             result.data
@@ -202,13 +209,13 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application, waits its death, but exceeds given timeout&quot;, async function(done) {
         const counter = process(`node ${counterScript}`, /Log\ No\.\ 10/);
 
-        try { // eslint-disable-line
+        try {
             await counter.death(10);
             done(new Error(&quot;Shouldn&apos;t resolve here&quot;));
         } catch(err) {
             assert.equal(err.message, &quot;Timeout exceeded.&quot;, &quot;Timeout Error should be thrown&quot;);
 
-            counter.kill();
+            await counter.kill();
             done();
         }
     });
@@ -220,8 +227,7 @@ describe(&quot;CoreWorker&quot;, function() {
 
         writable.write = function(chunk) {
             assert.equal(chunk, &quot;Hello\n&quot;);
-            inputLogger.kill();
-            done();
+            inputLogger.kill().then(() =&gt; done()).catch(done);
         };
 
         stream.pipe(writable);
@@ -231,12 +237,52 @@ describe(&quot;CoreWorker&quot;, function() {
     it(&quot;executes an application, but terminates unexpectedly&quot;, async function(done) {
         const failProcess = process(`node ${failScript}`);
 
-        try { // eslint-disable-line
+        try {
             await failProcess.death(1000);
             done(new Error(&quot;Shouldn&apos;t resolve here&quot;));
         } catch(err) {
             assert.equal(err.message, &quot;Process was closed unexpectedly. Code: 1&quot;, &quot;Message should be closing code with 1&quot;);
             done();
+        }
+    });
+
+    it(&quot;executes an application, awaits its death and terminates with valid exit code&quot;, async function(done) {
+        try {
+            const validExitCodeProcess = process(`node ${exitCodeScript}`);
+            const result               = await validExitCodeProcess.death(1000, 128);
+
+            assert.equal(result.data, &quot;Process exited with code 100&quot;);
+            done();
+        } catch(err) {
+            done(err);
+        }
+    });
+
+    it(&quot;executes an application and kills it&quot;, async function(done) {
+        try {
+            const liveProcess = process(`node ${killScript}`, /Kill me/);
+
+            await liveProcess.ready(1000);
+            await liveProcess.kill();
+            done();
+        } catch(err) {
+            assert.equal(err.message, &quot;Process was closed unexpectedly. Code: 137&quot;);
+            done();
+        }
+    });
+
+    it(&quot;executes an application, kills it and terminates with valid exit code&quot;, async function(done) {
+        try {
+            const liveProcess = process(`node ${killScript}`, /Kill me/);
+
+            await liveProcess.ready(1000);
+
+            const result = await liveProcess.kill([137]);
+
+            assert.equal(result.data, &quot;Kill me&quot;);
+            done();
+        } catch(err) {
+            done(err);
         }
     });
 });

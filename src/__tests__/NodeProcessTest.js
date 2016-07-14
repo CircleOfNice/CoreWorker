@@ -57,7 +57,7 @@ describe("NodeProcess", function() {
     it("creates a new nodeProcess", function() {
         const nodeProcess = NodeProcess.create("node Test.js", "Started Successfully.");
 
-        assert.deepStrictEqual(keys(nodeProcess.instance), ["isRunning", "isStreaming", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
+        assert.deepStrictEqual(keys(nodeProcess.instance), ["exitCodes", "isRunning", "isStreaming", "output", "lastMatch", "fulfilled"], "No Instance of child_process should be set");
         assert(!nodeProcess.instance.isRunning, "Process shouldn't run after create");
         assert.equal(nodeProcess.command, "node", "Command should be stored in Process");
         assert.equal(nodeProcess.commandArgs, "Test.js", "CommandArgs should be stored in Process");
@@ -94,7 +94,7 @@ describe("NodeProcess", function() {
         assert(matchSpy.calledOnce, "matchSpy wasn't called once");
     });
 
-    it("starts a nodeProcess and waits until it is closed", function() {
+    it("starts a nodeProcess and waits until it is closed", function() { //eslint-disable-line
         callbacks.close   = null;
         const nodeProcess = NodeProcess.create("node Test.js", "Not necessary");
         const mockPromise = {
@@ -102,7 +102,7 @@ describe("NodeProcess", function() {
             reject:  sinon.spy()
         };
 
-        nodeProcess.onDeath(mockPromise);
+        nodeProcess.onDeath(mockPromise, [0]);
         nodeProcess.run();
 
         assert(T.Function.is(callbacks.close), "Close shoud be set again");
