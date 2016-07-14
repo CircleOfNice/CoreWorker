@@ -21,4 +21,4 @@ const live = function live() {
     process.on("exit", () => process.exit(137));
 };
 
-setTimeout(live, 50);
+setTimeout(live, 5);
