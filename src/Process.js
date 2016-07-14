@@ -84,7 +84,6 @@ Process.prototype.stream = T.func([], TDuplexStream, "process.stream").of(functi
  * @param {MaybeExitCodes} maybeExitCodes that are valid
  */
 Process.prototype.kill = T.func([MaybeExitCodes], T.Object, "process.kill").of(function(maybeExitCodes) {
-    console.log(maybeExitCodes);
     const exitCodes = ExitCodes.create(maybeExitCodes);
 
     return this.instance.kill(exitCodes);

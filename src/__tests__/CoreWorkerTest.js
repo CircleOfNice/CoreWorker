@@ -29,7 +29,7 @@ const failScript     = path.join(__dirname, "/Scripts/FailScript.js");
 const exitCodeScript = path.join(__dirname, "/Scripts/ExitCodeScript.js");
 const killScript     = path.join(__dirname, "/Scripts/KillScript.js");
 
-describe("CoreWorker", function() {
+describe("CoreWorker", function() { //eslint-disable-line
     it("executes an application and waits until it is ready", async function(done) {
         this.timeout(5000);
         const counter = process(`node ${counterScript}`, "Log No. 10");
@@ -201,6 +201,19 @@ describe("CoreWorker", function() {
             done();
         } catch(err) {
             done(err);
+        }
+    });
+
+    it("executes an application and kills it", async function(done) {
+        try {
+            const liveProcess = process(`node ${killScript}`, /Kill me/);
+
+            await liveProcess.ready(1000);
+            await liveProcess.kill();
+            done();
+        } catch(err) {
+            assert.equal(err.message, "Process was closed unexpectedly. Code: 137");
+            done();
         }
     });
 

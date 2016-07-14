@@ -18,7 +18,7 @@
 
 const live = function live() {
     process.stdout.write("Kill me");
-    process.exitCode = 137;
+    process.on("exit", () => process.exit(137));
 };
 
-setTimeout(live, 5);
+setTimeout(live, 50);

@@ -72,10 +72,10 @@
 
 const live = function live() {
     process.stdout.write(&quot;Kill me&quot;);
-    process.exitCode = 137;
+    process.on(&quot;exit&quot;, () =&gt; process.exit(137));
 };
 
-setTimeout(live, 5);
+setTimeout(live, 50);
 </code></pre>
 
 </div>
