@@ -402,6 +402,36 @@ window.esdocSearchIndex = [
     "typedef"
   ],
   [
+    "src/exitcode.type.js",
+    "file/src/ExitCode.type.js.html",
+    "src/ExitCode.type.js",
+    "file"
+  ],
+  [
+    "src/exitcode.type.js~exitcode",
+    "typedef/index.html#static-typedef-ExitCode",
+    "src/ExitCode.type.js~ExitCode",
+    "typedef"
+  ],
+  [
+    "src/exitcodes.js",
+    "file/src/ExitCodes.js.html",
+    "src/ExitCodes.js",
+    "file"
+  ],
+  [
+    "src/exitcodes.type.js",
+    "file/src/ExitCodes.type.js.html",
+    "src/ExitCodes.type.js",
+    "file"
+  ],
+  [
+    "src/exitcodes.type.js~exitcodes",
+    "typedef/index.html#static-typedef-ExitCodes",
+    "src/ExitCodes.type.js~ExitCodes",
+    "typedef"
+  ],
+  [
     "src/instance.type.js",
     "file/src/Instance.type.js.html",
     "src/Instance.type.js",
@@ -411,6 +441,18 @@ window.esdocSearchIndex = [
     "src/instance.type.js~instance",
     "typedef/index.html#static-typedef-Instance",
     "src/Instance.type.js~Instance",
+    "typedef"
+  ],
+  [
+    "src/maybeexitcodes.type.js",
+    "file/src/MaybeExitCodes.type.js.html",
+    "src/MaybeExitCodes.type.js",
+    "file"
+  ],
+  [
+    "src/maybeexitcodes.type.js~maybeexitcodes",
+    "typedef/index.html#static-typedef-MaybeExitCodes",
+    "src/MaybeExitCodes.type.js~MaybeExitCodes",
     "typedef"
   ],
   [
@@ -534,6 +576,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/__tests__/exitcodestest.js",
+    "file/src/__tests__/ExitCodesTest.js.html",
+    "src/__tests__/ExitCodesTest.js",
+    "file"
+  ],
+  [
     "src/__tests__/nodeprocesstest.js",
     "file/src/__tests__/NodeProcessTest.js.html",
     "src/__tests__/NodeProcessTest.js",
@@ -558,9 +606,21 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/__tests__/scripts/exitcodescript.js",
+    "file/src/__tests__/Scripts/ExitCodeScript.js.html",
+    "src/__tests__/Scripts/ExitCodeScript.js",
+    "file"
+  ],
+  [
     "src/__tests__/scripts/failscript.js",
     "file/src/__tests__/Scripts/Failscript.js.html",
     "src/__tests__/Scripts/Failscript.js",
+    "file"
+  ],
+  [
+    "src/__tests__/scripts/killscript.js",
+    "file/src/__tests__/Scripts/KillScript.js.html",
+    "src/__tests__/Scripts/KillScript.js",
     "file"
   ],
   [
