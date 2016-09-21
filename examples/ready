@@ -39,8 +39,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Runs a Script that increases a counter each millisecond and logs it
  * This example waits until Process is ready
  */
-
-
 var websocketPath = _path2.default.join(__dirname, "Resources/Websocket");
 var websocket = (0, _index.process)("node " + websocketPath, "Request was upgraded successfully to new Websocket");
 var createWebsocket = function () {

@@ -1,7 +1,7 @@
 {
   "type": "Program",
   "start": 0,
-  "end": 884,
+  "end": 883,
   "loc": {
     "start": {
       "line": 1,
@@ -474,7 +474,7 @@
     {
       "type": "ExpressionStatement",
       "start": 862,
-      "end": 883,
+      "end": 882,
       "loc": {
         "start": {
           "line": 24,
@@ -482,13 +482,13 @@
         },
         "end": {
           "line": 24,
-          "column": 21
+          "column": 20
         }
       },
       "expression": {
         "type": "CallExpression",
         "start": 862,
-        "end": 882,
+        "end": 881,
         "loc": {
           "start": {
             "line": 24,
@@ -496,7 +496,7 @@
           },
           "end": {
             "line": 24,
-            "column": 20
+            "column": 19
           }
         },
         "callee": {
@@ -535,7 +535,7 @@
           {
             "type": "Literal",
             "start": 879,
-            "end": 881,
+            "end": 880,
             "loc": {
               "start": {
                 "line": 24,
@@ -543,12 +543,12 @@
               },
               "end": {
                 "line": 24,
-                "column": 19
+                "column": 18
               }
             },
-            "value": 50,
-            "rawValue": 50,
-            "raw": "50"
+            "value": 5,
+            "rawValue": 5,
+            "raw": "5"
           }
         ]
       }
