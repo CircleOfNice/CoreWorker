@@ -47,7 +47,7 @@ const spawn = function(command, commandArgs) {
 
 describe("NodeProcess", function() {
     before(function() {
-        sinon.stub(ChildProcess, "spawn", spawn);
+        sinon.stub(ChildProcess, "spawn").callsFake(spawn);
     });
 
     after(function() {
@@ -112,6 +112,6 @@ describe("NodeProcess", function() {
         assert(mockPromise.resolve.calledWith(Result({ data: "Yes" })), `closeSpy was called with wrong args: \n ${mockPromise.resolve.args}`);
 
         callbacks.close(1);
-        assert(mockPromise.reject.calledWith(new Error("Bla")), `closeSpy was called with wrong args: \n ${mockPromise.reject.args}`);
+        assert.deepStrictEqual(mockPromise.reject.getCall(0).args, [new Error("Error: Process was closed unexpectedly. Code: 1")]);
     });
 });

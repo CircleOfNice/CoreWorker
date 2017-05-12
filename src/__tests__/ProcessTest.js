@@ -104,16 +104,16 @@ const kill = function(reason) {
 
 const restoreAndSet = function(toRestore, toSet, functionName, stubFunction) {
     toRestore.restore();
-    sinon.stub(toSet, functionName, stubFunction);
+    sinon.stub(toSet, functionName).callsFake(stubFunction);
 };
 
 describe("Process", function() {
     before(function() {
-        sinon.stub(NodeProcess.prototype, "run", run);
-        sinon.stub(NodeProcess.prototype, "write", write);
-        sinon.stub(NodeProcess.prototype, "onReady", onReady);
-        sinon.stub(NodeProcess.prototype, "onDeath", onDeath);
-        sinon.stub(NodeProcess.prototype, "kill", kill);
+        sinon.stub(NodeProcess.prototype, "run").callsFake(run);
+        sinon.stub(NodeProcess.prototype, "write").callsFake(write);
+        sinon.stub(NodeProcess.prototype, "onReady").callsFake(onReady);
+        sinon.stub(NodeProcess.prototype, "onDeath").callsFake(onDeath);
+        sinon.stub(NodeProcess.prototype, "kill").callsFake(kill);
         this.clock = sinon.useFakeTimers();
     });
 
@@ -243,7 +243,7 @@ describe("Process", function() {
         const stream    = process.stream();
         const pipeSpy   = sinon.spy();
         const streamSpy = new Writable({ // eslint-disable-line
-            "write": (data, enc, next) => {
+            write(data, enc, next) {
                 pipeSpy(data);
                 next();
             }
