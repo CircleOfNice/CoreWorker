@@ -244,7 +244,7 @@ describe(&quot;CoreWorker&quot;, function() { //eslint-disable-line
         const liveProcess = process(`node ${killScript}`, /Kill me/);
 
         liveProcess.ready(1000)
-            .then(() =&gt; liveProcess.kill())
+            .then(() =&gt; liveProcess.death())
             .then(() =&gt; done(new Error(&quot;shouldn trigger&quot;)))
             .catch(err =&gt; {
                 try {

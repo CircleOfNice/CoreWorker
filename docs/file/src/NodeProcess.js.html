@@ -126,7 +126,10 @@ NodeProcess.prototype.run = function(timeout = 0) {
     this.emitter.on(&quot;data&quot;, data =&gt; this.validate(data.toString()));
     process.stdout.on(&quot;data&quot;, data =&gt; this.emitter.emit(&quot;data&quot;, data.toString()));
     process.stderr.on(&quot;data&quot;, data =&gt; this.emitter.emit(&quot;data&quot;, `&lt;error&gt; ${data}`));
-    process.on(&quot;close&quot;, (code, signal) =&gt; this.instance.exitCodes.indexOf(code) &gt; -1 || NotNil.is(signal) ? ::this.finish() : ::this.terminate(code));
+    process.on(&quot;close&quot;, (code, signal) =&gt; (
+        this.instance.exitCodes.indexOf(code) &gt; -1 ||
+        NotNil.is(signal)
+    ) ? ::this.finish(code) : ::this.terminate(code));
 
     assign(this.instance, process, {
         isRunning: true,
@@ -197,8 +200,10 @@ NodeProcess.prototype.terminate = T.func([T.Number], T.Nil, &quot;nodeProcess.te
 
 /**
  * Emits result after process was closed
+ *
+ * @param {number} code as exit status of the instance
  */
-NodeProcess.prototype.finish = T.func([], T.Nil, &quot;nodeProcess.finish&quot;).of(function() {
+NodeProcess.prototype.finish = T.func([T.maybe(T.Number)], T.Nil, &quot;nodeProcess.finish&quot;).of(function() {
     assign(this.instance, { isRunning: false });
     this.emitter.emit(&quot;death&quot;, Result.create(this.instance.output.join(&quot;&quot;)));
 });

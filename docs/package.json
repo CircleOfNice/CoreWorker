@@ -1,6 +1,6 @@
 {
   "name": "core-worker",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
