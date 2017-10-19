@@ -92,7 +92,7 @@ test: build
 	$(WORKING_DIR)/node_modules/.bin/remap-istanbul -i $(WORKING_DIR)/coverage/coverage.json -o $(WORKING_DIR)/coverage/lcov-report -t html
 
 docs: build
-	$(WORKING_DIR)/node_modules/.bin/esdoc -c esdoc.json
+#	$(WORKING_DIR)/node_modules/.bin/esdoc -c esdoc.json
 
 install: docs test
 	@+make -s $(INSTALLED_OBJECTS)
