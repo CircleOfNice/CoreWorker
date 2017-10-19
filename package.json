@@ -1,6 +1,6 @@
 {
   "name": "core-worker",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "CoreWorker",
   "main": "index.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "mocha-istanbul": "^0.3.0",
     "proxyquire": "^1.8.0",
     "remap-istanbul": "^0.9.5",
+    "selenium-server-standalone-jar": "^3.6.0",
     "sinon": "^4.0.1",
     "source-map-support": "^0.5.0"
   },

@@ -19,6 +19,7 @@
 import { process } from "../index";
 import assert from "assert";
 import T from "tcomb";
+import selenium from "selenium-server-standalone-jar";
 import { Writable } from "stream";
 import path from "path";
 
@@ -204,5 +205,17 @@ describe("CoreWorker", function() { //eslint-disable-line
         const result = await liveProcess.kill([137]);
 
         assert.equal(result.data, "Kill me");
+    });
+
+    it("starts a selenium server and kills it", async function() {
+        const command         = `java -jar ${selenium.path} -port 51515`;
+        const condition       = /Selenium Server is up and running/;
+        const seleniumProcess = process(command, condition);
+
+        await seleniumProcess.ready(5000);
+
+        const result = await seleniumProcess.kill(143);
+
+        assert.equal(result.data.split("\n").pop().split("-").pop().trim(), "Selenium Server is up and running");
     });
 });
