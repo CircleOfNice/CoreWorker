@@ -27,7 +27,7 @@ import Result from "./Result.type";
  */
 Result.create = T.func([T.maybe(T.String)], Result, "Result.create").of(function(match) {
     return {
-        data: match
+        data: typeof match === "string" ? match.trim() : match
     };
 });
 

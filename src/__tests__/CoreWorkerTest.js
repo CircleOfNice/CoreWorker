@@ -52,22 +52,18 @@ describe("CoreWorker", function() { //eslint-disable-line
         assert.equal(result.isRunning, true, "Expected process to be running");
         assert(T.Number.is(result.pid) && result.pid > 0, "Should have a pid");
 
-        assert.equal(
-            (await counter.kill()).data.indexOf(
-                "Log No. 1\n" +
-                "Log No. 2\n" +
-                "Log No. 3\n" +
-                "Log No. 4\n" +
-                "Log No. 5\n" +
-                "Log No. 6\n" +
-                "Log No. 7\n" +
-                "Log No. 8\n" +
-                "Log No. 9\n" +
-                "Log No. 10\n" +
-                "Log No. 11\n"
-            ),
-            0
-        );
+        assert.deepEqual((await counter.kill()).data.split("\n"), [
+            "Log No. 1",
+            "Log No. 2",
+            "Log No. 3",
+            "Log No. 4",
+            "Log No. 5",
+            "Log No. 6",
+            "Log No. 7",
+            "Log No. 8",
+            "Log No. 9",
+            "Log No. 10"
+        ]);
     });
 
     it("executes an application and waits until it is ready", async function() {
@@ -113,7 +109,6 @@ describe("CoreWorker", function() { //eslint-disable-line
         const result  = await counter.death();
 
         result.data
-            .slice(0, -1)
             .split("\n")
             .forEach(function(row, iterator) {
                 assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\n Log No. ${iterator + 1}`);
@@ -125,7 +120,6 @@ describe("CoreWorker", function() { //eslint-disable-line
         const result  = await counter.death(500);
 
         result.data
-            .slice(0, -1)
             .split("\n")
             .forEach(function(row, iterator) {
                 assert(row === `Log No. ${iterator + 1}`, `Wrong output: ${row}, expected:\n Log No. ${iterator + 1}`);

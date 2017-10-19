@@ -16,9 +16,9 @@
  * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
- const exit = function() {
-     process.stdout.write("Process exited with code 100");
-     process.exit(128);
- };
+const exit = function() {
+    process.stdout.write("Process exited with code 100");
+    process.exit(128);
+};
 
- setTimeout(exit, 5);
+setTimeout(exit, 5);

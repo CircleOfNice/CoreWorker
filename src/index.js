@@ -16,7 +16,7 @@
  * Copyright 2016 TeeAge-Beatz UG (haftungsbeschränkt)
  */
 
- import TProcess from "./Process";
+import TProcess from "./Process";
 
- export const process = ::TProcess.create;
- export const Process = TProcess;
+export const process = ::TProcess.create;
+export const Process = TProcess;

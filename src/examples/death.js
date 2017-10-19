@@ -26,9 +26,9 @@ import { process } from "../index";
 const copyProcess   = process(`cp ${path.join(__dirname, "Resources/dummyfile")} ${path.join(__dirname, "Resources/copiedDummyfile")}`);
 const removeProcess = process(`rm ${path.join(__dirname, "Resources/copiedDummyfile")}`);
 const copyAndRemove = async function() {
-    /*eslint-disable*/
+    /* eslint-disable */
     try {
-    /*eslint-enable*/
+    /* eslint-enable */
         console.log("> Copy file: dummyfile");
         await copyProcess.death(500);
         console.log("> Finished copy process: dummyfile -> copiedDummyfile");

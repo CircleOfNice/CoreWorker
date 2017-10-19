@@ -25,7 +25,6 @@ describe("TimeoutError", function() {
         try {
         /* eslint-ensable */
             throw TimeoutError.create(null);
-            done(new Error("TimeoutError should have been caught"));
         } catch(err) {
             assert.equal("Timeout exceeded.", err.message);
             done();
@@ -37,7 +36,6 @@ describe("TimeoutError", function() {
         try {
         /* eslint-enable */
             throw TimeoutError.create("Foobar");
-            done(new Error("Error should have been caught"));
         } catch(err) {
             assert.equal("Timeout exceeded. Last process output is: Foobar", err.message);
             done();
@@ -49,7 +47,6 @@ describe("TimeoutError", function() {
         try {
         /* eslint-enable */
             throw TimeoutError.create("");
-            done(new Error("Error should have been caught"));
         } catch(err) {
             assert.equal("Timeout exceeded.", err.message);
             done();
